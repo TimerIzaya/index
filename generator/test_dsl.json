@@ -1,0 +1,40 @@
+{
+  "database": {
+    "open": {
+      "name": "example_string",
+      "version": 1,
+      "onsuccess": {
+        "assign": {
+          "db": "result"
+        }
+      }
+    }
+  },
+  "transactions": [
+    {
+      "from": "db",
+      "stores": [
+        "store1"
+      ],
+      "mode": "readwrite",
+      "assign": {
+        "tx": "result"
+      }
+    }
+  ],
+  "operations": [
+    {
+      "type": "put",
+      "from": "tx",
+      "store": "store1",
+      "value": "any_value",
+      "key": "any_value"
+    },
+    {
+      "type": "get",
+      "from": "tx",
+      "store": "store1",
+      "key": "any_value"
+    }
+  ]
+}

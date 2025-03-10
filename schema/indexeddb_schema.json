@@ -1,0 +1,196 @@
+{
+  "database": {
+    "open": {
+      "type": "IDBFactory.open",
+      "params": [
+        { "name": "name", "type": "string" },
+        { "name": "version", "type": "number", "optional": true }
+      ],
+      "returns": "IDBOpenDBRequest",
+      "events": ["onsuccess", "onerror", "onupgradeneeded"]
+    },
+    "deleteDatabase": {
+      "type": "IDBFactory.deleteDatabase",
+      "params": [
+        { "name": "name", "type": "string" }
+      ],
+      "returns": "IDBOpenDBRequest",
+      "events": ["onsuccess", "onerror"]
+    }
+  },
+
+  "upgradeneeded": {
+    "createObjectStore": {
+      "type": "IDBDatabase.createObjectStore",
+      "params": [
+        { "name": "name", "type": "string" },
+        { "name": "options", "type": "object", "optional": true }
+      ],
+      "returns": "IDBObjectStore"
+    },
+    "deleteObjectStore": {
+      "type": "IDBDatabase.deleteObjectStore",
+      "params": [
+        { "name": "name", "type": "string" }
+      ],
+      "returns": "void"
+    },
+    "createIndex": {
+      "type": "IDBObjectStore.createIndex",
+      "params": [
+        { "name": "name", "type": "string" },
+        { "name": "keyPath", "type": "string" },
+        { "name": "options", "type": "object", "optional": true }
+      ],
+      "returns": "IDBIndex"
+    }
+  },
+
+  "transaction": {
+    "create": {
+      "type": "IDBDatabase.transaction",
+      "params": [
+        { "name": "storeNames", "type": "array|string" },
+        { "name": "mode", "type": "string", "optional": true }
+      ],
+      "requires": "IDBDatabase",
+      "returns": "IDBTransaction",
+      "events": ["oncomplete", "onerror", "onabort"]
+    },
+    "objectStore": {
+      "type": "IDBTransaction.objectStore",
+      "params": [
+        { "name": "name", "type": "string" }
+      ],
+      "requires": "IDBTransaction",
+      "returns": "IDBObjectStore"
+    }
+  },
+
+  "storeOperations": {
+    "put": {
+      "type": "IDBObjectStore.put",
+      "params": [
+        { "name": "value", "type": "any" },
+        { "name": "key", "type": "any", "optional": true }
+      ],
+      "requires": "IDBObjectStore",
+      "returns": "IDBRequest"
+    },
+    "get": {
+      "type": "IDBObjectStore.get",
+      "params": [
+        { "name": "key", "type": "any" }
+      ],
+      "requires": "IDBObjectStore",
+      "returns": "IDBRequest"
+    },
+    "delete": {
+      "type": "IDBObjectStore.delete",
+      "params": [
+        { "name": "key", "type": "any" }
+      ],
+      "requires": "IDBObjectStore",
+      "returns": "IDBRequest"
+    },
+    "clear": {
+      "type": "IDBObjectStore.clear",
+      "params": [],
+      "requires": "IDBObjectStore",
+      "returns": "IDBRequest"
+    },
+    "openCursor": {
+      "type": "IDBObjectStore.openCursor",
+      "params": [
+        { "name": "query", "type": "any", "optional": true },
+        { "name": "direction", "type": "string", "optional": true }
+      ],
+      "requires": "IDBObjectStore",
+      "returns": "IDBRequest"
+    }
+  },
+
+  "indexOperations": {
+    "get": {
+      "type": "IDBIndex.get",
+      "params": [
+        { "name": "query", "type": "any" }
+      ],
+      "requires": "IDBIndex",
+      "returns": "IDBRequest"
+    },
+    "count": {
+      "type": "IDBIndex.count",
+      "params": [
+        { "name": "query", "type": "any", "optional": true }
+      ],
+      "requires": "IDBIndex",
+      "returns": "IDBRequest"
+    }
+  },
+
+  "keyRange": {
+    "only": {
+      "type": "IDBKeyRange.only",
+      "params": [{ "name": "value", "type": "any" }],
+      "returns": "IDBKeyRange"
+    },
+    "lowerBound": {
+      "type": "IDBKeyRange.lowerBound",
+      "params": [
+        { "name": "lower", "type": "any" },
+        { "name": "open", "type": "boolean", "optional": true }
+      ],
+      "returns": "IDBKeyRange"
+    },
+    "upperBound": {
+      "type": "IDBKeyRange.upperBound",
+      "params": [
+        { "name": "upper", "type": "any" },
+        { "name": "open", "type": "boolean", "optional": true }
+      ],
+      "returns": "IDBKeyRange"
+    },
+    "bound": {
+      "type": "IDBKeyRange.bound",
+      "params": [
+        { "name": "lower", "type": "any" },
+        { "name": "upper", "type": "any" },
+        { "name": "openLower", "type": "boolean", "optional": true },
+        { "name": "openUpper", "type": "boolean", "optional": true }
+      ],
+      "returns": "IDBKeyRange"
+    }
+  },
+
+  "request": {
+    "events": ["onsuccess", "onerror"]
+  },
+
+  "cursor": {
+    "continue": {
+      "type": "IDBCursor.continue",
+      "params": [{ "name": "key", "type": "any", "optional": true }],
+      "requires": "IDBCursor",
+      "returns": "void"
+    },
+    "advance": {
+      "type": "IDBCursor.advance",
+      "params": [{ "name": "count", "type": "number" }],
+      "requires": "IDBCursor",
+      "returns": "void"
+    },
+    "update": {
+      "type": "IDBCursor.update",
+      "params": [{ "name": "value", "type": "any" }],
+      "requires": "IDBCursor",
+      "returns": "IDBRequest"
+    },
+    "delete": {
+      "type": "IDBCursor.delete",
+      "params": [],
+      "requires": "IDBCursor",
+      "returns": "IDBRequest"
+    }
+  }
+}
