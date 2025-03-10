@@ -1,8 +1,19 @@
 {
   "database": {
     "open": {
-      "name": "example_string",
+      "name": "testDB",
       "version": 1,
+      "onupgradeneeded": {
+        "createObjectStore": [
+          {
+            "name": "store1",
+            "options": {
+              "keyPath": "id",
+              "autoIncrement": true
+            }
+          }
+        ]
+      },
       "onsuccess": {
         "assign": {
           "db": "result"
@@ -27,14 +38,16 @@
       "type": "put",
       "from": "tx",
       "store": "store1",
-      "value": "any_value",
-      "key": "any_value"
+      "value": {
+        "id": 1,
+        "name": "Alice"
+      }
     },
     {
       "type": "get",
       "from": "tx",
       "store": "store1",
-      "key": "any_value"
+      "key": 1
     }
   ]
 }

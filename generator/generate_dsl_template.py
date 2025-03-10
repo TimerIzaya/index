@@ -1,3 +1,4 @@
+# ✅ generator/generate_dsl_template.py
 import json
 import os
 
@@ -16,53 +17,59 @@ def generate_dsl_template(schema_path: str) -> dict:
         schema = json.load(f)
 
     dsl = {
-        "database": {},
-        "transactions": [],
-        "operations": []
+        "database": {
+            "open": {
+                "name": "testDB",
+                "version": 1,
+                "onupgradeneeded": {
+                    "createObjectStore": [
+                        {
+                            "name": "store1",
+                            "options": {
+                                "keyPath": "id",
+                                "autoIncrement": True
+                            }
+                        }
+                    ]
+                },
+                "onsuccess": {
+                    "assign": { "db": "result" }
+                }
+            }
+        },
+        "transactions": [
+            {
+                "from": "db",
+                "stores": ["store1"],
+                "mode": "readwrite",
+                "assign": { "tx": "result" }
+            }
+        ],
+        "operations": [
+            {
+                "type": "put",
+                "from": "tx",
+                "store": "store1",
+                "value": { "id": 1, "name": "Alice" }
+            },
+            {
+                "type": "get",
+                "from": "tx",
+                "store": "store1",
+                "key": 1
+            }
+        ]
     }
-
-    # 1. open
-    open_api = schema["database"]["open"]
-    open_dsl = {}
-    for param in open_api["params"]:
-        open_dsl[param["name"]] = get_dummy_value(param["type"])
-    open_dsl["onsuccess"] = { "assign": { "db": "result" } }
-    dsl["database"]["open"] = open_dsl
-
-    # 2. transaction
-    tx_api = schema["transaction"]["create"]
-    tx_dsl = {
-        "from": "db",
-        "stores": ["store1"],
-        "mode": "readwrite",
-        "assign": { "tx": "result" }
-    }
-    dsl["transactions"].append(tx_dsl)
-
-    # 3. operation 示例
-    for op_name in ["put", "get"]:
-        op_def = schema["storeOperations"][op_name]
-        op_entry = {
-            "type": op_name,
-            "from": "tx",
-            "store": "store1"
-        }
-        for param in op_def["params"]:
-            if param["name"] not in op_entry:
-                op_entry[param["name"]] = get_dummy_value(param["type"])
-        dsl["operations"].append(op_entry)
 
     return dsl
-import pathlib
 
-# ✅ 入口函数：生成 JSON 文件
 if __name__ == "__main__":
-    schema_file = os.path.join("../schema", "indexeddb_schema.json")
+    schema_path = os.path.join("../schema", "indexeddb_schema.json")
+    output_file = "test_dsl.json"
 
-    dsl = generate_dsl_template(schema_file)
+    dsl = generate_dsl_template(schema_path)
 
-    output_file = pathlib.Path("test_dsl.json").resolve()
     with open(output_file, "w") as f:
         json.dump(dsl, f, indent=2)
 
-    print(f"✅ DSL 模板已保存到：{output_file}")
+    print(f"\u2705 DSL template saved to {output_file}")

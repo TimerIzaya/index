@@ -1,196 +1,645 @@
 {
-  "database": {
-    "open": {
-      "type": "IDBFactory.open",
-      "params": [
-        { "name": "name", "type": "string" },
-        { "name": "version", "type": "number", "optional": true }
-      ],
-      "returns": "IDBOpenDBRequest",
-      "events": ["onsuccess", "onerror", "onupgradeneeded"]
-    },
-    "deleteDatabase": {
-      "type": "IDBFactory.deleteDatabase",
-      "params": [
-        { "name": "name", "type": "string" }
-      ],
-      "returns": "IDBOpenDBRequest",
-      "events": ["onsuccess", "onerror"]
+  "IDBFactory": {
+    "staticMethods": {
+      "open": {
+        "kind": "staticMethod",
+        "name": "open",
+        "definedOn": "IDBFactory",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "returns": "IDBOpenDBRequest",
+        "events": [
+          "onsuccess",
+          "onerror",
+          "onupgradeneeded"
+        ]
+      },
+      "deleteDatabase": {
+        "kind": "staticMethod",
+        "name": "deleteDatabase",
+        "definedOn": "IDBFactory",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "returns": "IDBOpenDBRequest",
+        "events": [
+          "onsuccess",
+          "onerror"
+        ]
+      },
+      "cmp": {
+        "kind": "staticMethod",
+        "name": "cmp",
+        "definedOn": "IDBFactory",
+        "params": [
+          {
+            "name": "first",
+            "type": "any"
+          },
+          {
+            "name": "second",
+            "type": "any"
+          }
+        ],
+        "returns": "number"
+      },
+      "databases": {
+        "kind": "staticMethod",
+        "name": "databases",
+        "definedOn": "IDBFactory",
+        "params": [],
+        "returns": "Promise"
+      }
     }
   },
-
-  "upgradeneeded": {
-    "createObjectStore": {
-      "type": "IDBDatabase.createObjectStore",
-      "params": [
-        { "name": "name", "type": "string" },
-        { "name": "options", "type": "object", "optional": true }
-      ],
-      "returns": "IDBObjectStore"
+  "IDBDatabase": {
+    "instanceMethods": {
+      "transaction": {
+        "kind": "instanceMethod",
+        "name": "transaction",
+        "definedOn": "IDBDatabase",
+        "params": [
+          {
+            "name": "storeNames",
+            "type": "array|string"
+          },
+          {
+            "name": "mode",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "returns": "IDBTransaction"
+      },
+      "createObjectStore": {
+        "kind": "instanceMethod",
+        "name": "createObjectStore",
+        "definedOn": "IDBDatabase",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "IDBObjectStore"
+      },
+      "deleteObjectStore": {
+        "kind": "instanceMethod",
+        "name": "deleteObjectStore",
+        "definedOn": "IDBDatabase",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "returns": "void"
+      },
+      "close": {
+        "kind": "instanceMethod",
+        "name": "close",
+        "definedOn": "IDBDatabase",
+        "params": [],
+        "returns": "void"
+      }
     },
-    "deleteObjectStore": {
-      "type": "IDBDatabase.deleteObjectStore",
-      "params": [
-        { "name": "name", "type": "string" }
-      ],
-      "returns": "void"
+    "instanceProperties": [
+      {
+        "name": "name",
+        "type": "string",
+        "readonly": true
+      },
+      {
+        "name": "version",
+        "type": "number",
+        "readonly": true
+      },
+      {
+        "name": "objectStoreNames",
+        "type": "DOMStringList",
+        "readonly": true
+      }
+    ],
+    "events": [
+      "onabort",
+      "onclose",
+      "onerror",
+      "onversionchange"
+    ]
+  },
+  "IDBTransaction": {
+    "instanceMethods": {
+      "objectStore": {
+        "kind": "instanceMethod",
+        "name": "objectStore",
+        "definedOn": "IDBTransaction",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "returns": "IDBObjectStore"
+      }
     },
-    "createIndex": {
-      "type": "IDBObjectStore.createIndex",
-      "params": [
-        { "name": "name", "type": "string" },
-        { "name": "keyPath", "type": "string" },
-        { "name": "options", "type": "object", "optional": true }
-      ],
-      "returns": "IDBIndex"
+    "instanceProperties": [
+      {
+        "name": "db",
+        "type": "IDBDatabase",
+        "readonly": true
+      },
+      {
+        "name": "error",
+        "type": "DOMException",
+        "readonly": true
+      },
+      {
+        "name": "mode",
+        "type": "string",
+        "readonly": true
+      },
+      {
+        "name": "objectStoreNames",
+        "type": "DOMStringList",
+        "readonly": true
+      }
+    ],
+    "events": [
+      "onabort",
+      "oncomplete",
+      "onerror"
+    ]
+  },
+  "IDBObjectStore": {
+    "instanceMethods": {
+      "add": {
+        "kind": "instanceMethod",
+        "name": "add",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "value",
+            "type": "any"
+          },
+          {
+            "name": "key",
+            "type": "any",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "put": {
+        "kind": "instanceMethod",
+        "name": "put",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "value",
+            "type": "any"
+          },
+          {
+            "name": "key",
+            "type": "any",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "get": {
+        "kind": "instanceMethod",
+        "name": "get",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "key",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "delete": {
+        "kind": "instanceMethod",
+        "name": "delete",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "key",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "clear": {
+        "kind": "instanceMethod",
+        "name": "clear",
+        "definedOn": "IDBObjectStore",
+        "params": [],
+        "returns": "IDBRequest"
+      },
+      "openCursor": {
+        "kind": "instanceMethod",
+        "name": "openCursor",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "range",
+            "type": "IDBKeyRange|any",
+            "optional": true
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "index": {
+        "kind": "instanceMethod",
+        "name": "index",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "returns": "IDBIndex"
+      },
+      "createIndex": {
+        "kind": "instanceMethod",
+        "name": "createIndex",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "keyPath",
+            "type": "string|string[]"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "IDBIndex"
+      },
+      "deleteIndex": {
+        "kind": "instanceMethod",
+        "name": "deleteIndex",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "returns": "void"
+      }
+    },
+    "instanceProperties": [
+      {
+        "name": "name",
+        "type": "string",
+        "readonly": false
+      },
+      {
+        "name": "keyPath",
+        "type": "string|string[]",
+        "readonly": true
+      },
+      {
+        "name": "indexNames",
+        "type": "DOMStringList",
+        "readonly": true
+      },
+      {
+        "name": "autoIncrement",
+        "type": "boolean",
+        "readonly": true
+      },
+      {
+        "name": "transaction",
+        "type": "IDBTransaction",
+        "readonly": true
+      }
+    ]
+  },
+  "IDBIndex": {
+    "instanceMethods": {
+      "get": {
+        "kind": "instanceMethod",
+        "name": "get",
+        "definedOn": "IDBIndex",
+        "params": [
+          {
+            "name": "query",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "getKey": {
+        "kind": "instanceMethod",
+        "name": "getKey",
+        "definedOn": "IDBIndex",
+        "params": [
+          {
+            "name": "query",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "count": {
+        "kind": "instanceMethod",
+        "name": "count",
+        "definedOn": "IDBIndex",
+        "params": [
+          {
+            "name": "query",
+            "type": "any",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "openCursor": {
+        "kind": "instanceMethod",
+        "name": "openCursor",
+        "definedOn": "IDBIndex",
+        "params": [
+          {
+            "name": "query",
+            "type": "any",
+            "optional": true
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest"
+      }
+    },
+    "instanceProperties": [
+      {
+        "name": "name",
+        "type": "string",
+        "readonly": true
+      },
+      {
+        "name": "objectStore",
+        "type": "IDBObjectStore",
+        "readonly": true
+      },
+      {
+        "name": "keyPath",
+        "type": "string|string[]",
+        "readonly": true
+      },
+      {
+        "name": "multiEntry",
+        "type": "boolean",
+        "readonly": true
+      },
+      {
+        "name": "unique",
+        "type": "boolean",
+        "readonly": true
+      }
+    ]
+  },
+  "IDBCursor": {
+    "instanceMethods": {
+      "advance": {
+        "kind": "instanceMethod",
+        "name": "advance",
+        "definedOn": "IDBCursor",
+        "params": [
+          {
+            "name": "count",
+            "type": "number"
+          }
+        ],
+        "returns": "void"
+      },
+      "continue": {
+        "kind": "instanceMethod",
+        "name": "continue",
+        "definedOn": "IDBCursor",
+        "params": [
+          {
+            "name": "key",
+            "type": "any",
+            "optional": true
+          }
+        ],
+        "returns": "void"
+      },
+      "update": {
+        "kind": "instanceMethod",
+        "name": "update",
+        "definedOn": "IDBCursor",
+        "params": [
+          {
+            "name": "value",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest"
+      },
+      "delete": {
+        "kind": "instanceMethod",
+        "name": "delete",
+        "definedOn": "IDBCursor",
+        "params": [],
+        "returns": "IDBRequest"
+      }
+    },
+    "instanceProperties": [
+      {
+        "name": "key",
+        "type": "any",
+        "readonly": true
+      },
+      {
+        "name": "primaryKey",
+        "type": "any",
+        "readonly": true
+      },
+      {
+        "name": "source",
+        "type": "IDBObjectStore | IDBIndex",
+        "readonly": true
+      },
+      {
+        "name": "direction",
+        "type": "string",
+        "readonly": true
+      }
+    ]
+  },
+  "IDBCursorWithValue": {
+    "inherits": "IDBCursor",
+    "instanceProperties": [
+      {
+        "name": "value",
+        "type": "any",
+        "readonly": false
+      }
+    ]
+  },
+  "IDBRequest": {
+    "instanceProperties": [
+      {
+        "name": "result",
+        "type": "any",
+        "readonly": true
+      },
+      {
+        "name": "error",
+        "type": "DOMException",
+        "readonly": true
+      },
+      {
+        "name": "source",
+        "type": "IDBObjectStore | IDBIndex | IDBCursor",
+        "readonly": true
+      },
+      {
+        "name": "transaction",
+        "type": "IDBTransaction",
+        "readonly": true
+      },
+      {
+        "name": "readyState",
+        "type": "string",
+        "readonly": true
+      }
+    ],
+    "events": [
+      "onsuccess",
+      "onerror"
+    ]
+  },
+  "IDBOpenDBRequest": {
+    "inherits": "IDBRequest",
+    "events": [
+      "onblocked",
+      "onupgradeneeded"
+    ]
+  },
+  "IDBKeyRange": {
+    "staticMethods": {
+      "only": {
+        "kind": "staticMethod",
+        "name": "only",
+        "definedOn": "IDBKeyRange",
+        "params": [
+          {
+            "name": "value",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBKeyRange"
+      },
+      "lowerBound": {
+        "kind": "staticMethod",
+        "name": "lowerBound",
+        "definedOn": "IDBKeyRange",
+        "params": [
+          {
+            "name": "lower",
+            "type": "any"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "optional": true
+          }
+        ],
+        "returns": "IDBKeyRange"
+      },
+      "upperBound": {
+        "kind": "staticMethod",
+        "name": "upperBound",
+        "definedOn": "IDBKeyRange",
+        "params": [
+          {
+            "name": "upper",
+            "type": "any"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "optional": true
+          }
+        ],
+        "returns": "IDBKeyRange"
+      },
+      "bound": {
+        "kind": "staticMethod",
+        "name": "bound",
+        "definedOn": "IDBKeyRange",
+        "params": [
+          {
+            "name": "lower",
+            "type": "any"
+          },
+          {
+            "name": "upper",
+            "type": "any"
+          },
+          {
+            "name": "openLower",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "openUpper",
+            "type": "boolean",
+            "optional": true
+          }
+        ],
+        "returns": "IDBKeyRange"
+      }
     }
   },
-
-  "transaction": {
-    "create": {
-      "type": "IDBDatabase.transaction",
-      "params": [
-        { "name": "storeNames", "type": "array|string" },
-        { "name": "mode", "type": "string", "optional": true }
-      ],
-      "requires": "IDBDatabase",
-      "returns": "IDBTransaction",
-      "events": ["oncomplete", "onerror", "onabort"]
-    },
-    "objectStore": {
-      "type": "IDBTransaction.objectStore",
-      "params": [
-        { "name": "name", "type": "string" }
-      ],
-      "requires": "IDBTransaction",
-      "returns": "IDBObjectStore"
-    }
-  },
-
-  "storeOperations": {
-    "put": {
-      "type": "IDBObjectStore.put",
-      "params": [
-        { "name": "value", "type": "any" },
-        { "name": "key", "type": "any", "optional": true }
-      ],
-      "requires": "IDBObjectStore",
-      "returns": "IDBRequest"
-    },
-    "get": {
-      "type": "IDBObjectStore.get",
-      "params": [
-        { "name": "key", "type": "any" }
-      ],
-      "requires": "IDBObjectStore",
-      "returns": "IDBRequest"
-    },
-    "delete": {
-      "type": "IDBObjectStore.delete",
-      "params": [
-        { "name": "key", "type": "any" }
-      ],
-      "requires": "IDBObjectStore",
-      "returns": "IDBRequest"
-    },
-    "clear": {
-      "type": "IDBObjectStore.clear",
-      "params": [],
-      "requires": "IDBObjectStore",
-      "returns": "IDBRequest"
-    },
-    "openCursor": {
-      "type": "IDBObjectStore.openCursor",
-      "params": [
-        { "name": "query", "type": "any", "optional": true },
-        { "name": "direction", "type": "string", "optional": true }
-      ],
-      "requires": "IDBObjectStore",
-      "returns": "IDBRequest"
-    }
-  },
-
-  "indexOperations": {
-    "get": {
-      "type": "IDBIndex.get",
-      "params": [
-        { "name": "query", "type": "any" }
-      ],
-      "requires": "IDBIndex",
-      "returns": "IDBRequest"
-    },
-    "count": {
-      "type": "IDBIndex.count",
-      "params": [
-        { "name": "query", "type": "any", "optional": true }
-      ],
-      "requires": "IDBIndex",
-      "returns": "IDBRequest"
-    }
-  },
-
-  "keyRange": {
-    "only": {
-      "type": "IDBKeyRange.only",
-      "params": [{ "name": "value", "type": "any" }],
-      "returns": "IDBKeyRange"
-    },
-    "lowerBound": {
-      "type": "IDBKeyRange.lowerBound",
-      "params": [
-        { "name": "lower", "type": "any" },
-        { "name": "open", "type": "boolean", "optional": true }
-      ],
-      "returns": "IDBKeyRange"
-    },
-    "upperBound": {
-      "type": "IDBKeyRange.upperBound",
-      "params": [
-        { "name": "upper", "type": "any" },
-        { "name": "open", "type": "boolean", "optional": true }
-      ],
-      "returns": "IDBKeyRange"
-    },
-    "bound": {
-      "type": "IDBKeyRange.bound",
-      "params": [
-        { "name": "lower", "type": "any" },
-        { "name": "upper", "type": "any" },
-        { "name": "openLower", "type": "boolean", "optional": true },
-        { "name": "openUpper", "type": "boolean", "optional": true }
-      ],
-      "returns": "IDBKeyRange"
-    }
-  },
-
-  "request": {
-    "events": ["onsuccess", "onerror"]
-  },
-
-  "cursor": {
-    "continue": {
-      "type": "IDBCursor.continue",
-      "params": [{ "name": "key", "type": "any", "optional": true }],
-      "requires": "IDBCursor",
-      "returns": "void"
-    },
-    "advance": {
-      "type": "IDBCursor.advance",
-      "params": [{ "name": "count", "type": "number" }],
-      "requires": "IDBCursor",
-      "returns": "void"
-    },
-    "update": {
-      "type": "IDBCursor.update",
-      "params": [{ "name": "value", "type": "any" }],
-      "requires": "IDBCursor",
-      "returns": "IDBRequest"
-    },
-    "delete": {
-      "type": "IDBCursor.delete",
-      "params": [],
-      "requires": "IDBCursor",
-      "returns": "IDBRequest"
-    }
+  "IDBVersionChangeEvent": {
+    "instanceProperties": [
+      {
+        "name": "oldVersion",
+        "type": "number",
+        "readonly": true
+      },
+      {
+        "name": "newVersion",
+        "type": "number|null",
+        "readonly": true
+      }
+    ]
   }
 }
