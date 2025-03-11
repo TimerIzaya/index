@@ -17,10 +17,8 @@
           }
         ],
         "returns": "IDBOpenDBRequest",
-        "events": [
-          "onsuccess",
-          "onerror",
-          "onupgradeneeded"
+        "exceptions": [
+          "TypeError"
         ]
       },
       "deleteDatabase": {
@@ -34,10 +32,7 @@
           }
         ],
         "returns": "IDBOpenDBRequest",
-        "events": [
-          "onsuccess",
-          "onerror"
-        ]
+        "notes": "Calling deleteDatabase() on a non-existent database does NOT throw an exception. Instead, the result is returned asynchronously via the IDBOpenDBRequest. In contrast, IDBDatabase.deleteObjectStore() will throw a NotFoundError synchronously if the specified object store does not exist."
       },
       "cmp": {
         "kind": "staticMethod",
@@ -53,14 +48,21 @@
             "type": "any"
           }
         ],
-        "returns": "number"
+        "returns": "number",
+        "returnEnum": [-1, 0, 1],
+        "notes": "返回 -1 表示 first 小于 second，返回 0 表示两者相等，返回 1 表示 first 大于 second。",
+        "exceptions": [
+          "DataError"
+        ]
       },
       "databases": {
         "kind": "staticMethod",
         "name": "databases",
         "definedOn": "IDBFactory",
         "params": [],
-        "returns": "Promise"
+        "returns": "Promise",
+        "returnGeneric": "IDBDatabaseInfo[]",
+        "notes": "返回一个 Promise，该 Promise resolve 一个数组，每个数组元素代表一个 IndexedDB 数据库对象，包含 name 和 version 两个属性。"
       }
     }
   },
@@ -81,7 +83,10 @@
             "optional": true
           }
         ],
-        "returns": "IDBTransaction"
+        "returns": "IDBTransaction",
+        "exceptions": [
+          "InvalidStateError"
+        ]
       },
       "createObjectStore": {
         "kind": "instanceMethod",
@@ -98,7 +103,11 @@
             "optional": true
           }
         ],
-        "returns": "IDBObjectStore"
+        "returns": "IDBObjectStore",
+        "exceptions": [
+          "InvalidStateError",
+          "ConstraintError"
+        ]
       },
       "deleteObjectStore": {
         "kind": "instanceMethod",
@@ -110,7 +119,11 @@
             "type": "string"
           }
         ],
-        "returns": "void"
+        "returns": "void",
+        "exceptions": [
+          "InvalidStateError",
+          "NotFoundError"
+        ]
       },
       "close": {
         "kind": "instanceMethod",
@@ -138,9 +151,7 @@
       }
     ],
     "events": [
-      "onabort",
       "onclose",
-      "onerror",
       "onversionchange"
     ]
   },
@@ -156,7 +167,11 @@
             "type": "string"
           }
         ],
-        "returns": "IDBObjectStore"
+        "returns": "IDBObjectStore",
+        "exceptions": [
+          "InvalidStateError",
+          "NotFoundError"
+        ]
       }
     },
     "instanceProperties": [
@@ -204,7 +219,13 @@
             "optional": true
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "DataError",
+          "ConstraintError",
+          "TransactionInactiveError",
+          "ReadOnlyError"
+        ]
       },
       "put": {
         "kind": "instanceMethod",
@@ -221,7 +242,12 @@
             "optional": true
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "DataError",
+          "TransactionInactiveError",
+          "ReadOnlyError"
+        ]
       },
       "get": {
         "kind": "instanceMethod",
@@ -233,7 +259,11 @@
             "type": "any"
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "delete": {
         "kind": "instanceMethod",
@@ -245,14 +275,22 @@
             "type": "any"
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "clear": {
         "kind": "instanceMethod",
         "name": "clear",
         "definedOn": "IDBObjectStore",
         "params": [],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "ReadOnlyError"
+        ]
       },
       "openCursor": {
         "kind": "instanceMethod",
@@ -270,7 +308,10 @@
             "optional": true
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError"
+        ]
       },
       "index": {
         "kind": "instanceMethod",
@@ -282,7 +323,10 @@
             "type": "string"
           }
         ],
-        "returns": "IDBIndex"
+        "returns": "IDBIndex",
+        "exceptions": [
+          "NotFoundError"
+        ]
       },
       "createIndex": {
         "kind": "instanceMethod",
@@ -303,7 +347,12 @@
             "optional": true
           }
         ],
-        "returns": "IDBIndex"
+        "returns": "IDBIndex",
+        "exceptions": [
+          "ConstraintError",
+          "TransactionInactiveError",
+          "InvalidAccessError"
+        ]
       },
       "deleteIndex": {
         "kind": "instanceMethod",
@@ -315,14 +364,18 @@
             "type": "string"
           }
         ],
-        "returns": "void"
+        "returns": "void",
+        "exceptions": [
+          "NotFoundError",
+          "TransactionInactiveError"
+        ]
       }
     },
     "instanceProperties": [
       {
         "name": "name",
         "type": "string",
-        "readonly": false
+        "readonly": true
       },
       {
         "name": "keyPath",
@@ -358,7 +411,11 @@
             "type": "any"
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "getKey": {
         "kind": "instanceMethod",
@@ -370,7 +427,11 @@
             "type": "any"
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "count": {
         "kind": "instanceMethod",
@@ -383,7 +444,11 @@
             "optional": true
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "openCursor": {
         "kind": "instanceMethod",
@@ -401,7 +466,11 @@
             "optional": true
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "TransactionInactiveError",
+          "DataError"
+        ]
       }
     },
     "instanceProperties": [
@@ -444,7 +513,10 @@
             "type": "number"
           }
         ],
-        "returns": "void"
+        "returns": "void",
+        "exceptions": [
+          "InvalidStateError"
+        ]
       },
       "continue": {
         "kind": "instanceMethod",
@@ -457,7 +529,10 @@
             "optional": true
           }
         ],
-        "returns": "void"
+        "returns": "void",
+        "exceptions": [
+          "InvalidStateError"
+        ]
       },
       "update": {
         "kind": "instanceMethod",
@@ -469,14 +544,23 @@
             "type": "any"
           }
         ],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "ReadOnlyError",
+          "TransactionInactiveError",
+          "DataError"
+        ]
       },
       "delete": {
         "kind": "instanceMethod",
         "name": "delete",
         "definedOn": "IDBCursor",
         "params": [],
-        "returns": "IDBRequest"
+        "returns": "IDBRequest",
+        "exceptions": [
+          "ReadOnlyError",
+          "TransactionInactiveError"
+        ]
       }
     },
     "instanceProperties": [
@@ -508,7 +592,7 @@
       {
         "name": "value",
         "type": "any",
-        "readonly": false
+        "readonly": true
       }
     ]
   },
@@ -564,7 +648,10 @@
             "type": "any"
           }
         ],
-        "returns": "IDBKeyRange"
+        "returns": "IDBKeyRange",
+        "exceptions": [
+          "DataError"
+        ]
       },
       "lowerBound": {
         "kind": "staticMethod",
@@ -581,7 +668,10 @@
             "optional": true
           }
         ],
-        "returns": "IDBKeyRange"
+        "returns": "IDBKeyRange",
+        "exceptions": [
+          "DataError"
+        ]
       },
       "upperBound": {
         "kind": "staticMethod",
@@ -598,7 +688,10 @@
             "optional": true
           }
         ],
-        "returns": "IDBKeyRange"
+        "returns": "IDBKeyRange",
+        "exceptions": [
+          "DataError"
+        ]
       },
       "bound": {
         "kind": "staticMethod",
@@ -624,9 +717,34 @@
             "optional": true
           }
         ],
-        "returns": "IDBKeyRange"
+        "returns": "IDBKeyRange",
+        "exceptions": [
+          "DataError"
+        ]
       }
-    }
+    },
+    "instanceProperties": [
+      {
+        "name": "lower",
+        "type": "any",
+        "readonly": true
+      },
+      {
+        "name": "upper",
+        "type": "any",
+        "readonly": true
+      },
+      {
+        "name": "lowerOpen",
+        "type": "boolean",
+        "readonly": true
+      },
+      {
+        "name": "upperOpen",
+        "type": "boolean",
+        "readonly": true
+      }
+    ]
   },
   "IDBVersionChangeEvent": {
     "instanceProperties": [
@@ -638,6 +756,20 @@
       {
         "name": "newVersion",
         "type": "number|null",
+        "readonly": true
+      }
+    ]
+  },
+  "IDBDatabaseInfo": {
+    "instanceProperties": [
+      {
+        "name": "name",
+        "type": "string",
+        "readonly": true
+      },
+      {
+        "name": "version",
+        "type": "number",
         "readonly": true
       }
     ]
