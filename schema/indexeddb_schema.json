@@ -31,8 +31,7 @@
             "type": "string"
           }
         ],
-        "returns": "IDBOpenDBRequest",
-        "notes": "Calling deleteDatabase() on a non-existent database does NOT throw an exception. Instead, the result is returned asynchronously via the IDBOpenDBRequest. In contrast, IDBDatabase.deleteObjectStore() will throw a NotFoundError synchronously if the specified object store does not exist."
+        "returns": "IDBOpenDBRequest"
       },
       "cmp": {
         "kind": "staticMethod",
@@ -49,8 +48,11 @@
           }
         ],
         "returns": "number",
-        "returnEnum": [-1, 0, 1],
-        "notes": "返回 -1 表示 first 小于 second，返回 0 表示两者相等，返回 1 表示 first 大于 second。",
+        "returnEnum": [
+          -1,
+          0,
+          1
+        ],
         "exceptions": [
           "DataError"
         ]
@@ -61,10 +63,12 @@
         "definedOn": "IDBFactory",
         "params": [],
         "returns": "Promise",
-        "returnGeneric": "IDBDatabaseInfo[]",
-        "notes": "返回一个 Promise，该 Promise resolve 一个数组，每个数组元素代表一个 IndexedDB 数据库对象，包含 name 和 version 两个属性。"
+        "returnGeneric": "IDBDatabaseInfo[]"
       }
-    }
+    },
+    "instanceMethods": {},
+    "instanceProperties": [],
+    "events": []
   },
   "IDBDatabase": {
     "instanceMethods": {
@@ -75,17 +79,71 @@
         "params": [
           {
             "name": "storeNames",
-            "type": "array|string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           {
             "name": "mode",
             "type": "string",
-            "optional": true
+            "optional": true,
+            "enum": [
+              "readonly",
+              "readwrite",
+              "readwriteflush"
+            ],
+            "default": "readonly"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true,
+            "properties": {
+              "durability": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "relaxed",
+                  "strict"
+                ],
+                "default": "default"
+              }
+            }
           }
         ],
         "returns": "IDBTransaction",
         "exceptions": [
-          "InvalidStateError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "NotFoundError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TypeError",
+            "type": "TypeError"
+          },
+          {
+            "name": "InvalidAccessError",
+            "type": "DOMException"
+          }
         ]
       },
       "createObjectStore": {
@@ -100,13 +158,46 @@
           {
             "name": "options",
             "type": "object",
-            "optional": true
+            "optional": true,
+            "properties": {
+              "keyPath": {
+                "type": [
+                  "string",
+                  "array"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "autoIncrement": {
+                "type": "boolean",
+                "default": false
+              }
+            }
           }
         ],
         "returns": "IDBObjectStore",
         "exceptions": [
-          "InvalidStateError",
-          "ConstraintError"
+          {
+            "name": "ConstraintError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidAccessError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "SyntaxError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       },
       "deleteObjectStore": {
@@ -121,8 +212,18 @@
         ],
         "returns": "void",
         "exceptions": [
-          "InvalidStateError",
-          "NotFoundError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "NotFoundError",
+            "type": "DOMException"
+          }
         ]
       },
       "close": {
@@ -151,12 +252,51 @@
       }
     ],
     "events": [
-      "onclose",
-      "onversionchange"
+      {
+        "name": "onclose",
+        "definedOn": "IDBDatabase",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onversionchange",
+        "definedOn": "IDBDatabase",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onabort",
+        "definedOn": "IDBTransaction",
+        "bubblesFrom": "IDBTransaction"
+      },
+      {
+        "name": "onerror",
+        "definedOn": "IDBTransaction",
+        "bubblesFrom": "IDBTransaction"
+      }
     ]
   },
   "IDBTransaction": {
     "instanceMethods": {
+      "abort": {
+        "kind": "instanceMethod",
+        "name": "abort",
+        "definedOn": "IDBTransaction",
+        "params": [],
+        "returns": "void",
+        "exceptions": [
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
+        ]
+      },
+      "commit": {
+        "kind": "instanceMethod",
+        "name": "commit",
+        "definedOn": "IDBTransaction",
+        "params": [],
+        "returns": "void",
+        "exceptions": []
+      },
       "objectStore": {
         "kind": "instanceMethod",
         "name": "objectStore",
@@ -169,8 +309,14 @@
         ],
         "returns": "IDBObjectStore",
         "exceptions": [
-          "InvalidStateError",
-          "NotFoundError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "NotFoundError",
+            "type": "DOMException"
+          }
         ]
       }
     },
@@ -181,8 +327,16 @@
         "readonly": true
       },
       {
+        "name": "durability",
+        "type": "string",
+        "readonly": true
+      },
+      {
         "name": "error",
-        "type": "DOMException",
+        "type": [
+          "DOMException",
+          "null"
+        ],
         "readonly": true
       },
       {
@@ -197,9 +351,21 @@
       }
     ],
     "events": [
-      "onabort",
-      "oncomplete",
-      "onerror"
+      {
+        "name": "onabort",
+        "definedOn": "IDBTransaction",
+        "bubblesFrom": null
+      },
+      {
+        "name": "oncomplete",
+        "definedOn": "IDBTransaction",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onerror",
+        "definedOn": "IDBTransaction",
+        "bubblesFrom": null
+      }
     ]
   },
   "IDBObjectStore": {
@@ -305,12 +471,20 @@
           {
             "name": "direction",
             "type": "string",
-            "optional": true
+            "optional": true,
+            "default": "next"
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       },
       "index": {
@@ -339,7 +513,17 @@
           },
           {
             "name": "keyPath",
-            "type": "string|string[]"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
           },
           {
             "name": "options",
@@ -349,9 +533,26 @@
         ],
         "returns": "IDBIndex",
         "exceptions": [
-          "ConstraintError",
-          "TransactionInactiveError",
-          "InvalidAccessError"
+          {
+            "name": "ConstraintError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidAccessError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "SyntaxError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       },
       "deleteIndex": {
@@ -366,8 +567,18 @@
         ],
         "returns": "void",
         "exceptions": [
-          "NotFoundError",
-          "TransactionInactiveError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "NotFoundError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       }
     },
@@ -397,7 +608,8 @@
         "type": "IDBTransaction",
         "readonly": true
       }
-    ]
+    ],
+    "events": []
   },
   "IDBIndex": {
     "instanceMethods": {
@@ -463,13 +675,20 @@
           {
             "name": "direction",
             "type": "string",
-            "optional": true
+            "optional": true,
+            "default": "next"
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       }
     },
@@ -499,7 +718,8 @@
         "type": "boolean",
         "readonly": true
       }
-    ]
+    ],
+    "events": []
   },
   "IDBCursor": {
     "instanceMethods": {
@@ -584,7 +804,8 @@
         "type": "string",
         "readonly": true
       }
-    ]
+    ],
+    "events": []
   },
   "IDBCursorWithValue": {
     "inherits": "IDBCursor",
@@ -594,7 +815,9 @@
         "type": "any",
         "readonly": true
       }
-    ]
+    ],
+    "instanceMethods": {},
+    "events": []
   },
   "IDBRequest": {
     "instanceProperties": [
@@ -625,16 +848,40 @@
       }
     ],
     "events": [
-      "onsuccess",
-      "onerror"
-    ]
+      {
+        "name": "onsuccess",
+        "definedOn": "IDBRequest",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onerror",
+        "definedOn": "IDBRequest",
+        "bubblesFrom": null
+      }
+    ],
+    "instanceMethods": {}
   },
   "IDBOpenDBRequest": {
     "inherits": "IDBRequest",
     "events": [
-      "onblocked",
-      "onupgradeneeded"
-    ]
+      {
+        "name": "onblocked",
+        "definedOn": "IDBOpenDBRequest",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onupgradeneeded",
+        "definedOn": "IDBOpenDBRequest",
+        "bubblesFrom": null
+      },
+      {
+        "name": "onblocked",
+        "definedOn": "IDBFactory",
+        "bubblesFrom": "IDBFactory"
+      }
+    ],
+    "instanceMethods": {},
+    "instanceProperties": []
   },
   "IDBKeyRange": {
     "staticMethods": {
@@ -665,7 +912,8 @@
           {
             "name": "open",
             "type": "boolean",
-            "optional": true
+            "optional": true,
+            "default": false
           }
         ],
         "returns": "IDBKeyRange",
@@ -685,7 +933,8 @@
           {
             "name": "open",
             "type": "boolean",
-            "optional": true
+            "optional": true,
+            "default": false
           }
         ],
         "returns": "IDBKeyRange",
@@ -709,12 +958,14 @@
           {
             "name": "openLower",
             "type": "boolean",
-            "optional": true
+            "optional": true,
+            "default": false
           },
           {
             "name": "openUpper",
             "type": "boolean",
-            "optional": true
+            "optional": true,
+            "default": false
           }
         ],
         "returns": "IDBKeyRange",
@@ -744,7 +995,9 @@
         "type": "boolean",
         "readonly": true
       }
-    ]
+    ],
+    "instanceMethods": {},
+    "events": []
   },
   "IDBVersionChangeEvent": {
     "instanceProperties": [
@@ -758,7 +1011,9 @@
         "type": "number|null",
         "readonly": true
       }
-    ]
+    ],
+    "instanceMethods": {},
+    "events": []
   },
   "IDBDatabaseInfo": {
     "instanceProperties": [
