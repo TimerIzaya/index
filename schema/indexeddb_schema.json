@@ -18,7 +18,10 @@
         ],
         "returns": "IDBOpenDBRequest",
         "exceptions": [
-          "TypeError"
+          {
+            "name": "TypeError",
+            "type": "DOMException"
+          }
         ]
       },
       "deleteDatabase": {
@@ -54,7 +57,10 @@
           1
         ],
         "exceptions": [
-          "DataError"
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "databases": {
@@ -387,10 +393,30 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "DataError",
-          "ConstraintError",
-          "TransactionInactiveError",
-          "ReadOnlyError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          },
+          {
+            "name": "ConstraintError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataCloneError",
+            "type": "DOMException"
+          }
         ]
       },
       "put": {
@@ -410,9 +436,26 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "DataError",
-          "TransactionInactiveError",
-          "ReadOnlyError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataCloneError",
+            "type": "DOMException"
+          }
         ]
       },
       "get": {
@@ -427,8 +470,18 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "delete": {
@@ -443,8 +496,22 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "clear": {
@@ -454,8 +521,18 @@
         "params": [],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "ReadOnlyError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "openCursor": {
@@ -472,7 +549,13 @@
             "name": "direction",
             "type": "string",
             "optional": true,
-            "default": "next"
+            "default": "next",
+            "enum": [
+              "next",
+              "nextunique",
+              "prev",
+              "prevunique"
+            ]
           }
         ],
         "returns": "IDBRequest",
@@ -483,6 +566,10 @@
           },
           {
             "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
             "type": "DOMException"
           }
         ]
@@ -499,12 +586,19 @@
         ],
         "returns": "IDBIndex",
         "exceptions": [
-          "NotFoundError"
+          {
+            "name": "NotFoundError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "createIndex": {
-        "kind": "instanceMethod",
         "name": "createIndex",
+        "kind": "instanceMethod",
         "definedOn": "IDBObjectStore",
         "params": [
           {
@@ -528,7 +622,17 @@
           {
             "name": "options",
             "type": "object",
-            "optional": true
+            "optional": true,
+            "properties": {
+              "unique": {
+                "type": "boolean",
+                "default": false
+              },
+              "multiEntry": {
+                "type": "boolean",
+                "default": false
+              }
+            }
           }
         ],
         "returns": "IDBIndex",
@@ -580,6 +684,150 @@
             "type": "DOMException"
           }
         ]
+      },
+      "getAll": {
+        "kind": "instanceMethod",
+        "name": "getAll",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "query",
+            "type": "any",
+            "optional": true
+          },
+          {
+            "name": "count",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest",
+        "exceptions": [
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
+        ]
+      },
+      "getAllKeys": {
+        "kind": "instanceMethod",
+        "name": "getAllKeys",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "query",
+            "type": "any",
+            "optional": true
+          },
+          {
+            "name": "count",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest",
+        "exceptions": [
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
+        ]
+      },
+      "count": {
+        "kind": "instanceMethod",
+        "name": "count",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "query",
+            "type": "any",
+            "optional": true
+          }
+        ],
+        "returns": "IDBRequest",
+        "exceptions": [
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
+        ]
+      },
+      "openKeyCursor": {
+        "kind": "instanceMethod",
+        "name": "openKeyCursor",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "range",
+            "type": "IDBKeyRange|any",
+            "optional": true
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "optional": true,
+            "default": "next",
+            "enum": [
+              "next",
+              "nextunique",
+              "prev",
+              "prevunique"
+            ]
+          }
+        ],
+        "returns": "IDBRequest",
+        "exceptions": [
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
+        ]
+      },
+      "getKey": {
+        "kind": "instanceMethod",
+        "name": "getKey",
+        "definedOn": "IDBObjectStore",
+        "params": [
+          {
+            "name": "key",
+            "type": "any"
+          }
+        ],
+        "returns": "IDBRequest",
+        "exceptions": [
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          },
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
+        ]
       }
     },
     "instanceProperties": [
@@ -625,8 +873,14 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "getKey": {
@@ -641,8 +895,14 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "count": {
@@ -658,8 +918,14 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "openCursor": {
@@ -735,7 +1001,10 @@
         ],
         "returns": "void",
         "exceptions": [
-          "InvalidStateError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "continue": {
@@ -751,7 +1020,10 @@
         ],
         "returns": "void",
         "exceptions": [
-          "InvalidStateError"
+          {
+            "name": "InvalidStateError",
+            "type": "DOMException"
+          }
         ]
       },
       "update": {
@@ -766,9 +1038,18 @@
         ],
         "returns": "IDBRequest",
         "exceptions": [
-          "ReadOnlyError",
-          "TransactionInactiveError",
-          "DataError"
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          },
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "delete": {
@@ -778,8 +1059,14 @@
         "params": [],
         "returns": "IDBRequest",
         "exceptions": [
-          "ReadOnlyError",
-          "TransactionInactiveError"
+          {
+            "name": "ReadOnlyError",
+            "type": "DOMException"
+          },
+          {
+            "name": "TransactionInactiveError",
+            "type": "DOMException"
+          }
         ]
       }
     },
@@ -897,7 +1184,10 @@
         ],
         "returns": "IDBKeyRange",
         "exceptions": [
-          "DataError"
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "lowerBound": {
@@ -918,7 +1208,10 @@
         ],
         "returns": "IDBKeyRange",
         "exceptions": [
-          "DataError"
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "upperBound": {
@@ -939,7 +1232,10 @@
         ],
         "returns": "IDBKeyRange",
         "exceptions": [
-          "DataError"
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       },
       "bound": {
@@ -970,7 +1266,10 @@
         ],
         "returns": "IDBKeyRange",
         "exceptions": [
-          "DataError"
+          {
+            "name": "DataError",
+            "type": "DOMException"
+          }
         ]
       }
     },
