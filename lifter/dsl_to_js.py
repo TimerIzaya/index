@@ -48,4 +48,3 @@ if __name__ == "__main__":
     with open("test_output.js", "w") as f:
         f.write(js_code)
 
-    print("✅ JS code saved to test_output.js")
