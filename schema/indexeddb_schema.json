@@ -8,11 +8,15 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           },
           {
             "name": "version",
-            "type": "number",
+            "type": {
+              "typename": "number"
+            },
             "optional": true
           }
         ],
@@ -20,9 +24,13 @@
         "exceptions": [
           {
             "name": "TypeError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": false
       },
       "deleteDatabase": {
         "kind": "staticMethod",
@@ -31,10 +39,14 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           }
         ],
-        "returns": "IDBOpenDBRequest"
+        "returns": "IDBOpenDBRequest",
+        "isStatic": true,
+        "isConstructor": false
       },
       "cmp": {
         "kind": "staticMethod",
@@ -43,11 +55,15 @@
         "params": [
           {
             "name": "first",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "second",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "number",
@@ -59,9 +75,13 @@
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": false
       },
       "databases": {
         "kind": "staticMethod",
@@ -69,12 +89,15 @@
         "definedOn": "IDBFactory",
         "params": [],
         "returns": "Promise",
-        "returnGeneric": "IDBDatabaseInfo[]"
+        "returnGeneric": "IDBDatabaseInfo[]",
+        "isStatic": true,
+        "isConstructor": false
       }
     },
     "instanceMethods": {},
     "instanceProperties": [],
-    "events": []
+    "events": [],
+    "category": "factory"
   },
   "IDBDatabase": {
     "instanceMethods": {
@@ -85,72 +108,82 @@
         "params": [
           {
             "name": "storeNames",
-            "anyOf": [
+            "type": [
               {
-                "type": "string"
+                "typename": "string"
               },
               {
-                "anyOf": [
+                "items": [
                   {
                     "type": "string"
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
                   }
-                ]
+                ],
+                "typename": "array"
               }
             ]
           },
           {
             "name": "mode",
-            "type": "string",
+            "type": {
+              "typename": "string"
+            },
             "optional": true,
             "enum": [
               "readonly",
               "readwrite",
               "readwriteflush"
-            ],
-            "default": "readonly"
+            ]
           },
           {
             "name": "options",
-            "type": "object",
+            "type": {
+              "typename": "object"
+            },
             "optional": true,
-            "properties": {
-              "durability": {
-                "type": "string",
+            "properties": [
+              {
+                "name": "durability",
+                "type": {
+                  "typename": "string"
+                },
                 "enum": [
                   "default",
                   "relaxed",
                   "strict"
-                ],
-                "default": "default"
+                ]
               }
-            }
+            ]
           }
         ],
         "returns": "IDBTransaction",
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "NotFoundError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           },
           {
             "name": "InvalidAccessError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "createObjectStore": {
         "kind": "instanceMethod",
@@ -159,52 +192,78 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           },
           {
             "name": "options",
-            "type": "object",
+            "type": {
+              "typename": "object"
+            },
             "optional": true,
-            "properties": {
-              "keyPath": {
+            "properties": [
+              {
+                "name": "keyPath",
                 "type": [
-                  "string",
-                  "array"
-                ],
-                "items": {
-                  "type": "string"
-                }
+                  {
+                    "typename": "string"
+                  },
+                  {
+                    "items": [
+                      {
+                        "type": "string"
+                      }
+                    ],
+                    "typename": "array"
+                  }
+                ]
               },
-              "autoIncrement": {
-                "type": "boolean",
+              {
+                "name": "autoIncrement",
+                "type": {
+                  "typename": "boolean"
+                },
                 "default": false
               }
-            }
+            ]
           }
         ],
         "returns": "IDBObjectStore",
         "exceptions": [
           {
             "name": "ConstraintError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidAccessError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "SyntaxError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "deleteObjectStore": {
         "kind": "instanceMethod",
@@ -213,47 +272,65 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           }
         ],
         "returns": "void",
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "NotFoundError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "close": {
         "kind": "instanceMethod",
         "name": "close",
         "definedOn": "IDBDatabase",
         "params": [],
-        "returns": "void"
+        "returns": "void",
+        "isStatic": false,
+        "isConstructor": false
       }
     },
     "instanceProperties": [
       {
         "name": "name",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "version",
-        "type": "number",
+        "type": {
+          "typename": "number"
+        },
         "readonly": true
       },
       {
         "name": "objectStoreNames",
-        "type": "DOMStringList",
+        "type": {
+          "typename": "DOMStringList"
+        },
         "readonly": true
       }
     ],
@@ -278,7 +355,8 @@
         "definedOn": "IDBTransaction",
         "bubblesFrom": "IDBTransaction"
       }
-    ]
+    ],
+    "category": "database"
   },
   "IDBTransaction": {
     "instanceMethods": {
@@ -291,9 +369,13 @@
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "commit": {
         "kind": "instanceMethod",
@@ -301,7 +383,9 @@
         "definedOn": "IDBTransaction",
         "params": [],
         "returns": "void",
-        "exceptions": []
+        "exceptions": [],
+        "isStatic": false,
+        "isConstructor": false
       },
       "objectStore": {
         "kind": "instanceMethod",
@@ -310,49 +394,64 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           }
         ],
         "returns": "IDBObjectStore",
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "NotFoundError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       }
     },
     "instanceProperties": [
       {
         "name": "db",
-        "type": "IDBDatabase",
+        "type": {
+          "typename": "IDBDatabase"
+        },
         "readonly": true
       },
       {
         "name": "durability",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "error",
-        "type": [
-          "DOMException",
-          "null"
-        ],
+        "type": {
+          "typename": "DOMException"
+        },
         "readonly": true
       },
       {
         "name": "mode",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "objectStoreNames",
-        "type": "DOMStringList",
+        "type": {
+          "typename": "DOMStringList"
+        },
         "readonly": true
       }
     ],
@@ -372,7 +471,8 @@
         "definedOn": "IDBTransaction",
         "bubblesFrom": null
       }
-    ]
+    ],
+    "category": "transaction"
   },
   "IDBObjectStore": {
     "instanceMethods": {
@@ -383,11 +483,15 @@
         "params": [
           {
             "name": "value",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "key",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           }
         ],
@@ -395,29 +499,43 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ConstraintError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataCloneError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "put": {
         "kind": "instanceMethod",
@@ -426,11 +544,15 @@
         "params": [
           {
             "name": "value",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "key",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           }
         ],
@@ -438,25 +560,37 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataCloneError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "get": {
         "kind": "instanceMethod",
@@ -465,24 +599,34 @@
         "params": [
           {
             "name": "key",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "delete": {
         "kind": "instanceMethod",
@@ -491,28 +635,40 @@
         "params": [
           {
             "name": "key",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "clear": {
         "kind": "instanceMethod",
@@ -523,17 +679,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "openCursor": {
         "kind": "instanceMethod",
@@ -542,12 +706,21 @@
         "params": [
           {
             "name": "range",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "direction",
-            "type": "string",
+            "type": {
+              "typename": "string"
+            },
             "optional": true,
             "default": "next",
             "enum": [
@@ -562,17 +735,25 @@
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "index": {
         "kind": "instanceMethod",
@@ -581,20 +762,28 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           }
         ],
         "returns": "IDBIndex",
         "exceptions": [
           {
             "name": "NotFoundError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "createIndex": {
         "name": "createIndex",
@@ -603,61 +792,85 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           },
           {
             "name": "keyPath",
-            "anyOf": [
+            "type": [
               {
-                "type": "string"
+                "typename": "string"
               },
               {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+                "items": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "typename": "array"
               }
             ]
           },
           {
             "name": "options",
-            "type": "object",
+            "type": {
+              "typename": "object"
+            },
             "optional": true,
-            "properties": {
-              "unique": {
-                "type": "boolean",
+            "properties": [
+              {
+                "name": "unique",
+                "type": {
+                  "typename": "boolean"
+                },
                 "default": false
               },
-              "multiEntry": {
-                "type": "boolean",
+              {
+                "name": "multiEntry",
+                "type": {
+                  "typename": "boolean"
+                },
                 "default": false
               }
-            }
+            ]
           }
         ],
         "returns": "IDBIndex",
         "exceptions": [
           {
             "name": "ConstraintError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidAccessError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "SyntaxError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "deleteIndex": {
         "kind": "instanceMethod",
@@ -666,24 +879,34 @@
         "params": [
           {
             "name": "name",
-            "type": "string"
+            "type": {
+              "typename": "string"
+            }
           }
         ],
         "returns": "void",
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "NotFoundError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getAll": {
         "kind": "instanceMethod",
@@ -692,12 +915,16 @@
         "params": [
           {
             "name": "query",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           },
           {
             "name": "count",
-            "type": "number",
+            "type": {
+              "typename": "number"
+            },
             "optional": true
           }
         ],
@@ -705,13 +932,19 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getAllKeys": {
         "kind": "instanceMethod",
@@ -720,12 +953,16 @@
         "params": [
           {
             "name": "query",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           },
           {
             "name": "count",
-            "type": "number",
+            "type": {
+              "typename": "number"
+            },
             "optional": true
           }
         ],
@@ -733,13 +970,19 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "count": {
         "kind": "instanceMethod",
@@ -748,7 +991,9 @@
         "params": [
           {
             "name": "query",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           }
         ],
@@ -756,13 +1001,19 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "openKeyCursor": {
         "kind": "instanceMethod",
@@ -771,12 +1022,21 @@
         "params": [
           {
             "name": "range",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "direction",
-            "type": "string",
+            "type": {
+              "typename": "string"
+            },
             "optional": true,
             "default": "next",
             "enum": [
@@ -791,17 +1051,25 @@
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getKey": {
         "kind": "instanceMethod",
@@ -810,54 +1078,85 @@
         "params": [
           {
             "name": "key",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       }
     },
     "instanceProperties": [
       {
         "name": "name",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "keyPath",
-        "type": "string|string[]",
-        "readonly": true
+        "readonly": true,
+        "type": [
+          {
+            "typename": "string"
+          },
+          {
+            "items": [
+              {
+                "type": "string"
+              }
+            ],
+            "typename": "array"
+          }
+        ]
       },
       {
         "name": "indexNames",
-        "type": "DOMStringList",
+        "type": {
+          "typename": "DOMStringList"
+        },
         "readonly": true
       },
       {
         "name": "autoIncrement",
-        "type": "boolean",
+        "type": {
+          "typename": "boolean"
+        },
         "readonly": true
       },
       {
         "name": "transaction",
-        "type": "IDBTransaction",
+        "type": {
+          "typename": "IDBTransaction"
+        },
         "readonly": true
       }
     ],
-    "events": []
+    "events": [],
+    "category": "objectstore"
   },
   "IDBIndex": {
     "instanceMethods": {
@@ -868,7 +1167,9 @@
         "params": [
           {
             "name": "query",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           }
         ],
@@ -876,17 +1177,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "get": {
         "kind": "instanceMethod",
@@ -895,7 +1204,14 @@
         "params": [
           {
             "name": "key",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           }
         ],
@@ -903,17 +1219,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getKey": {
         "kind": "instanceMethod",
@@ -922,7 +1246,14 @@
         "params": [
           {
             "name": "key",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           }
         ],
@@ -930,17 +1261,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getAll": {
         "kind": "instanceMethod",
@@ -949,12 +1288,21 @@
         "params": [
           {
             "name": "query",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "count",
-            "type": "number",
+            "type": {
+              "typename": "number"
+            },
             "optional": true
           }
         ],
@@ -962,17 +1310,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "getAllKeys": {
         "kind": "instanceMethod",
@@ -981,12 +1337,21 @@
         "params": [
           {
             "name": "query",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "count",
-            "type": "number",
+            "type": {
+              "typename": "number"
+            },
             "optional": true
           }
         ],
@@ -994,17 +1359,25 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "openCursor": {
         "kind": "instanceMethod",
@@ -1013,12 +1386,21 @@
         "params": [
           {
             "name": "query",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "direction",
-            "type": "string",
+            "type": {
+              "typename": "string"
+            },
             "optional": true,
             "default": "next",
             "enum": [
@@ -1033,21 +1415,31 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "openKeyCursor": {
         "kind": "instanceMethod",
@@ -1056,12 +1448,21 @@
         "params": [
           {
             "name": "query",
-            "type": "IDBKeyRange|any",
+            "type": [
+              {
+                "typename": "IDBKeyRange"
+              },
+              {
+                "typename": "any"
+              }
+            ],
             "optional": true
           },
           {
             "name": "direction",
-            "type": "string",
+            "type": {
+              "typename": "string"
+            },
             "optional": true,
             "default": "next",
             "enum": [
@@ -1076,51 +1477,82 @@
         "exceptions": [
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       }
     },
     "instanceProperties": [
       {
         "name": "name",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "objectStore",
-        "type": "IDBObjectStore",
+        "type": {
+          "typename": "IDBObjectStore"
+        },
         "readonly": true
       },
       {
         "name": "keyPath",
-        "type": "string|string[]",
-        "readonly": true
+        "readonly": true,
+        "type": [
+          {
+            "typename": "string"
+          },
+          {
+            "items": [
+              {
+                "type": "string"
+              }
+            ],
+            "typename": "array"
+          }
+        ]
       },
       {
         "name": "multiEntry",
-        "type": "boolean",
+        "type": {
+          "typename": "boolean"
+        },
         "readonly": true
       },
       {
         "name": "unique",
-        "type": "boolean",
+        "type": {
+          "typename": "boolean"
+        },
         "readonly": true
       }
     ],
-    "events": []
+    "events": [],
+    "category": "index"
   },
   "IDBCursor": {
     "instanceMethods": {
@@ -1131,24 +1563,34 @@
         "params": [
           {
             "name": "count",
-            "type": "number"
+            "type": {
+              "typename": "number"
+            }
           }
         ],
         "returns": "void",
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TypeError",
-            "type": "TypeError"
+            "type": {
+              "typename": "TypeError"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "continue": {
         "kind": "instanceMethod",
@@ -1157,7 +1599,9 @@
         "params": [
           {
             "name": "key",
-            "type": "any",
+            "type": {
+              "typename": "any"
+            },
             "optional": true
           }
         ],
@@ -1165,17 +1609,25 @@
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "continuePrimaryKey": {
         "kind": "instanceMethod",
@@ -1184,32 +1636,46 @@
         "params": [
           {
             "name": "key",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "primaryKey",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "void",
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidAccessError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "delete": {
         "kind": "instanceMethod",
@@ -1220,17 +1686,25 @@
         "exceptions": [
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       },
       "update": {
         "kind": "instanceMethod",
@@ -1239,38 +1713,54 @@
         "params": [
           {
             "name": "value",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "IDBRequest",
         "exceptions": [
           {
             "name": "DataCloneError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "InvalidStateError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "ReadOnlyError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "TransactionInactiveError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           },
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": false
       }
     },
     "instanceProperties": [
       {
         "name": "direction",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true,
         "enum": [
           "next",
@@ -1281,60 +1771,100 @@
       },
       {
         "name": "key",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "primaryKey",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "request",
-        "type": "IDBRequest",
+        "type": {
+          "typename": "IDBRequest"
+        },
         "readonly": true
       },
       {
         "name": "source",
-        "type": "IDBObjectStore|IDBIndex",
+        "type": [
+          {
+            "typename": "IDBObjectStore"
+          },
+          {
+            "typename": "IDBIndex"
+          }
+        ],
         "readonly": true
       }
     ],
-    "events": []
+    "events": [],
+    "category": "cursor"
   },
   "IDBCursorWithValue": {
     "inherits": "IDBCursor",
     "instanceProperties": [
       {
         "name": "value",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       }
     ],
     "instanceMethods": {},
-    "events": []
+    "events": [],
+    "category": "cursor"
   },
   "IDBRequest": {
     "instanceMethods": {},
     "instanceProperties": [
       {
         "name": "error",
-        "type": "DOMException|null",
+        "type": [
+          {
+            "typename": "DOMException"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       },
       {
         "name": "onsuccess",
-        "type": "function|null",
+        "type": [
+          {
+            "typename": "function"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": false
       },
       {
         "name": "onerror",
-        "type": "function|null",
+        "type": [
+          {
+            "typename": "function"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": false
       },
       {
         "name": "readyState",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true,
         "enum": [
           "pending",
@@ -1343,17 +1873,39 @@
       },
       {
         "name": "result",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "source",
-        "type": "IDBObjectStore|IDBIndex|IDBCursor|null",
+        "type": [
+          {
+            "typename": "IDBObjectStore"
+          },
+          {
+            "typename": "IDBIndex"
+          },
+          {
+            "typename": "IDBCursor"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       },
       {
         "name": "transaction",
-        "type": "IDBTransaction|null",
+        "type": [
+          {
+            "typename": "IDBTransaction"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       }
     ],
@@ -1368,7 +1920,8 @@
         "definedOn": "IDBRequest",
         "bubblesFrom": null
       }
-    ]
+    ],
+    "category": "request"
   },
   "IDBOpenDBRequest": {
     "inherits": "IDBRequest",
@@ -1398,22 +1951,45 @@
     "instanceProperties": [
       {
         "name": "error",
-        "type": "DOMException|null",
+        "type": [
+          {
+            "typename": "DOMException"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       },
       {
         "name": "onsuccess",
-        "type": "function|null",
+        "type": [
+          {
+            "typename": "function"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": false
       },
       {
         "name": "onerror",
-        "type": "function|null",
+        "type": [
+          {
+            "typename": "function"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": false
       },
       {
         "name": "readyState",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true,
         "enum": [
           "pending",
@@ -1422,20 +1998,43 @@
       },
       {
         "name": "result",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "source",
-        "type": "IDBObjectStore|IDBIndex|IDBCursor|null",
+        "type": [
+          {
+            "typename": "IDBObjectStore"
+          },
+          {
+            "typename": "IDBIndex"
+          },
+          {
+            "typename": "IDBCursor"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       },
       {
         "name": "transaction",
-        "type": "IDBTransaction|null",
+        "type": [
+          {
+            "typename": "IDBTransaction"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       }
-    ]
+    ],
+    "category": "request"
   },
   "IDBKeyRange": {
     "staticMethods": {
@@ -1446,21 +2045,29 @@
         "params": [
           {
             "name": "lower",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "upper",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "lowerOpen",
-            "type": "boolean",
+            "type": {
+              "typename": "boolean"
+            },
             "optional": true,
             "default": false
           },
           {
             "name": "upperOpen",
-            "type": "boolean",
+            "type": {
+              "typename": "boolean"
+            },
             "optional": true,
             "default": false
           }
@@ -1469,9 +2076,13 @@
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": true
       },
       "lowerBound": {
         "kind": "staticMethod",
@@ -1480,11 +2091,15 @@
         "params": [
           {
             "name": "lower",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "open",
-            "type": "boolean",
+            "type": {
+              "typename": "boolean"
+            },
             "optional": true,
             "default": false
           }
@@ -1493,9 +2108,13 @@
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": true
       },
       "upperBound": {
         "kind": "staticMethod",
@@ -1504,11 +2123,15 @@
         "params": [
           {
             "name": "upper",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           },
           {
             "name": "open",
-            "type": "boolean",
+            "type": {
+              "typename": "boolean"
+            },
             "optional": true,
             "default": false
           }
@@ -1517,9 +2140,13 @@
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": true
       },
       "only": {
         "kind": "staticMethod",
@@ -1528,37 +2155,51 @@
         "params": [
           {
             "name": "value",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "IDBKeyRange",
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": true,
+        "isConstructor": true
       }
     },
     "instanceProperties": [
       {
         "name": "lower",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "upper",
-        "type": "any",
+        "type": {
+          "typename": "any"
+        },
         "readonly": true
       },
       {
         "name": "lowerOpen",
-        "type": "boolean",
+        "type": {
+          "typename": "boolean"
+        },
         "readonly": true
       },
       {
         "name": "upperOpen",
-        "type": "boolean",
+        "type": {
+          "typename": "boolean"
+        },
         "readonly": true
       }
     ],
@@ -1570,47 +2211,69 @@
         "params": [
           {
             "name": "key",
-            "type": "any"
+            "type": {
+              "typename": "any"
+            }
           }
         ],
         "returns": "boolean",
         "exceptions": [
           {
             "name": "DataError",
-            "type": "DOMException"
+            "type": {
+              "typename": "DOMException"
+            }
           }
-        ]
+        ],
+        "isStatic": false,
+        "isConstructor": true
       }
-    }
+    },
+    "category": "keyrange"
   },
   "IDBVersionChangeEvent": {
     "instanceProperties": [
       {
         "name": "oldVersion",
-        "type": "number",
+        "type": {
+          "typename": "number"
+        },
         "readonly": true
       },
       {
         "name": "newVersion",
-        "type": "number|null",
+        "type": [
+          {
+            "typename": "number"
+          },
+          {
+            "typename": "null"
+          }
+        ],
         "readonly": true
       }
     ],
     "instanceMethods": {},
-    "events": []
+    "events": [],
+    "category": "misc"
   },
   "IDBDatabaseInfo": {
     "instanceProperties": [
       {
         "name": "name",
-        "type": "string",
+        "type": {
+          "typename": "string"
+        },
         "readonly": true
       },
       {
         "name": "version",
-        "type": "number",
+        "type": {
+          "typename": "number"
+        },
         "readonly": true
       }
-    ]
+    ],
+    "category": "database"
   }
 }
