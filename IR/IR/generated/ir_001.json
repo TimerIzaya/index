@@ -54,30 +54,20 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "add"
+                "property": "delete"
               },
               "arguments": [],
-              "resultName": "addResult",
+              "resultName": "deleteResult",
               "handlers": null
             },
             {
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "put"
+                "property": "openCursor"
               },
               "arguments": [],
-              "resultName": "putResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "get"
-              },
-              "arguments": [],
-              "resultName": "getResult",
+              "resultName": "openCursorResult",
               "handlers": null
             },
             {
@@ -94,10 +84,20 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "openKeyCursor"
+                "property": "getAllKeys"
               },
               "arguments": [],
-              "resultName": "openKeyCursorResult",
+              "resultName": "getAllKeysResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
+                "property": "count"
+              },
+              "arguments": [],
+              "resultName": "countResult",
               "handlers": null
             },
             {

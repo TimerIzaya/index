@@ -94,10 +94,30 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "index"
+                "property": "clear"
               },
               "arguments": [],
-              "resultName": "indexResult",
+              "resultName": "clearResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
+                "property": "openCursor"
+              },
+              "arguments": [],
+              "resultName": "openCursorResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
+                "property": "createIndex"
+              },
+              "arguments": [],
+              "resultName": "createIndexResult",
               "handlers": null
             },
             {
@@ -108,16 +128,6 @@
               },
               "arguments": [],
               "resultName": "deleteIndexResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "getAll"
-              },
-              "arguments": [],
-              "resultName": "getAllResult",
               "handlers": null
             },
             {
@@ -138,6 +148,16 @@
               },
               "arguments": [],
               "resultName": "openKeyCursorResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
+                "property": "getKey"
+              },
+              "arguments": [],
+              "resultName": "getKeyResult",
               "handlers": null
             },
             {

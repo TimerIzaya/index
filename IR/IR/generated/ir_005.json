@@ -54,16 +54,6 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "put"
-              },
-              "arguments": [],
-              "resultName": "putResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
                 "property": "delete"
               },
               "arguments": [],
@@ -84,16 +74,6 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "openCursor"
-              },
-              "arguments": [],
-              "resultName": "openCursorResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
                 "property": "index"
               },
               "arguments": [],
@@ -104,10 +84,30 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
+                "property": "createIndex"
+              },
+              "arguments": [],
+              "resultName": "createIndexResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
                 "property": "deleteIndex"
               },
               "arguments": [],
               "resultName": "deleteIndexResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
+                "property": "getAll"
+              },
+              "arguments": [],
+              "resultName": "getAllResult",
               "handlers": null
             },
             {
@@ -128,16 +128,6 @@
               },
               "arguments": [],
               "resultName": "countResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "openKeyCursor"
-              },
-              "arguments": [],
-              "resultName": "openKeyCursorResult",
               "handlers": null
             },
             {

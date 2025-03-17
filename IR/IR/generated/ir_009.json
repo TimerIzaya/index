@@ -54,10 +54,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "add"
+                "property": "put"
               },
               "arguments": [],
-              "resultName": "addResult",
+              "resultName": "putResult",
               "handlers": null
             },
             {
@@ -74,40 +74,20 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "delete"
+                "property": "openCursor"
               },
               "arguments": [],
-              "resultName": "deleteResult",
+              "resultName": "openCursorResult",
               "handlers": null
             },
             {
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "clear"
+                "property": "index"
               },
               "arguments": [],
-              "resultName": "clearResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "createIndex"
-              },
-              "arguments": [],
-              "resultName": "createIndexResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "deleteIndex"
-              },
-              "arguments": [],
-              "resultName": "deleteIndexResult",
+              "resultName": "indexResult",
               "handlers": null
             },
             {
@@ -134,10 +114,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "openKeyCursor"
+                "property": "count"
               },
               "arguments": [],
-              "resultName": "openKeyCursorResult",
+              "resultName": "countResult",
               "handlers": null
             },
             {

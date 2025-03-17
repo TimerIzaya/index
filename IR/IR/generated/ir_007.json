@@ -54,6 +54,16 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
+                "property": "add"
+              },
+              "arguments": [],
+              "resultName": "addResult",
+              "handlers": null
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "store",
                 "property": "put"
               },
               "arguments": [],
@@ -64,20 +74,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "clear"
+                "property": "get"
               },
               "arguments": [],
-              "resultName": "clearResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "openCursor"
-              },
-              "arguments": [],
-              "resultName": "openCursorResult",
+              "resultName": "getResult",
               "handlers": null
             },
             {
@@ -94,10 +94,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "getAll"
+                "property": "createIndex"
               },
               "arguments": [],
-              "resultName": "getAllResult",
+              "resultName": "createIndexResult",
               "handlers": null
             },
             {
@@ -114,20 +114,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "count"
+                "property": "getKey"
               },
               "arguments": [],
-              "resultName": "countResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "openKeyCursor"
-              },
-              "arguments": [],
-              "resultName": "openKeyCursorResult",
+              "resultName": "getKeyResult",
               "handlers": null
             },
             {

@@ -54,10 +54,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "add"
+                "property": "put"
               },
               "arguments": [],
-              "resultName": "addResult",
+              "resultName": "putResult",
               "handlers": null
             },
             {
@@ -78,26 +78,6 @@
               },
               "arguments": [],
               "resultName": "clearResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "index"
-              },
-              "arguments": [],
-              "resultName": "indexResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "deleteIndex"
-              },
-              "arguments": [],
-              "resultName": "deleteIndexResult",
               "handlers": null
             },
             {

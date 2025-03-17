@@ -54,16 +54,6 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "put"
-              },
-              "arguments": [],
-              "resultName": "putResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
                 "property": "get"
               },
               "arguments": [],
@@ -74,40 +64,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "openCursor"
-              },
-              "arguments": [],
-              "resultName": "openCursorResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "index"
-              },
-              "arguments": [],
-              "resultName": "indexResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
                 "property": "deleteIndex"
               },
               "arguments": [],
               "resultName": "deleteIndexResult",
-              "handlers": null
-            },
-            {
-              "type": "CallExpression",
-              "callee": {
-                "object": "store",
-                "property": "getAll"
-              },
-              "arguments": [],
-              "resultName": "getAllResult",
               "handlers": null
             },
             {
@@ -134,10 +94,10 @@
               "type": "CallExpression",
               "callee": {
                 "object": "store",
-                "property": "openKeyCursor"
+                "property": "getKey"
               },
               "arguments": [],
-              "resultName": "openKeyCursorResult",
+              "resultName": "getKeyResult",
               "handlers": null
             },
             {
