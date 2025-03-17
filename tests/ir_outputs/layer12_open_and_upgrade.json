@@ -1,0 +1,57 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "CallExpression",
+      "callee": {
+        "object": "indexedDB",
+        "property": "open"
+      },
+      "arguments": [
+        {
+          "type": "Literal",
+          "value": "fuzzDB"
+        },
+        {
+          "type": "Literal",
+          "value": 2
+        }
+      ],
+      "resultName": "req1",
+      "handlers": {
+        "onupgradeneeded": {
+          "type": "FunctionBody",
+          "params": [
+            "event"
+          ],
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "name": "db2",
+              "value": {
+                "type": "MemberExpression",
+                "object": "event.target",
+                "property": "result"
+              }
+            },
+            {
+              "type": "CallExpression",
+              "callee": {
+                "object": "db2",
+                "property": "createObjectStore"
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "store1"
+                }
+              ],
+              "resultName": null,
+              "handlers": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

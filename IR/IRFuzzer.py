@@ -11,6 +11,9 @@ class IRFuzzer:
         self.max_nodes = max_nodes
         self.config = config or {
             "enable_onupgradeneeded": True,
+            "enable_onsuccess": True,
+            "enable_transaction": True,
+            "enable_store_ops": True,
             "num_transactions": (1, 3),
             "ops_per_transaction": (1, 3)
         }
@@ -43,9 +46,10 @@ class IRFuzzer:
             self._generate_onupgradeneeded("event", up_fn)
             call.add_handler("onupgradeneeded", up_fn)
 
-        success_fn = FunctionBody(params=["event"])
-        self._generate_onsuccess("event", success_fn)
-        call.add_handler("onsuccess", success_fn)
+        if self.config.get("enable_onsuccess", True):
+            success_fn = FunctionBody(params=["event"])
+            self._generate_onsuccess("event", success_fn)
+            call.add_handler("onsuccess", success_fn)
 
         program.add(call)
 
@@ -69,7 +73,8 @@ class IRFuzzer:
         db_decl = VariableDeclaration(name=db_var, value=db_access)
         body.add(db_decl)
 
-        self._generate_transactions(db_var, body)
+        if self.config.get("enable_transaction", True):
+            self._generate_transactions(db_var, body)
 
     def _generate_transactions(self, db_var: str, body: FunctionBody):
         num_txns = random.randint(*self.config.get("num_transactions", (1, 1)))
@@ -83,7 +88,9 @@ class IRFuzzer:
                 result_name=txn_var
             )
             body.add(txn_call)
-            self._generate_store_ops(txn_var, body)
+
+            if self.config.get("enable_store_ops", True):
+                self._generate_store_ops(txn_var, body)
 
     def _generate_store_ops(self, txn_var: str, body: FunctionBody):
         store_var = self._new_var("store")

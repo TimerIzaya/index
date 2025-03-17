@@ -136,7 +136,7 @@ class IfStatement(IRNode):
     def to_dict(self):
         return {
             "type": "IfStatement",
-            "test": self.test.to_dict(),
+            "tests": self.test.to_dict(),
             "consequent": [stmt.to_dict() for stmt in self.consequent],
             "alternate": [stmt.to_dict() for stmt in self.alternate] if self.alternate else None
         }
