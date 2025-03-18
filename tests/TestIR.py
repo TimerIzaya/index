@@ -27,6 +27,7 @@ class TestIRFuzzerLayers(unittest.TestCase):
             json.dump(program.to_dict(), f, indent=2)
         print(f"Saved: {path}")
 
+    # let req1 = indexedDB.open("fuzzDB", 10);
     def test_layer_1_only_open(self):
         fuzzer = IRFuzzer(SCHEMA_PATH, config={
             "enable_onupgradeneeded": False,
@@ -35,6 +36,12 @@ class TestIRFuzzerLayers(unittest.TestCase):
         program = fuzzer.generate_program()
         self._save_ir("layer1_open_only", program)
 
+    # let req1 = indexedDB.open("fuzzDB", 10);
+    # req1.onupgradeneeded = function(event)
+    # {
+    # let db2 = event.target.result;
+    # db2.createObjectStore("store1");
+    # };
     def test_layer_12_open_and_upgrade(self):
         fuzzer = IRFuzzer(SCHEMA_PATH, config={
             "enable_onupgradeneeded": True,
