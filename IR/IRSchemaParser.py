@@ -1,5 +1,10 @@
 import json
+import random
+from random import choice
+
 import config
+from IR.IRType import Type
+
 
 class IndexedDBSchemaParser:
     """
@@ -39,19 +44,39 @@ class IndexedDBSchemaParser:
     def get_return_type(self, interface, method):
         return self.get_instance_methods(interface).get(method, {}).get("returns", None)
 
-if __name__ == "__main__":
-    parser = IndexedDBSchemaParser()
-    interfaces = parser.get_interfaces()
-    print("Available Interfaces:", interfaces)
+    def extract_param_type_from_schema(self, param):
+        """返回一个 Type 对象用于后续调用"""
+        typeInfo = param.get("type", {})
+        maybe = [typeInfo]
+        selected = random.choices(maybe)
+        return Type(selected)
 
-    for interface in interfaces:
-        print(f"\n===== Interface: {interface} =====")
-        print("Static Methods:", list(parser.get_static_methods(interface).keys()))
-        print("Instance Methods:", list(parser.get_instance_methods(interface).keys()))
-        print("Properties:", list(parser.get_properties(interface).keys()))
-        print("Events:", [e['name'] for e in parser.get_events(interface)])
-        for method in parser.get_instance_methods(interface):
-            print(f"\n  --- Method: {method} ---")
-            print("  Exceptions:", parser.get_exceptions(interface, method))
-            print("  Parameters:", parser.get_parameters(interface, method))
-            print("  Return Type:", parser.get_return_type(interface, method))
+
+class IRTypeRegistry:
+    def __init__(self):
+        self.known_types = set()
+        self.collect_types_from_schema()
+        config.AllIRTypes.append(self.known_types)
+
+    def collect_types_from_schema(self):
+        parser = IndexedDBSchemaParser()
+        for iface in parser.get_interfaces():
+            for method_dict in [parser.get_static_methods(iface), parser.get_instance_methods(iface)]:
+                for method in method_dict.values():
+                    for param in method.get("params", []):
+                        raw_type = param.get("type", {})
+                        if isinstance(raw_type, list):
+                            for entry in raw_type:
+                                self.known_types.add(Type(entry.get(config.Consts.TypeName, "any")))
+                        else:
+                            self.known_types.add(Type(raw_type.get(config.Consts.TypeName, "any")))
+
+if __name__ == "__main__":
+        parser = IndexedDBSchemaParser()
+        apiName = parser.get_interfaces()[0]
+        mes = parser.get_static_methods(apiName).items()
+        for me in mes:
+            params = parser.get_parameters(apiName, me)
+            for p in params:
+                t = parser.extract_param_type_from_schema(p)
+                print(1)

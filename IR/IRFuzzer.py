@@ -1,6 +1,6 @@
 import random
 from .IRNodes import *
-from .ParamGenerator import ParameterGenerator
+from .IRParamGenerator import ParameterGenerator
 from .IRSchemaParser import IndexedDBSchemaParser
 
 
