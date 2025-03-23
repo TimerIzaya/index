@@ -1,187 +1,81 @@
-from typing import List, Dict, Optional, Any, Union
-
-
 class IRNode:
-    is_expression: bool = False
-    is_statement: bool = False
-    has_scope: bool = False
-
-    def to_dict(self) -> dict:
+    def to_dict(self):
         raise NotImplementedError()
 
-    def __repr__(self):
-        return str(self.to_dict())
 
 class Literal(IRNode):
-    is_expression = True
-
-    def __init__(self, value: Any):
+    def __init__(self, value, type=None):
         self.value = value
+        self.type = type  # optional, e.g., "string", "number"
 
     def to_dict(self):
         return {
             "type": "Literal",
-            "value": self.value
+            "value": self.value,
+            "valueType": self.type
         }
 
-class MemberExpression(IRNode):
-    is_expression = True
 
-    def __init__(self, object_name: str, property_name: str):
-        self.object_name = object_name
-        self.property_name = property_name
-
-    def to_dict(self):
-        return {
-            "type": "MemberExpression",
-            "object": self.object_name,
-            "property": self.property_name
-        }
-
-class VariableDeclaration(IRNode):
-    is_statement = True
-
-    def __init__(self, name: str, value: IRNode):
+class Identifier(IRNode):
+    def __init__(self, name):
         self.name = name
-        self.value = value
 
     def to_dict(self):
         return {
-            "type": "VariableDeclaration",
-            "name": self.name,
-            "value": self.value.to_dict()
+            "type": "Identifier",
+            "name": self.name
         }
+
 
 class CallExpression(IRNode):
-    is_expression = True
-    is_statement = True
-
-    def __init__(
-        self,
-        object_name: str,
-        property_name: str,
-        arguments: List[IRNode],
-        result_name: Optional[str] = None,
-        handlers: Optional[Dict[str, 'FunctionBody']] = None
-    ):
-        self.object_name = object_name
-        self.property_name = property_name
-        self.arguments = arguments
-        self.result_name = result_name
-        self.handlers = handlers or {}
-
-    def add_handler(self, event: str, handler: 'FunctionBody'):
-        self.handlers[event] = handler
+    def __init__(self, callee_object, callee_method, args, result_name=None):
+        self.callee_object = callee_object
+        self.callee_method = callee_method
+        self.args = args  # List of IRNode (e.g., Literal, Identifier)
+        self.result_name = result_name  # optional name to store result
 
     def to_dict(self):
         return {
             "type": "CallExpression",
-            "callee": {
-                "object": self.object_name,
-                "property": self.property_name
-            },
-            "arguments": [arg.to_dict() for arg in self.arguments],
-            "resultName": self.result_name,
-            "handlers": {
-                key: handler.to_dict()
-                for key, handler in self.handlers.items()
-            } if self.handlers else None
+            "callee_object": self.callee_object,
+            "callee_method": self.callee_method,
+            "args": [arg.to_dict() for arg in self.args],
+            "result_name": self.result_name
         }
 
-class FunctionBody(IRNode):
-    has_scope = True
 
-    def __init__(self, params: List[str], body: Optional[List[IRNode]] = None):
-        self.params = params
-        self.body = body or []
-
-    def add(self, node: IRNode):
-        self.body.append(node)
-
-    def to_dict(self):
-        return {
-            "type": "FunctionBody",
-            "params": self.params,
-            "body": [node.to_dict() for node in self.body]
-        }
-
-class TryCatchBlock(IRNode):
-    is_statement = True
-    has_scope = True
-
-    def __init__(self, try_body: List[IRNode], catch_param: str, catch_body: List[IRNode]):
-        self.try_body = try_body
-        self.catch_param = catch_param
-        self.catch_body = catch_body
-
-    def to_dict(self):
-        return {
-            "type": "TryCatchBlock",
-            "try": [stmt.to_dict() for stmt in self.try_body],
-            "catch": {
-                "param": self.catch_param,
-                "body": [stmt.to_dict() for stmt in self.catch_body]
-            }
-        }
-
-class IfStatement(IRNode):
-    is_statement = True
-    has_scope = True
-
-    def __init__(self, test: IRNode, consequent: List[IRNode], alternate: Optional[List[IRNode]] = None):
-        self.test = test
-        self.consequent = consequent
-        self.alternate = alternate or []
-
-    def to_dict(self):
-        return {
-            "type": "IfStatement",
-            "tests": self.test.to_dict(),
-            "consequent": [stmt.to_dict() for stmt in self.consequent],
-            "alternate": [stmt.to_dict() for stmt in self.alternate] if self.alternate else None
-        }
-
-class Assignment(IRNode):
+class AssignmentExpression(IRNode):
     def __init__(self, target, value):
-        super().__init__()
-        self.target = target
+        self.target = target  # string
+        self.value = value    # IRNode, typically FunctionExpression
+
+    def to_dict(self):
+        return {
+            "type": "AssignmentExpression",
+            "target": self.target,
+            "value": self.value.to_dict()
+        }
+
+
+class FunctionExpression(IRNode):
+    def __init__(self, params, body):
+        self.params = params  # list of strings
+        self.body = body      # list of IRNode (e.g., CallExpression, Assignment)
+
+    def to_dict(self):
+        return {
+            "type": "FunctionExpression",
+            "params": self.params,
+            "body": [stmt.to_dict() for stmt in self.body]
+        }
+
+
+class ReturnStatement(IRNode):
+    def __init__(self, value: IRNode):
         self.value = value
 
     def to_dict(self):
         return {
-            "type": "Assignment",
-            "target": self.target.to_dict(),
+            "type": "ReturnStatement",
             "value": self.value.to_dict()
-        }
-
-class BinaryExpression(IRNode):
-    def __init__(self, operator, left, right):
-        super().__init__()
-        self.operator = operator
-        self.left = left
-        self.right = right
-
-    def to_dict(self):
-        return {
-            "type": "BinaryExpression",
-            "operator": self.operator,
-            "left": {"type": "Identifier", "name": self.left} if isinstance(self.left, str) else self.left.to_dict(),
-            "right": {"type": "Identifier", "name": self.right} if isinstance(self.right, str) else self.right.to_dict()
-        }
-
-
-class Program(IRNode):
-    is_statement = True
-    has_scope = True
-
-    def __init__(self):
-        self.body: List[IRNode] = []
-
-    def add(self, node: IRNode):
-        self.body.append(node)
-
-    def to_dict(self):
-        return {
-            "type": "Program",
-            "body": [node.to_dict() for node in self.body]
         }

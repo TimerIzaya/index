@@ -2,15 +2,16 @@ import random
 
 from IR.IRContext import IRContext
 from IR.IRType import Type
+from config import Consts
 
 
-class IRParameterGenerator:
+class ParameterGenerator:
     def __init__(self, context: IRContext):
         self.context = context
 
     def generate_parameter(self, paramInSchema):
         param_type = Type(paramInSchema["type"])
-        typename = param_type.typename()
+        typename = param_type.typename
 
         # 尝试复用已有变量
         candidates = self.context.get_visible_variables(typename)
@@ -39,7 +40,7 @@ class IRParameterGenerator:
 
 if __name__ == '__main__':
     ctx = IRContext()
-    gen = IRParameterGenerator(ctx)
+    gen = ParameterGenerator(ctx)
 
     ctx.enter_layer("OpenDatabase")
     print("[Add db]", gen.generate_parameter({"name": "db", "type": "string"}))

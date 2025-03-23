@@ -1,82 +1,103 @@
-import json
-import random
-from random import choice
+from config import GlobalIRTypeRegistry
+from schema.SchemaInstanceTree import initialize_interfaces, ALL_INTERFACES
 
-import config
-from IR.IRType import Type
+
+class SchemaNode:
+    def __init__(self, node):
+        self.node = node
+
+    def getStaticMethod(self, name: str):
+        method = getattr(self.node, "staticMethods", {}).get(name)
+        return SchemaNode(method) if method else None
+
+    def getInstanceMethod(self, name: str):
+        method = getattr(self.node, "instanceMethods", {}).get(name)
+        return SchemaNode(method) if method else None
+
+    def getEvent(self, name: str):
+        for evt in getattr(self.node, "events", []):
+            if evt.name == name:
+                return evt
+        return None
+
+    def getProperty(self, name: str):
+        for p in getattr(self.node, "instanceProperties", []):
+            if p.name == name:
+                return p
+        return None
+
+    def getParam(self, index: int):
+        params = getattr(self.node, "params", [])
+        if 0 <= index < len(params):
+            return SchemaNode(params[index])
+        return None
+
+    def getReturn(self):
+        return SchemaNode(getattr(self.node, "returns", None)) if hasattr(self.node, "returns") else None
+
+    def getAttr(self, key: str):
+        if isinstance(self.node, dict):
+            return self.node.get(key)
+        return getattr(self.node, key, None)
+
+    def raw(self):
+        return self.node
 
 
 class IndexedDBSchemaParser:
-    """
-    基于嵌套结构的 IndexedDB schema 解析器：
-    每个接口包含：
-    - staticMethods
-    - instanceMethods
-    - instanceProperties
-    - events
-    """
-    def __init__(self, schema_file=config.SCHEMA_FILE):
-        with open(schema_file, "r") as f:
-            self.schema = json.load(f)
-
-    def get_interfaces(self):
-        return list(self.schema.keys())
-
-    def get_static_methods(self, interface):
-        return self.schema.get(interface, {}).get("staticMethods", {})
-
-    def get_instance_methods(self, interface):
-        return self.schema.get(interface, {}).get("instanceMethods", {})
-
-    def get_properties(self, interface):
-        props = self.schema.get(interface, {}).get("instanceProperties", [])
-        return {p['name']: p for p in props if 'name' in p}
-
-    def get_events(self, interface):
-        return self.schema.get(interface, {}).get("events", [])
-
-    def get_exceptions(self, interface, method):
-        return self.get_instance_methods(interface).get(method, {}).get("exceptions", [])
-
-    def get_parameters(self, interface, method):
-        return self.get_instance_methods(interface).get(method, {}).get("parameters", [])
-
-    def get_return_type(self, interface, method):
-        return self.get_instance_methods(interface).get(method, {}).get("returns", None)
-
-    def extract_param_type_from_schema(self, param):
-        """返回一个 Type 对象用于后续调用"""
-        typeInfo = param.get("type", {})
-        maybe = [typeInfo]
-        selected = random.choices(maybe)
-        return Type(selected)
-
-
-class IRTypeRegistry:
     def __init__(self):
-        self.known_types = set()
-        self.collect_types_from_schema()
-        config.AllIRTypes.append(self.known_types)
+        self.root = {}
 
-    def collect_types_from_schema(self):
-        parser = IndexedDBSchemaParser()
-        for iface in parser.get_interfaces():
-            for method_dict in [parser.get_static_methods(iface), parser.get_instance_methods(iface)]:
-                for method in method_dict.values():
-                    for param in method.get("params", []):
-                        raw_type = param.get("type", {})
-                        if isinstance(raw_type, list):
-                            for entry in raw_type:
-                                self.known_types.add(Type(entry.get(config.Consts.TypeName, "any")))
-                        else:
-                            self.known_types.add(Type(raw_type.get(config.Consts.TypeName, "any")))
+    def load(self):
+        initialize_interfaces()
+        self.root = {name: SchemaNode(iface) for name, iface in ALL_INTERFACES.items()}
+        self.populate_all_types_from_parser()
 
-if __name__ == "__main__":
-        parser = IndexedDBSchemaParser()
-        apiName = parser.get_interfaces()[0]
-        mes = parser.get_static_methods(apiName).items()
-        for me in mes:
-            params = parser.get_parameters(apiName, me)
-            for p in params:
-                t = parser.extract_param_type_from_schema(p)
-                print(1)
+    def getInterface(self, name: str):
+        return self.root.get(name)
+
+    def populate_all_types_from_parser(self):
+        def visit(node: SchemaNode):
+            if not node:
+                return
+            raw = node.raw()
+            if isinstance(raw, dict):
+                for k, v in raw.items():
+                    if k == "typename" and isinstance(v, str):
+                        GlobalIRTypeRegistry.register(v)
+                    visit(SchemaNode(v))
+            elif isinstance(raw, list):
+                for item in raw:
+                    visit(SchemaNode(item))
+            elif hasattr(raw, "__dict__"):
+                for attr in vars(raw).values():
+                    visit(SchemaNode(attr))
+
+        for schema_node in self.root.values():
+            visit(schema_node)
+
+if __name__ == '__main__':
+    parser = IndexedDBSchemaParser()
+    parser.load()
+
+    # 获取 open 方法的第一个参数类型
+    t1 = parser.getInterface("IDBFactory") \
+        .getStaticMethod("open") \
+        .getParam(0) \
+        .getAttr("type")
+
+    # 获取 transaction 方法第一个参数（联合类型）
+    t2 = parser.getInterface("IDBDatabase") \
+        .getInstanceMethod("transaction") \
+        .getParam(0) \
+        .getAttr("type")
+
+    # 获取 onversionchange 事件定义
+    e1 = parser.getInterface("IDBDatabase") \
+
+    # 获取 put() 的返回类型
+    ret = parser.getInterface("IDBObjectStore") \
+        .getInstanceMethod("put") \
+        .getReturn() \
+        .getAttr("typename")
+
