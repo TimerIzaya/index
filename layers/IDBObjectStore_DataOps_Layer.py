@@ -1,13 +1,23 @@
 from IR.IRNodes import CallExpression
-from IR.IRParamGenerator import ParameterGenerator
 from IR.IRContext import IRContext
-from layers.Layer import Layer
-from config import IDBObjectStore_DataOps_Layer
+from IR.IRParamGenerator import ParameterGenerator
+from layers.Layer import Layer, LayerType
+from layers.LayerBuilder import LayerBuilder
 
-def build_IDBObjectStore_DataOps_Layer(ctx: IRContext):
-    ctx.enter_layer(IDBObjectStore_DataOps_Layer)
-    gen = ParameterGenerator(ctx)
-    key = gen.generate_parameter({"type": {"typename": "string"}})
-    value = gen.generate_parameter({"type": {"typename": "any"}})
-    call = CallExpression("store", "put", [value, key])
-    return Layer(IDBObjectStore_DataOps_Layer, ir_nodes=[call])
+class IDBObjectStore_DataOps_Layer(LayerBuilder):
+    name = "IDBObjectStore_DataOps_Layer"
+    layer_type = LayerType.EXECUTION
+
+    @staticmethod
+    def build(ctx: IRContext) -> Layer:
+        gen = ParameterGenerator(ctx)
+        key = gen.generate_parameter_from_typename("string")
+        value = gen.generate_parameter_from_typename("any")
+
+        call = CallExpression(
+            callee_object=ctx.get_random_identifier("IDBObjectStore"),
+            callee_method="put",
+            args=[value, key]
+        )
+
+        return Layer(IDBObjectStore_DataOps_Layer.name, [call], layer_type=IDBObjectStore_DataOps_Layer.layer_type)

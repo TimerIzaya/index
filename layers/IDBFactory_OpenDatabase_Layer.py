@@ -1,25 +1,33 @@
 from IR.IRNodes import CallExpression
+from IR.IRContext import IRContext, Variable
 from IR.IRParamGenerator import ParameterGenerator
-from IR.IRContext import IRContext
-from IR.IRSchemaParser import SchemaParser
-from config import *
-from layers.Layer import Layer
+from IR.IRSchemaParser import get_parser
+from IR.IRType import IDBOpenDBRequest
+from layers.Layer import Layer, LayerType
+from layers.LayerBuilder import LayerBuilder
 
-class IDBFactory_OpenDatabase_Layer:
+
+# req = windows.indexDB.open("databasename", 5)
+class IDBFactory_OpenDatabase_Layer(LayerBuilder):
 
     name = "IDBFactory_OpenDatabase_Layer"
 
+    layer_type = LayerType.CALLING
+
     @staticmethod
     def build(ctx: IRContext) -> Layer:
-        ctx.enter_layer(IDBFactory_OpenDatabase_Layer)
+        parser = get_parser()
         gen = ParameterGenerator(ctx)
 
-        method = SchemaParser.getInterface("IDBFactory").getStaticMethod("open")
-        params = method.getParams().raw()
-        # use ParameterGenerator to generator args about params
+        method = parser.getInterface("IDBFactory").getStaticMethod("open")
+        args = [gen.generate_parameter(param) for param in method.getParams().raw()]
 
-        # callee = ctx.get_random_identifier("IDBFactory")
-        # call = CallExpression(callee, "open", args, result_name="openRequest")
-        # ctx.register_variable("openRequest", "IDBOpenDBRequest")
+        call = CallExpression(
+            callee_object=ctx.get_random_identifier("IDBFactory"),
+            callee_method="open",
+            args=args,
+            result_name="openRequest"
+        )
 
-        return Layer(IDBFactory_OpenDatabase_Layer.name, ir_nodes=[])
+        ctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
+        return Layer(IDBFactory_OpenDatabase_Layer.name, [call], layer_type=IDBFactory_OpenDatabase_Layer.layer_type)
