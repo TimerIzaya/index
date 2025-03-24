@@ -1,55 +1,55 @@
 import random
-
-from IR.IRContext import IRContext
-from IR.IRType import Type
-from config import Consts
+from IR.IRNodes import Literal, Identifier
+from IRContext import IRContext
+from IRType import Type
+from schema.SchemaClass import ParamInfo
 
 
 class ParameterGenerator:
     def __init__(self, context: IRContext):
         self.context = context
 
-    def generate_parameter(self, paramInSchema):
-        param_type = Type(paramInSchema["type"])
-        typename = param_type.typename
+    def generate_parameter(self, param: ParamInfo):
+        param_type_info = param.type
+        typename = self._resolve_typename(param_type_info)
 
-        # 尝试复用已有变量
+        # 尝试重用已存在的变量
         candidates = self.context.get_visible_variables(typename)
         if candidates:
-            return random.choice(candidates)
+            return random.choice(candidates).identifier  # 直接返回 Identifier
 
-        # 否则新生成值（这里只是示例生成器）
-        value = self._generate_by_type(typename)
-        var_name = self._generate_variable_name(typename)
-        self.context.register_variable(var_name, typename)
-        return var_name  # 实际 fuzz 可返回更复杂表达式
+        # 否则随机生成 Literal（常量值）
+        value = self._generate_value_for_type(typename)
+        return Literal(value, type=typename)
 
-    def _generate_by_type(self, typename):
+    def _resolve_typename(self, type_info):
+        if isinstance(type_info, list):
+            return random.choice(type_info).get("typename", "any")
+        elif isinstance(type_info, dict):
+            return type_info.get("typename", "any")
+        return "any"
+
+    def _generate_value_for_type(self, typename):
+        # ✅ 特殊类型：IDB 开头 或 DOMException/TypeError 等异常类
+        if typename.startswith("IDB") or "Exception" in typename or "Error" in typename:
+            return None
+
+        # ✅ 基础类型随机值生成
         if typename == "string":
-            return f'"str_{random.randint(0, 100)}"'
+            return "example_" + str(random.randint(1, 100))
         elif typename == "number":
-            return random.randint(0, 100)
+            return random.randint(1, 100)
         elif typename == "boolean":
-            return random.choice(["true", "false"])
+            return random.choice([True, False])
+        elif typename == "array":
+            return []
+        elif typename == "object":
+            return {"key": "value"}
+        elif typename == "null":
+            return None
+        elif typename == "any":
+            return random.choice(["fallback", 42, True])
         else:
-            return f'{typename}_instance'
+            # 默认处理（可以是空值、占位对象等）
+            return f"{typename}_instance"
 
-    def _generate_variable_name(self, typename):
-        return f'{typename}_{random.randint(0, 9999)}'
-
-
-if __name__ == '__main__':
-    ctx = IRContext()
-    gen = ParameterGenerator(ctx)
-
-    ctx.enter_layer("OpenDatabase")
-    print("[Add db]", gen.generate_parameter({"name": "db", "type": "string"}))
-
-    ctx.enter_layer("Transaction")
-    print("[Reuse or add storeNames]", gen.generate_parameter({"name": "storeNames", "type": [
-        {Consts.TypeName: "string"},
-        {Consts.TypeName: "array"}
-    ]}))
-
-    ctx.exit_layer()
-    ctx.debug()

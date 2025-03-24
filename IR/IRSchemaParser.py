@@ -1,6 +1,15 @@
+from enum import nonmember
+
 from config import GlobalIRTypeRegistry
 from schema.SchemaInstanceTree import initialize_interfaces, ALL_INTERFACES
 
+_parser_instance = None
+def get_parser():
+    global _parser_instance
+    if _parser_instance is None:
+        _parser_instance = IndexedDBSchemaParser()
+        _parser_instance.load()
+    return _parser_instance
 
 class SchemaNode:
     def __init__(self, node):
@@ -31,6 +40,10 @@ class SchemaNode:
         if 0 <= index < len(params):
             return SchemaNode(params[index])
         return None
+
+    def getParams(self):
+        params = getattr(self.node, "params", [])
+        return SchemaNode(params)
 
     def getReturn(self):
         return SchemaNode(getattr(self.node, "returns", None)) if hasattr(self.node, "returns") else None
@@ -75,6 +88,10 @@ class IndexedDBSchemaParser:
 
         for schema_node in self.root.values():
             visit(schema_node)
+
+
+SchemaParser = get_parser()
+
 
 if __name__ == '__main__':
     parser = IndexedDBSchemaParser()
