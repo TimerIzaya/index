@@ -4,6 +4,7 @@ from IR.IRParamGenerator import ParameterGenerator
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
+
 class IDBObjectStore_DataOps_Layer(LayerBuilder):
     name = "IDBObjectStore_DataOps_Layer"
     layer_type = LayerType.EXECUTION
@@ -11,8 +12,9 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
     @staticmethod
     def build(ctx: IRContext) -> Layer:
         gen = ParameterGenerator(ctx)
-        key = gen.generate_parameter_from_typename("string")
-        value = gen.generate_parameter_from_typename("any")
+
+        key = gen.generate_value_from_typename("string")
+        value = gen.generate_value_from_typename("any")
 
         call = CallExpression(
             callee_object=ctx.get_random_identifier("IDBObjectStore"),
@@ -20,4 +22,4 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
             args=[value, key]
         )
 
-        return Layer(IDBObjectStore_DataOps_Layer.name, [call], layer_type=IDBObjectStore_DataOps_Layer.layer_type)
+        return Layer(IDBObjectStore_DataOps_Layer.name, [call], layer_type=LayerType.EXECUTION)

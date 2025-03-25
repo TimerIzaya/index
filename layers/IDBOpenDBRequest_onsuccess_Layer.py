@@ -1,9 +1,10 @@
-from IR.IRNodes import AssignmentExpression, FunctionExpression
-from IR.IRContext import IRContext
+from IR.IRNodes import AssignmentExpression, FunctionExpression, MemberExpression
+from IR.IRContext import IRContext, Variable
+from IR.IRType import IDBDatabase
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
-from layers.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
+from layers.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
+
 
 class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
     name = "IDBOpenDBRequest_onsuccess_Layer"
@@ -13,12 +14,12 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
     def build(ctx: IRContext) -> Layer:
         ctx.enter_layer(IDBOpenDBRequest_onsuccess_Layer)
 
-        body = []
-        body.extend(IDBTransaction_ObjectStoreAccess_Layer.build(ctx).ir_nodes)
-        body.extend(IDBObjectStore_DataOps_Layer.build(ctx).ir_nodes)
+        assign_result = AssignmentExpression("db", MemberExpression("openRequest", "result"))
+        ctx.register_variable(Variable("db", IDBDatabase))
 
-        func = FunctionExpression([], body)
-        assign = AssignmentExpression("openRequest.onsuccess", func)
+        txn_layer = IDBDatabase_Transaction_Layer.build(ctx)
+        func = FunctionExpression([], [assign_result] + txn_layer.ir_nodes)
+        handler = AssignmentExpression("openRequest.onsuccess", func)
 
         ctx.exit_layer()
-        return Layer(IDBOpenDBRequest_onsuccess_Layer.name, [assign], layer_type=IDBOpenDBRequest_onsuccess_Layer.layer_type)
+        return Layer(IDBOpenDBRequest_onsuccess_Layer.name, [handler], children=[txn_layer], layer_type=LayerType.REGISTER)

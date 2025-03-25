@@ -16,11 +16,11 @@ class ParameterGenerator:
         # 尝试重用已存在的变量
         candidates = self.context.get_visible_variables(typename)
         if candidates:
-            return random.choice(candidates).identifier  # 直接返回 Identifier
+            return random.choice(candidates).identifier  # 返回 Identifier
 
-        # 否则随机生成 Literal（常量值）
-        value = self._generate_value_for_type(typename)
-        return Literal(value, type=typename)
+        # 否则随机生成 Literal
+        value = self.generate_value_from_typename(typename)
+        return Literal(value)  # ✅ 修复：不再传 type=
 
     def _resolve_typename(self, type_info):
         if isinstance(type_info, list):
@@ -29,7 +29,7 @@ class ParameterGenerator:
             return type_info.get("typename", "any")
         return "any"
 
-    def _generate_value_for_type(self, typename):
+    def generate_value_from_typename(self, typename):
         # ✅ 特殊类型：IDB 开头 或 DOMException/TypeError 等异常类
         if typename.startswith("IDB") or "Exception" in typename or "Error" in typename:
             return None

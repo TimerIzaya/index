@@ -5,13 +5,11 @@ from IR.IRSchemaParser import get_parser
 from IR.IRType import IDBOpenDBRequest
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
+from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 
 
-# req = windows.indexDB.open("databasename", 5)
 class IDBFactory_OpenDatabase_Layer(LayerBuilder):
-
     name = "IDBFactory_OpenDatabase_Layer"
-
     layer_type = LayerType.CALLING
 
     @staticmethod
@@ -30,4 +28,6 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         )
 
         ctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
-        return Layer(IDBFactory_OpenDatabase_Layer.name, [call], layer_type=IDBFactory_OpenDatabase_Layer.layer_type)
+        onsuccess_layer = IDBOpenDBRequest_onsuccess_Layer.build(ctx)
+
+        return Layer(IDBFactory_OpenDatabase_Layer.name, [call], children=[onsuccess_layer], layer_type=LayerType.CALLING)

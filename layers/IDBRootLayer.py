@@ -2,6 +2,8 @@ from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBFactory
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
+from layers.IDBFactory_OpenDatabase_Layer import IDBFactory_OpenDatabase_Layer
+
 
 class IDBRootLayer(LayerBuilder):
     name = "IDBRootLayer"
@@ -10,4 +12,5 @@ class IDBRootLayer(LayerBuilder):
     @staticmethod
     def build(ctx: IRContext) -> Layer:
         ctx.register_variable(Variable("indexedDB", IDBFactory))
-        return Layer(IDBRootLayer.name, [], layer_type=IDBRootLayer.layer_type)
+        open_layer = IDBFactory_OpenDatabase_Layer.build(ctx)
+        return Layer(IDBRootLayer.name, [], children=[open_layer], layer_type=IDBRootLayer.layer_type)

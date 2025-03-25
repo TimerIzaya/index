@@ -1,93 +1,62 @@
-from typing import List, Optional, Union
-
-
 class IRNode:
-    def to_dict(self) -> dict:
+    def to_dict(self):
         raise NotImplementedError()
 
 
-# ========= Identifier =========
 class Identifier(IRNode):
     def __init__(self, name: str):
-        self.name: str = name
+        self.name = name
 
-    def to_dict(self) -> dict:
+    def to_dict(self):
         return {
             "type": "Identifier",
             "name": self.name
         }
 
 
-# ========= Literal =========
 class Literal(IRNode):
-    def __init__(self, value: Union[str, int, float, bool, None], type: Optional[str] = None):
+    def __init__(self, value):
         self.value = value
-        self.value_type = type or self._infer_type()
 
-    def _infer_type(self) -> str:
-        if isinstance(self.value, str):
-            return "string"
-        elif isinstance(self.value, bool):
-            return "boolean"
-        elif isinstance(self.value, (int, float)):
-            return "number"
-        elif self.value is None:
-            return "null"
-        else:
-            return "any"
-
-    def to_dict(self) -> dict:
+    def to_dict(self):
         return {
             "type": "Literal",
-            "value": self.value,
-            "valueType": self.value_type
+            "value": self.value
         }
 
 
-# ========= CallExpression =========
-class CallExpression(IRNode):
-    def __init__(
-        self,
-        callee_object: Identifier,
-        callee_method: str,
-        args: List[IRNode],
-        result_name: Optional[str] = None
-    ):
-        self.callee_object = callee_object
-        self.callee_method = callee_method
-        self.args = args
-        self.result_name = result_name
+class MemberExpression(IRNode):
+    def __init__(self, object_name: str, property_name: str):
+        self.object_name = object_name
+        self.property_name = property_name
 
-    def to_dict(self) -> dict:
+    def to_dict(self):
         return {
-            "type": "CallExpression",
-            "callee_object": self.callee_object.to_dict(),
-            "callee_method": self.callee_method,
-            "args": [arg.to_dict() for arg in self.args],
-            "result_name": self.result_name
+            "type": "MemberExpression",
+            "object": self.object_name,
+            "property": self.property_name
         }
 
 
-# ========= AssignmentExpression =========
 class AssignmentExpression(IRNode):
-    def __init__(self, left: str, right: IRNode):
-        self.left = left  # e.g. "db.onversionchange"
-        self.right = right
+    def __init__(self, target: str, value: IRNode):
+        self.target = target
+        self.value = value
 
-    def to_dict(self) -> dict:
+    def to_dict(self):
         return {
             "type": "AssignmentExpression",
-            "left": self.left,
-            "right": self.right.to_dict()
+            "target": self.target,
+            "value": self.value.to_dict()
         }
 
-# ========= FunctionExpression =========
-class FunctionExpression(IRNode):
-    def __init__(self, params: List[str], body: List[IRNode]):
-        self.params = params
-        self.body = body
 
-    def to_dict(self) -> dict:
+class FunctionExpression(IRNode):
+    def __init__(self, params, body):
+        self.params = params  # List[str]
+        self.body = body  # List[IRNode]
+
+    def to_dict(self):
         return {
             "type": "FunctionExpression",
             "params": self.params,
@@ -95,13 +64,32 @@ class FunctionExpression(IRNode):
         }
 
 
-# ========= Program =========
-class Program(IRNode):
-    def __init__(self, body: List[IRNode]):
-        self.body = body
+class CallExpression(IRNode):
+    def __init__(self, callee_object: IRNode, callee_method: str, args, result_name=None):
+        self.callee_object = callee_object  # IRNode (typically Identifier)
+        self.callee_method = callee_method
+        self.args = args  # List[IRNode or raw value]
+        self.result_name = result_name
 
-    def to_dict(self) -> dict:
+    def to_dict(self):
+        def wrap(arg):
+            return arg.to_dict() if isinstance(arg, IRNode) else Literal(arg).to_dict()
+
+        return {
+            "type": "CallExpression",
+            "callee_object": self.callee_object.to_dict(),
+            "callee_method": self.callee_method,
+            "args": [wrap(arg) for arg in self.args],
+            "result_name": self.result_name
+        }
+
+
+class Program(IRNode):
+    def __init__(self, layers):
+        self.layers = layers
+
+    def to_dict(self):
         return {
             "type": "Program",
-            "body": [stmt.to_dict() for stmt in self.body]
+            "layers": [layer.to_dict() for layer in self.layers]
         }
