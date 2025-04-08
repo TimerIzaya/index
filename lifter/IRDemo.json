@@ -22,11 +22,11 @@
               "args": [
                 {
                   "type": "Literal",
-                  "value": "example_32"
+                  "value": "example_90"
                 },
                 {
                   "type": "Literal",
-                  "value": 86
+                  "value": 9
                 }
               ],
               "result_name": "request"
@@ -66,7 +66,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "example_90"
+                            "value": "example_2"
                           }
                         ],
                         "result_name": "store"
@@ -110,72 +110,84 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "example_27"
+                            "value": "example_26"
                           },
                           {
                             "type": "Literal",
-                            "value": "example_34"
+                            "value": "example_50"
                           }
                         ],
                         "result_name": "txn"
+                      },
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "txn"
+                        },
+                        "callee_method": "objectStore",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "value": "example_23"
+                          }
+                        ],
+                        "result_name": "store"
+                      },
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "store"
+                        },
+                        "callee_method": "put",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "value": 42
+                          },
+                          {
+                            "type": "Literal",
+                            "value": 42
+                          }
+                        ],
+                        "result_name": "req_put"
+                      },
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "store"
+                        },
+                        "callee_method": "get",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "value": true
+                          }
+                        ],
+                        "result_name": "req_get"
+                      },
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "store"
+                        },
+                        "callee_method": "delete",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "value": "fallback"
+                          }
+                        ],
+                        "result_name": "req_del"
                       }
                     ]
                   }
                 }
               ],
-              "children": [
-                {
-                  "type": "Layer",
-                  "name": "IDBTransaction_ObjectStoreAccess_Layer",
-                  "layer_type": "\u8bbf\u95ee\u578b",
-                  "ir_nodes": [
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "txn"
-                      },
-                      "callee_method": "objectStore",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": "example_53"
-                        }
-                      ],
-                      "result_name": "store"
-                    }
-                  ],
-                  "children": [
-                    {
-                      "type": "Layer",
-                      "name": "IDBObjectStore_DataOps_Layer",
-                      "layer_type": "\u6267\u884c\u578b",
-                      "ir_nodes": [
-                        {
-                          "type": "CallExpression",
-                          "callee_object": {
-                            "type": "Identifier",
-                            "name": "store"
-                          },
-                          "callee_method": "put",
-                          "args": [
-                            {
-                              "type": "Literal",
-                              "value": true
-                            },
-                            {
-                              "type": "Literal",
-                              "value": "example_11"
-                            }
-                          ],
-                          "result_name": null
-                        }
-                      ],
-                      "children": []
-                    }
-                  ]
-                }
-              ]
+              "children": []
             },
             {
               "type": "Layer",

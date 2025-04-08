@@ -1,25 +1,35 @@
-from IR.IRNodes import CallExpression
-from IR.IRContext import IRContext
+from IR.IRNodes import CallExpression, Identifier
+from IR.IRContext import IRContext, Variable
+from IR.IRType import IDBRequest
 from IR.IRParamGenerator import ParameterGenerator
-from layers.Layer import Layer, LayerType
-from layers.LayerBuilder import LayerBuilder
 
 
-class IDBObjectStore_DataOps_Layer(LayerBuilder):
-    name = "IDBObjectStore_DataOps_Layer"
-    layer_type = LayerType.EXECUTION
-
+class IDBObjectStore_DataOps_Layer:
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
+    def build_body(ctx: IRContext):
         gen = ParameterGenerator(ctx)
+        body = []
 
-        key = gen.generate_value_from_typename("string")
-        value = gen.generate_value_from_typename("any")
-
-        call = CallExpression(
-            callee_object=ctx.get_random_identifier("IDBObjectStore"),
-            callee_method="put",
-            args=[value, key]
+        # store.get(...)
+        get_key = gen.generate_value_from_typename("any")
+        get_call = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="get",
+            args=[get_key],
+            result_name="req_get"
         )
+        ctx.register_variable(Variable("req_get", IDBRequest))
+        body.append(get_call)
 
-        return Layer(IDBObjectStore_DataOps_Layer.name, [call], layer_type=LayerType.EXECUTION)
+        # store.delete(...)
+        del_key = gen.generate_value_from_typename("any")
+        del_call = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="delete",
+            args=[del_key],
+            result_name="req_del"
+        )
+        ctx.register_variable(Variable("req_del", IDBRequest))
+        body.append(del_call)
+
+        return body

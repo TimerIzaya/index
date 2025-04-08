@@ -1,29 +1,40 @@
-from IR.IRNodes import CallExpression
+from IR.IRNodes import CallExpression, Identifier
 from IR.IRContext import IRContext, Variable
+from IR.IRType import IDBObjectStore, IDBRequest
 from IR.IRParamGenerator import ParameterGenerator
-from IR.IRType import IDBObjectStore
-from layers.Layer import Layer, LayerType
-from layers.LayerBuilder import LayerBuilder
 from layers.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
 
 
-class IDBTransaction_ObjectStoreAccess_Layer(LayerBuilder):
-    name = "IDBTransaction_ObjectStoreAccess_Layer"
-    layer_type = LayerType.ACCESS
-
+class IDBTransaction_ObjectStoreAccess_Layer:
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
+    def build_body(ctx: IRContext):
         gen = ParameterGenerator(ctx)
-        store_name = gen.generate_value_from_typename("string")
+        body = []
 
-        call = CallExpression(
-            callee_object=ctx.get_random_identifier("IDBTransaction"),
+        # store = txn.objectStore("store")
+        store_name = gen.generate_value_from_typename("string")
+        store_call = CallExpression(
+            callee_object=Identifier("txn"),
             callee_method="objectStore",
             args=[store_name],
             result_name="store"
         )
-
         ctx.register_variable(Variable("store", IDBObjectStore))
-        data_layer = IDBObjectStore_DataOps_Layer.build(ctx)
+        body.append(store_call)
 
-        return Layer(IDBTransaction_ObjectStoreAccess_Layer.name, [call], children=[data_layer], layer_type=LayerType.ACCESS)
+        # store.put(...)
+        value = gen.generate_value_from_typename("any")
+        key = gen.generate_value_from_typename("any")
+        put_call = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="put",
+            args=[value, key],
+            result_name="req_put"
+        )
+        ctx.register_variable(Variable("req_put", IDBRequest))
+        body.append(put_call)
+
+        # 🔗 插入 store.get / delete 等 IR
+        body.extend(IDBObjectStore_DataOps_Layer.build_body(ctx))
+
+        return body

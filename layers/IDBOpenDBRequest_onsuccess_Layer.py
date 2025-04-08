@@ -3,8 +3,7 @@ from IR.IRNodes import (
     MemberExpression,
     Identifier,
     FunctionExpression,
-    CallExpression,
-    Literal
+    CallExpression
 )
 from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBDatabase, IDBTransaction
@@ -31,7 +30,7 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         ctx.register_variable(Variable("db", IDBDatabase))
         body.append(assign_result)
 
-        # txn = db.transaction(store, mode)
+        # txn = db.transaction(...)
         store_name = gen.generate_value_from_typename("string")
         mode = gen.generate_value_from_typename("string")
 
@@ -44,21 +43,18 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         ctx.register_variable(Variable("txn", IDBTransaction))
         body.append(txn_call)
 
-        # 封装事件处理器
+        # 将 txn 子操作内联进事件体
+        txn_ops = IDBTransaction_ObjectStoreAccess_Layer.build_body(ctx)
+        body.extend(txn_ops)
+
+        # 包装为事件函数
         handler = AssignmentExpression(
             target="request.onsuccess",
-            value=FunctionExpression(
-                params=["event"],
-                body=body
-            )
+            value=FunctionExpression(params=["event"], body=body)
         )
-
-        # 子层：txn.objectStore(...)
-        txn_child_layer = IDBTransaction_ObjectStoreAccess_Layer.build(ctx)
 
         return Layer(
             IDBOpenDBRequest_onsuccess_Layer.name,
             [handler],
-            children=[txn_child_layer],
             layer_type=LayerType.REGISTER
         )
