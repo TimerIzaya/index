@@ -1,5 +1,8 @@
 from enum import Enum
 
+from IR.IRNodes import IRNodeFactory
+
+
 # === 枚举 Layer 的 4 种类型 ===
 class LayerType(Enum):
     CALLING = "调用型"
@@ -7,13 +10,12 @@ class LayerType(Enum):
     EXECUTION = "执行型"
     ACCESS = "访问型"
 
-# === Layer 基类 ===
 class Layer:
     def __init__(self, name: str, ir_nodes=None, children=None, layer_type: LayerType = LayerType.EXECUTION):
         self.name = name
         self.ir_nodes = ir_nodes or []
         self.children = children or []
-        self.layer_type = layer_type  # ✅ 新增类型字段
+        self.layer_type = layer_type
 
     def to_dict(self):
         return {
@@ -24,14 +26,13 @@ class Layer:
             "children": [child.to_dict() for child in self.children]
         }
 
+    @staticmethod
+    def from_dict(d: dict):
+        return Layer(
+            name=d["name"],
+            layer_type=LayerType(d.get("layer_type", "EXECUTION")),
+            ir_nodes=[IRNodeFactory.from_dict(n) for n in d.get("ir_nodes", [])],
+            children=[Layer.from_dict(c) for c in d.get("children", [])]
+        )
 
-# === IRProgram 顶层结构 ===
-class Program:
-    def __init__(self, layers=None):
-        self.layers = layers or []
 
-    def to_dict(self):
-        return {
-            "type": "Program",
-            "layers": [layer.to_dict() for layer in self.layers]
-        }

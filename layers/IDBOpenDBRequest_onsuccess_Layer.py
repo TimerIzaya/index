@@ -7,7 +7,9 @@ from layers.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
 
 
 class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
+
     name = "IDBOpenDBRequest_onsuccess_Layer"
+
     layer_type = LayerType.REGISTER
 
     @staticmethod

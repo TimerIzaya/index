@@ -1,0 +1,98 @@
+{
+  "IRProgram": {
+    "IDBRootLayer": {
+      "type": "INIT",
+      "children": {
+        "IDBFactory_OpenDatabase_Layer": {
+          "type": "CALLING",
+          "api": "indexedDB.open(name, version)",
+          "children": {
+            "IDBOpenDBRequest_onblocked_Layer": {
+              "type": "REGISTER",
+              "api": "openRequest.onblocked = fn"
+            },
+            "IDBOpenDBRequest_onupgradeneeded_Layer": {
+              "type": "REGISTER",
+              "api": "openRequest.onupgradeneeded = fn",
+              "children": {
+                "IDBDatabase_SchemaOps_Layer": {
+                  "type": "EXECUTION",
+                  "api": "createObjectStore, deleteObjectStore, ..."
+                }
+              }
+            },
+            "IDBOpenDBRequest_onsuccess_Layer": {
+              "type": "REGISTER",
+              "api": "openRequest.onsuccess = fn",
+              "children": {
+                "IDBDatabase_Transaction_Layer": {
+                  "type": "CALLING",
+                  "api": "db.transaction()",
+                  "children": {
+                    "IDBTransaction_oncomplete_Layer": {
+                      "type": "REGISTER",
+                      "api": "txn.oncomplete = fn"
+                    },
+                    "IDBTransaction_onabort_Layer": {
+                      "type": "REGISTER",
+                      "api": "txn.onabort = fn"
+                    },
+                    "IDBTransaction_onerror_Layer": {
+                      "type": "REGISTER",
+                      "api": "txn.onerror = fn"
+                    },
+                    "IDBTransaction_ObjectStoreAccess_Layer": {
+                      "type": "ACCESS",
+                      "api": "txn.objectStore('store')",
+                      "children": {
+                        "IDBObjectStore_DataOps_Layer": {
+                          "type": "EXECUTION",
+                          "api": "store.put(), get(), delete(), count()..."
+                        },
+                        "IDBObjectStore_IndexOps_Layer": {
+                          "type": "ACCESS",
+                          "api": "store.index('idx')"
+                        },
+                        "IDBObjectStore_CursorOps_Layer": {
+                          "type": "EXECUTION",
+                          "api": "cursor.continue(), cursor.update()"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "IDBOpenDBRequest_onerror_Layer": {
+              "type": "REGISTER",
+              "api": "openRequest.onerror = fn"
+            }
+          }
+        },
+        "IDBFactory_DeleteDatabase_Layer": {
+          "type": "CALLING",
+          "api": "indexedDB.deleteDatabase(name)",
+          "children": {
+            "IDBOpenDBRequest_onblocked_Layer": {
+              "type": "REGISTER"
+            },
+            "IDBOpenDBRequest_onsuccess_Layer": {
+              "type": "REGISTER"
+            },
+            "IDBOpenDBRequest_onerror_Layer": {
+              "type": "REGISTER"
+            }
+          }
+        },
+        "IDBDatabase_onversionchange_Layer": {
+          "type": "REGISTER",
+          "api": "db.onversionchange = fn"
+        },
+        "IDBDatabase_onclose_Layer": {
+          "type": "REGISTER",
+          "api": "db.onclose = fn"
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,6 @@
+from typing import List
+
+
 class IRNode:
     def to_dict(self):
         raise NotImplementedError()
@@ -84,8 +87,8 @@ class CallExpression(IRNode):
         }
 
 
-class Program(IRNode):
-    def __init__(self, layers):
+class Program:
+    def __init__(self, layers: List["Layer"]):
         self.layers = layers
 
     def to_dict(self):
@@ -93,3 +96,40 @@ class Program(IRNode):
             "type": "Program",
             "layers": [layer.to_dict() for layer in self.layers]
         }
+
+    @staticmethod
+    def from_dict(d: dict):
+        from layers.Layer import Layer
+        return Program([Layer.from_dict(ld) for ld in d.get("layers", [])])
+
+
+
+class IRNodeFactory:
+    @staticmethod
+    def from_dict(d: dict):
+        t = d.get("type")
+        if t == "CallExpression":
+            return CallExpression(
+                callee_object=IRNodeFactory.from_dict(d["callee_object"]),
+                callee_method=d["callee_method"],
+                args=[IRNodeFactory.from_dict(arg) for arg in d["args"]],
+                result_name=d.get("result_name")
+            )
+        elif t == "AssignmentExpression":
+            return AssignmentExpression(
+                target=d["target"],
+                value=IRNodeFactory.from_dict(d["value"])
+            )
+        elif t == "FunctionExpression":
+            return FunctionExpression(
+                params=d.get("params", []),
+                body=[IRNodeFactory.from_dict(n) for n in d["body"]]
+            )
+        elif t == "MemberExpression":
+            return MemberExpression(d["object"], d["property"])
+        elif t == "Identifier":
+            return Identifier(d["name"])
+        elif t == "Literal":
+            return Literal(d["value"])
+        else:
+            raise ValueError(f"Unknown node type: {t}")

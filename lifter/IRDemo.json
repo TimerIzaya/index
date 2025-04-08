@@ -1,0 +1,167 @@
+{
+    "type": "Program",
+    "layers": [
+      {
+        "type": "Layer",
+        "name": "IDBRootLayer",
+        "layer_type": "\u8c03\u7528\u578b",
+        "ir_nodes": [],
+        "children": [
+          {
+            "type": "Layer",
+            "name": "IDBFactory_OpenDatabase_Layer",
+            "layer_type": "\u8c03\u7528\u578b",
+            "ir_nodes": [
+              {
+                "type": "CallExpression",
+                "callee_object": {
+                  "type": "Identifier",
+                  "name": "indexedDB"
+                },
+                "callee_method": "open",
+                "args": [
+                  {
+                    "type": "Literal",
+                    "value": "example_14"
+                  },
+                  {
+                    "type": "Literal",
+                    "value": 80
+                  }
+                ],
+                "result_name": "openRequest"
+              }
+            ],
+            "children": [
+              {
+                "type": "Layer",
+                "name": "IDBOpenDBRequest_onsuccess_Layer",
+                "layer_type": "\u6ce8\u518c\u578b",
+                "ir_nodes": [
+                  {
+                    "type": "AssignmentExpression",
+                    "target": "openRequest.onsuccess",
+                    "value": {
+                      "type": "FunctionExpression",
+                      "params": [],
+                      "body": [
+                        {
+                          "type": "AssignmentExpression",
+                          "target": "db",
+                          "value": {
+                            "type": "MemberExpression",
+                            "object": "openRequest",
+                            "property": "result"
+                          }
+                        },
+                        {
+                          "type": "CallExpression",
+                          "callee_object": {
+                            "type": "Identifier",
+                            "name": "db"
+                          },
+                          "callee_method": "transaction",
+                          "args": [
+                            {
+                              "type": "Literal",
+                              "value": "example_2"
+                            },
+                            {
+                              "type": "Literal",
+                              "value": "example_93"
+                            }
+                          ],
+                          "result_name": "txn"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "Layer",
+                    "name": "IDBDatabase_Transaction_Layer",
+                    "layer_type": "\u8c03\u7528\u578b",
+                    "ir_nodes": [
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "db"
+                        },
+                        "callee_method": "transaction",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "value": "example_2"
+                          },
+                          {
+                            "type": "Literal",
+                            "value": "example_93"
+                          }
+                        ],
+                        "result_name": "txn"
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "Layer",
+                        "name": "IDBTransaction_ObjectStoreAccess_Layer",
+                        "layer_type": "\u8bbf\u95ee\u578b",
+                        "ir_nodes": [
+                          {
+                            "type": "CallExpression",
+                            "callee_object": {
+                              "type": "Identifier",
+                              "name": "txn"
+                            },
+                            "callee_method": "objectStore",
+                            "args": [
+                              {
+                                "type": "Literal",
+                                "value": "example_17"
+                              }
+                            ],
+                            "result_name": "store"
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "Layer",
+                            "name": "IDBObjectStore_DataOps_Layer",
+                            "layer_type": "\u6267\u884c\u578b",
+                            "ir_nodes": [
+                              {
+                                "type": "CallExpression",
+                                "callee_object": {
+                                  "type": "Identifier",
+                                  "name": "store"
+                                },
+                                "callee_method": "put",
+                                "args": [
+                                  {
+                                    "type": "Literal",
+                                    "value": "fallback"
+                                  },
+                                  {
+                                    "type": "Literal",
+                                    "value": "example_34"
+                                  }
+                                ],
+                                "result_name": null
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
