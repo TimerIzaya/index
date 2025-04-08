@@ -1,9 +1,9 @@
 import json
 
 import config
+from IR.IRNodes import Program
 from IR.IRSchemaParser import IndexedDBSchemaParser
 from IR.IRContext import IRContext
-from layers.Layer import Program
 
 # 导入所有 Layer
 from layers.IDBRootLayer import IDBRootLayer

@@ -49,7 +49,7 @@ class IRToJSConverter:
             self.level += 1
             body = "\n".join(self._convert_node(n) for n in node.body)
             self.level -= 1
-            return self._indent(f"(event) => {{\n{body}\n{self._indent('}}')}")
+            return self._indent(f"(event) => {{\n{body}\n{self._indent('}')}")
 
         else:
             return self._indent(f"// [Unknown node: {type(node).__name__}]")

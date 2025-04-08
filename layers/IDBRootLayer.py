@@ -11,6 +11,6 @@ class IDBRootLayer(LayerBuilder):
 
     @staticmethod
     def build(ctx: IRContext) -> Layer:
-        ctx.register_variable(Variable("indexedDB", IDBFactory))
+        ctx.register_variable(Variable("window.indexedDB", IDBFactory))
         open_layer = IDBFactory_OpenDatabase_Layer.build(ctx)
         return Layer(IDBRootLayer.name, [], children=[open_layer], layer_type=IDBRootLayer.layer_type)
