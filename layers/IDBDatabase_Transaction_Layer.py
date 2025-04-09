@@ -1,8 +1,7 @@
-from IR.IRNodes import CallExpression
 from IR.IRContext import IRContext, Variable
-from IR.IRParamGenerator import ParameterGenerator
+from IR.IRNodes import AssignmentExpression, CallExpression, Identifier, Literal
 from IR.IRType import IDBTransaction
-from IR.IRSchemaParser import get_parser
+from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 from layers.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
@@ -13,31 +12,26 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
     layer_type = LayerType.CALLING
 
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
-        parser = get_parser()
-        method = parser.getInterface("IDBDatabase").getInstanceMethod("transaction")
-        gen = ParameterGenerator(ctx)
-
-        # 动态构造参数
-        params = method.getParams().raw()
-        args = [arg for p in params if (arg := gen.generate_parameter(p)) is not None]
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
+        # ✅ 从 IDBContext 中获取当前已注册的 object store
+        store_name = idbctx.pick_random_object_store()
+        txn_mode = Literal("readwrite")  # 可扩展为枚举
 
         call = CallExpression(
-            callee_object=ctx.get_random_identifier("IDBDatabase"),
+            callee_object=Identifier("db"),
             callee_method="transaction",
-            args=args,
+            args=[Literal(store_name), txn_mode],
             result_name="txn"
         )
 
-        ctx.register_variable(Variable("txn", IDBTransaction))
+        irctx.register_variable(Variable("txn", IDBTransaction))
 
-        # ✅ 接入子操作层
-        ir_nodes = [call]
-        access_nodes = IDBTransaction_ObjectStoreAccess_Layer.build_body(ctx)
-        ir_nodes.extend(access_nodes)
+        # 创建子层，访问 objectStore 并执行数据操作
+        child_layer = IDBTransaction_ObjectStoreAccess_Layer.build(irctx, idbctx)
 
         return Layer(
-            IDBDatabase_Transaction_Layer.name,
-            ir_nodes,
+            name=IDBDatabase_Transaction_Layer.name,
+            ir_nodes=[call],
+            children=[child_layer],
             layer_type=IDBDatabase_Transaction_Layer.layer_type
         )

@@ -5,6 +5,7 @@ import config
 from IR.IRNodes import Program
 from IR.IRSchemaParser import IndexedDBSchemaParser
 from IR.IRContext import IRContext
+from layers.IDBContext import IDBContext
 
 # 导入所有 Layer
 from layers.IDBRootLayer import IDBRootLayer
@@ -18,8 +19,9 @@ def loadFuzzerNeed():
 
 
 def generate_ir_program():
-    ctx = IRContext()
-    root_layer = IDBRootLayer.build(ctx)
+    irctx = IRContext()
+    idbctx = IDBContext()
+    root_layer = IDBRootLayer.build(irctx, idbctx)
     return Program(layers=[root_layer])
 
 

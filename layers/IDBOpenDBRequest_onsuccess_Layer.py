@@ -7,6 +7,7 @@ from IR.IRNodes import (
 from IR.IRContext import IRContext, Variable
 from IR.IRParamGenerator import ParameterGenerator
 from IR.IRType import IDBDatabase
+from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 from layers.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
@@ -17,7 +18,7 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
     layer_type = LayerType.REGISTER
 
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         body = []
 
         # db = request.result
@@ -25,11 +26,11 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
             target="db",
             value=MemberExpression("request", "result")
         )
-        ctx.register_variable(Variable("db", IDBDatabase))
+        irctx.register_variable(Variable("db", IDBDatabase))
         body.append(assign_db)
 
         # 构建并内联事务层
-        txn_layer = IDBDatabase_Transaction_Layer.build(ctx)
+        txn_layer = IDBDatabase_Transaction_Layer.build(irctx, idbctx)
         body.extend(txn_layer.ir_nodes)
 
         # 注册事件处理器

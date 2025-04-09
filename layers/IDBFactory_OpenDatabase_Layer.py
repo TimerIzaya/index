@@ -1,16 +1,13 @@
-from IR.IRNodes import CallExpression
+from IR.IRNodes import CallExpression, AssignmentExpression, FunctionExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBFactory, IDBOpenDBRequest
+from layers.IDBContext import IDBContext
+from IR.IRType import IDBOpenDBRequest
 from IR.IRParamGenerator import ParameterGenerator
 from IR.IRSchemaParser import get_parser
-from layers.Layer import Layer, LayerType
-from layers.LayerBuilder import LayerBuilder
-
-# 子层导入
 from layers.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
 from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
-from layers.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
-from layers.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
+from layers.Layer import Layer, LayerType
+from layers.LayerBuilder import LayerBuilder
 
 
 class IDBFactory_OpenDatabase_Layer(LayerBuilder):
@@ -18,40 +15,38 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
     layer_type = LayerType.CALLING
 
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         parser = get_parser()
         method = parser.getInterface("IDBFactory").getStaticMethod("open")
-        gen = ParameterGenerator(ctx)
+        gen = ParameterGenerator(irctx)
 
-        params = method.getParams().raw()
-        args = [arg for p in params if (arg := gen.generate_parameter(p)) is not None]
+        # 单独生成 name/version 参数，便于注册数据库
+        open_params = method.getParams().raw()
+        name_param = gen.generate_parameter(open_params[0])  # string
+        version_param = gen.generate_parameter(open_params[1])  # number?
 
-        callee = ctx.get_random_identifier("IDBFactory")
+        # 注册数据库名
+        if isinstance(name_param, Literal):
+            idbctx.start_database(name_param.value)
+
+        args = [name_param, version_param]
 
         call = CallExpression(
-            callee_object=callee,
+            callee_object=Identifier("indexedDB"),
             callee_method="open",
             args=args,
-            result_name="request"
+            result_name="openRequest"
         )
 
-        # 注册 openRequest 变量
-        ctx.register_variable(Variable("request", IDBOpenDBRequest))
+        irctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
 
-        # 构造子层
-        upgrade_layer = IDBOpenDBRequest_onupgradeneeded_Layer.build(ctx)
-        success_layer = IDBOpenDBRequest_onsuccess_Layer.build(ctx)
-        error_layer = IDBOpenDBRequest_onerror_Layer.build(ctx)
-        blocked_layer = IDBOpenDBRequest_onblocked_Layer.build(ctx)
+        # 注册子事件层
+        upgrade_layer = IDBOpenDBRequest_onupgradeneeded_Layer.build(irctx, idbctx)
+        success_layer = IDBOpenDBRequest_onsuccess_Layer.build(irctx, idbctx)
 
         return Layer(
-            IDBFactory_OpenDatabase_Layer.name,
-            [call],
-            children=[
-                upgrade_layer,
-                success_layer,
-                error_layer,
-                blocked_layer
-            ],
-            layer_type=LayerType.CALLING
+            name=IDBFactory_OpenDatabase_Layer.name,
+            ir_nodes=[call],
+            children=[upgrade_layer, success_layer],
+            layer_type=IDBFactory_OpenDatabase_Layer.layer_type
         )

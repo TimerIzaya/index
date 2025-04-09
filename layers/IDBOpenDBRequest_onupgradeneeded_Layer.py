@@ -1,13 +1,9 @@
-from IR.IRNodes import (
-    AssignmentExpression,
-    MemberExpression,
-    Identifier,
-    FunctionExpression,
-    CallExpression
-)
+from IR.IRNodes import AssignmentExpression, FunctionExpression, CallExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBDatabase, IDBObjectStore
+from layers.IDBContext import IDBContext
 from IR.IRParamGenerator import ParameterGenerator
+from IR.IRType import IDBObjectStore, IDBDatabase
+from IR.IRSchemaParser import get_parser
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
@@ -17,32 +13,54 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
     layer_type = LayerType.REGISTER
 
     @staticmethod
-    def build(ctx: IRContext) -> Layer:
-        gen = ParameterGenerator(ctx)
-        body = []
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
+        parser = get_parser()
+        gen = ParameterGenerator(irctx)
 
         # db = event.target.result
-        db_assign = AssignmentExpression(
+        assign_db = AssignmentExpression(
             target="db",
-            value=MemberExpression("event.target", "result")
+            value=CallExpression(Identifier("event.target"), "result", [])
         )
-        ctx.register_variable(Variable("db", IDBDatabase))
-        body.append(db_assign)
+        irctx.register_variable(Variable("db", IDBDatabase))
 
-        # store = db.createObjectStore("store")
-        store_name = gen.generate_value_from_typename("string")
-        create_call = CallExpression(
+        # 创建 objectStore
+        create_store_method = parser.getInterface("IDBDatabase").getInstanceMethod("createObjectStore")
+        store_args = [arg for p in create_store_method.getParams().raw() if (arg := gen.generate_parameter(p)) is not None]
+        store_name = store_args[0].value if isinstance(store_args[0], Literal) else "store"
+
+        idbctx.register_object_store(store_name)
+
+        create_store_call = CallExpression(
             callee_object=Identifier("db"),
             callee_method="createObjectStore",
-            args=[store_name],
+            args=store_args,
             result_name="store"
         )
-        ctx.register_variable(Variable("store", IDBObjectStore))
-        body.append(create_call)
+        irctx.register_variable(Variable("store", IDBObjectStore))
 
-        handler = AssignmentExpression(
-            target="request.onupgradeneeded",
-            value=FunctionExpression(params=["event"], body=body)
+        # 创建 index
+        create_index_method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
+        index_args = [arg for p in create_index_method.getParams().raw() if (arg := gen.generate_parameter(p)) is not None]
+        create_index_call = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="createIndex",
+            args=index_args
         )
 
-        return Layer(IDBOpenDBRequest_onupgradeneeded_Layer.name, [handler], layer_type=LayerType.REGISTER)
+        if index_args and isinstance(index_args[0], Literal):
+            idbctx.register_index(store_name, index_args[0].value)
+
+        handler_body = [assign_db, create_store_call, create_index_call]
+
+
+        handler = AssignmentExpression(
+            target="openRequest.onupgradeneeded",
+            value=FunctionExpression(params=["event"], body=handler_body)
+        )
+
+        return Layer(
+            name=IDBOpenDBRequest_onupgradeneeded_Layer.name,
+            ir_nodes=[handler],
+            layer_type=IDBOpenDBRequest_onupgradeneeded_Layer.layer_type
+        )

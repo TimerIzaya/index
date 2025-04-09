@@ -1,4 +1,6 @@
+from IR.IRContext import IRContext
 from IR.IRNodes import AssignmentExpression, FunctionExpression
+from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
@@ -8,7 +10,7 @@ class IDBOpenDBRequest_onblocked_Layer(LayerBuilder):
     layer_type = LayerType.REGISTER
 
     @staticmethod
-    def build(ctx) -> Layer:
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         handler = AssignmentExpression(
             target="request.onblocked",
             value=FunctionExpression(params=["event"], body=[])
