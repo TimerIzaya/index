@@ -5,7 +5,13 @@
       "type": "Layer",
       "name": "IDBRootLayer",
       "layer_type": "\u8c03\u7528\u578b",
-      "ir_nodes": [],
+      "ir_nodes": [
+        {
+          "type": "VariableDeclaration",
+          "kind": "let",
+          "name": "db"
+        }
+      ],
       "children": [
         {
           "type": "Layer",
@@ -22,11 +28,7 @@
               "args": [
                 {
                   "type": "Literal",
-                  "value": "example_90"
-                },
-                {
-                  "type": "Literal",
-                  "value": 9
+                  "value": "v_89"
                 }
               ],
               "result_name": "request"
@@ -66,7 +68,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "example_2"
+                            "value": "v_77"
                           }
                         ],
                         "result_name": "store"
@@ -110,11 +112,13 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "example_26"
+                            "value": "v_87"
                           },
                           {
                             "type": "Literal",
-                            "value": "example_50"
+                            "value": {
+                              "key": "value"
+                            }
                           }
                         ],
                         "result_name": "txn"
@@ -129,7 +133,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "example_23"
+                            "value": "v_54"
                           }
                         ],
                         "result_name": "store"
@@ -144,7 +148,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": 42
+                            "value": "fallback"
                           },
                           {
                             "type": "Literal",
@@ -163,7 +167,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": true
+                            "value": "fallback"
                           }
                         ],
                         "result_name": "req_get"
@@ -178,7 +182,7 @@
                         "args": [
                           {
                             "type": "Literal",
-                            "value": "fallback"
+                            "value": 42
                           }
                         ],
                         "result_name": "req_del"
@@ -187,7 +191,101 @@
                   }
                 }
               ],
-              "children": []
+              "children": [
+                {
+                  "type": "Layer",
+                  "name": "IDBDatabase_Transaction_Layer",
+                  "layer_type": "\u8c03\u7528\u578b",
+                  "ir_nodes": [
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "db"
+                      },
+                      "callee_method": "transaction",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": "v_87"
+                        },
+                        {
+                          "type": "Literal",
+                          "value": {
+                            "key": "value"
+                          }
+                        }
+                      ],
+                      "result_name": "txn"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "txn"
+                      },
+                      "callee_method": "objectStore",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": "v_54"
+                        }
+                      ],
+                      "result_name": "store"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store"
+                      },
+                      "callee_method": "put",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": "fallback"
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 42
+                        }
+                      ],
+                      "result_name": "req_put"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store"
+                      },
+                      "callee_method": "get",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": "fallback"
+                        }
+                      ],
+                      "result_name": "req_get"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store"
+                      },
+                      "callee_method": "delete",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": 42
+                        }
+                      ],
+                      "result_name": "req_del"
+                    }
+                  ],
+                  "children": []
+                }
+              ]
             },
             {
               "type": "Layer",

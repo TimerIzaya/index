@@ -1,8 +1,8 @@
 IRProgram
 └── IDBRootLayer                                [done]
     ├── IDBFactory_OpenDatabase_Layer           [done]
-    │   ├── IDBOpenDBRequest_onblocked_Layer    []
-    │   ├── IDBOpenDBRequest_onupgradeneeded_Layer []
+    │   ├── IDBOpenDBRequest_onblocked_Layer    [done]
+    │   ├── IDBOpenDBRequest_onupgradeneeded_Layer [done]
     │   │   └── IDBDatabase_SchemaOps_Layer     []
     │   ├── IDBOpenDBRequest_onsuccess_Layer    [done]
     │   │   └── IDBDatabase_Transaction_Layer   [done]

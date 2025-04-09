@@ -1,7 +1,7 @@
 import random
+
+from IR import IRContext
 from IR.IRNodes import Literal, Identifier
-from IRContext import IRContext
-from IRType import Type
 from schema.SchemaClass import ParamInfo
 
 
@@ -10,17 +10,26 @@ class ParameterGenerator:
         self.context = context
 
     def generate_parameter(self, param: ParamInfo):
+        # 处理 optional 参数：50% 概率跳过
+        if param.optional and random.random() < 0.5:
+            return None
+
+        # 处理 enum 参数：直接从枚举中随机选择一个
+        if param.enum:
+            return Literal(random.choice(param.enum))
+
+        # 正常流程
         param_type_info = param.type
         typename = self._resolve_typename(param_type_info)
 
-        # 尝试重用已存在的变量
+        # 优先重用已有变量
         candidates = self.context.get_visible_variables(typename)
         if candidates:
             return random.choice(candidates).identifier  # 返回 Identifier
 
-        # 否则随机生成 Literal
+        # 否则生成 Literal
         value = self.generate_value_from_typename(typename)
-        return Literal(value)  # ✅ 修复：不再传 type=
+        return Literal(value)
 
     def _resolve_typename(self, type_info):
         if isinstance(type_info, list):
@@ -36,7 +45,7 @@ class ParameterGenerator:
 
         # ✅ 基础类型随机值生成
         if typename == "string":
-            return "example_" + str(random.randint(1, 100))
+            return "v_" + str(random.randint(1, 100))
         elif typename == "number":
             return random.randint(1, 100)
         elif typename == "boolean":

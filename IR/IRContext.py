@@ -1,6 +1,7 @@
 from typing import List, Dict
 from IR.IRNodes import Identifier
-from IRType import Type
+from IR.IRType import Type
+
 
 class Variable:
     def __init__(self, name: str, type_: Type):

@@ -23,7 +23,9 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         method = parser.getInterface("IDBFactory").getStaticMethod("open")
         gen = ParameterGenerator(ctx)
 
-        args = [gen.generate_parameter(param) for param in method.getParams().raw()]
+        params = method.getParams().raw()
+        args = [arg for p in params if (arg := gen.generate_parameter(p)) is not None]
+
         callee = ctx.get_random_identifier("IDBFactory")
 
         call = CallExpression(

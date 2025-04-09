@@ -1,4 +1,5 @@
 import json
+import os
 
 import config
 from IR.IRNodes import Program
@@ -23,7 +24,4 @@ def generate_ir_program():
 
 
 
-if __name__ == "__main__":
-    loadFuzzerNeed()
-    program = generate_ir_program()
-    print(json.dumps(program.to_dict(), indent=2))
+

@@ -102,6 +102,17 @@ class Program:
         from layers.Layer import Layer
         return Program([Layer.from_dict(ld) for ld in d.get("layers", [])])
 
+class VariableDeclaration(IRNode):
+    def __init__(self, kind: str, name: str):
+        self.kind = kind  # typically 'let'
+        self.name = name
+
+    def to_dict(self):
+        return {
+            "type": "VariableDeclaration",
+            "kind": self.kind,
+            "name": self.name
+        }
 
 
 class IRNodeFactory:
@@ -131,5 +142,7 @@ class IRNodeFactory:
             return Identifier(d["name"])
         elif t == "Literal":
             return Literal(d["value"])
+        elif t == "VariableDeclaration":
+            return VariableDeclaration(d["kind"], d["name"])
         else:
             raise ValueError(f"Unknown node type: {t}")
