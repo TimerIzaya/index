@@ -8,6 +8,9 @@ from layers.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_L
 from layers.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
 from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 from layers.IDBContext import IDBContext
+from layers.db_delete.IDBDeleteDBRequest_onblocked_Layer import IDBDeleteDBRequest_onblocked_Layer
+from layers.db_delete.IDBDeleteDBRequest_onerror_Layer import IDBDeleteDBRequest_onerror_Layer
+from layers.db_delete.IDBDeteleDBRequest_onsuccess_Layer import IDBDeleteDBRequest_onsuccess_Layer
 
 
 class IDBFactory_DeleteDatabase_Layer(LayerBuilder):
@@ -31,9 +34,9 @@ class IDBFactory_DeleteDatabase_Layer(LayerBuilder):
         irctx.register_variable(Variable("deleteRequest", IDBOpenDBRequest))
 
         # 构造子事件层
-        blocked_layer = IDBOpenDBRequest_onblocked_Layer.build(irctx, idbctx)
-        error_layer = IDBOpenDBRequest_onerror_Layer.build(irctx, idbctx)
-        success_layer = IDBOpenDBRequest_onsuccess_Layer.build(irctx, idbctx)
+        blocked_layer = IDBDeleteDBRequest_onblocked_Layer.build(irctx, idbctx)
+        error_layer = IDBDeleteDBRequest_onerror_Layer.build(irctx, idbctx)
+        success_layer = IDBDeleteDBRequest_onsuccess_Layer.build(irctx, idbctx)
 
         return Layer(
             IDBFactory_DeleteDatabase_Layer.name,

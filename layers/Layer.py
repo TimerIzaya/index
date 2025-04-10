@@ -37,41 +37,5 @@ class Layer:
         )
 
 
-class IRNodeFactory:
-    @staticmethod
-    def from_dict(d: dict) -> IRNode:
-        t = d.get("type")
-        if t == "Identifier":
-            return Identifier(d["name"])
-        elif t == "Literal":
-            return Literal(d["value"])
-        elif t == "VariableDeclaration":
-            return VariableDeclaration(
-                name=d["name"],
-                kind=d.get("kind", "let")
-            )
-        elif t == "AssignmentExpression":
-            return AssignmentExpression(
-                left=IRNodeFactory.from_dict(d["left"]),
-                right=IRNodeFactory.from_dict(d["right"])
-            )
-        elif t == "MemberExpression":
-            return MemberExpression(
-                object_expr=IRNodeFactory.from_dict(d["object"]),
-                property_name=d["property"]
-            )
-        elif t == "FunctionExpression":
-            return FunctionExpression(
-                params=[IRNodeFactory.from_dict(p) for p in d.get("params", [])],
-                body=[IRNodeFactory.from_dict(b) for b in d.get("body", [])]
-            )
-        elif t == "CallExpression":
-            return CallExpression(
-                callee_object=IRNodeFactory.from_dict(d["callee_object"]),
-                callee_method=d["callee_method"],
-                args=[IRNodeFactory.from_dict(arg) for arg in d.get("args", [])],
-                result_name=d.get("result_name")
-            )
-        else:
-            raise ValueError(f"Unknown IR node type: {t}")
+
 

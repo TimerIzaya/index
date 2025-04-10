@@ -25,11 +25,11 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_62"
+              "value": "v_13"
             },
             {
               "type": "Literal",
-              "value": 39
+              "value": 14
             }
           ],
           "result_name": "openRequest"
@@ -176,6 +176,64 @@
                       }
                     ],
                     "result_name": "txn"
+                  },
+                  {
+                    "type": "AssignmentExpression",
+                    "left": {
+                      "type": "MemberExpression",
+                      "object": {
+                        "type": "Identifier",
+                        "name": "db"
+                      },
+                      "property": "onversionchange"
+                    },
+                    "right": {
+                      "type": "FunctionExpression",
+                      "params": [
+                        {
+                          "type": "Identifier",
+                          "name": "event"
+                        }
+                      ],
+                      "body": [
+                        {
+                          "type": "ConsoleLog",
+                          "value": {
+                            "type": "Literal",
+                            "value": "The version of this database has changed"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "AssignmentExpression",
+                    "left": {
+                      "type": "MemberExpression",
+                      "object": {
+                        "type": "Identifier",
+                        "name": "db"
+                      },
+                      "property": "onclose"
+                    },
+                    "right": {
+                      "type": "FunctionExpression",
+                      "params": [
+                        {
+                          "type": "Identifier",
+                          "name": "event"
+                        }
+                      ],
+                      "body": [
+                        {
+                          "type": "ConsoleLog",
+                          "value": {
+                            "type": "Literal",
+                            "value": "The version of this database has changed"
+                          }
+                        }
+                      ]
+                    }
                   }
                 ]
               }
@@ -258,7 +316,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_62"
+              "value": "v_13"
             }
           ],
           "result_name": "deleteRequest"
@@ -267,7 +325,7 @@
       "children": [
         {
           "type": "Layer",
-          "name": "IDBOpenDBRequest_onblocked_Layer",
+          "name": "IDBDeleteDBRequest_onblocked_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
             {
@@ -276,7 +334,7 @@
                 "type": "MemberExpression",
                 "object": {
                   "type": "Identifier",
-                  "name": "openRequest"
+                  "name": "deleteRequest"
                 },
                 "property": "onblocked"
               },
@@ -288,7 +346,23 @@
                     "name": "event"
                   }
                 ],
-                "body": []
+                "body": [
+                  {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "console"
+                    },
+                    "callee_method": "log",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "onblocked triggered"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                ]
               }
             }
           ],
@@ -296,7 +370,7 @@
         },
         {
           "type": "Layer",
-          "name": "IDBOpenDBRequest_onsuccess_Layer",
+          "name": "IDBDeleteDBRequest_onsuccess_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
             {
@@ -305,9 +379,9 @@
                 "type": "MemberExpression",
                 "object": {
                   "type": "Identifier",
-                  "name": "openRequest"
+                  "name": "deleteRequest"
                 },
-                "property": "onsuccess"
+                "property": "onblocked"
               },
               "right": {
                 "type": "FunctionExpression",
@@ -319,38 +393,19 @@
                 ],
                 "body": [
                   {
-                    "type": "AssignmentExpression",
-                    "left": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "right": {
-                      "type": "MemberExpression",
-                      "object": {
-                        "type": "Identifier",
-                        "name": "openRequest"
-                      },
-                      "property": "result"
-                    }
-                  },
-                  {
                     "type": "CallExpression",
                     "callee_object": {
                       "type": "Identifier",
-                      "name": "db"
+                      "name": "console"
                     },
-                    "callee_method": "transaction",
+                    "callee_method": "log",
                     "args": [
                       {
                         "type": "Literal",
-                        "value": "store_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "readwrite"
+                        "value": "onsuccess triggered"
                       }
                     ],
-                    "result_name": "txn"
+                    "result_name": null
                   }
                 ]
               }
@@ -360,7 +415,7 @@
         },
         {
           "type": "Layer",
-          "name": "IDBOpenDBRequest_onerror_Layer",
+          "name": "IDBDeleteDBRequest_onerror_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
             {
@@ -371,7 +426,7 @@
                   "type": "Identifier",
                   "name": "deleteRequest"
                 },
-                "property": "onerror"
+                "property": "onblocked"
               },
               "right": {
                 "type": "FunctionExpression",
@@ -381,7 +436,23 @@
                     "name": "event"
                   }
                 ],
-                "body": []
+                "body": [
+                  {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "console"
+                    },
+                    "callee_method": "log",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "onerror triggered"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                ]
               }
             }
           ],

@@ -15,10 +15,10 @@ IRProgram
     │   │           └── IDBObjectStore_CursorOps_Layer []
     │   └── IDBOpenDBRequest_onerror_Layer       [done]
     │
-    ├── IDBFactory_DeleteDatabase_Layer         []
-    │   ├── IDBOpenDBRequest_onblocked_Layer    []
-    │   ├── IDBOpenDBRequest_onsuccess_Layer    []
-    │   └── IDBOpenDBRequest_onerror_Layer      []
+    ├── IDBFactory_DeleteDatabase_Layer         [done]
+    │   ├── IDBOpenDBRequest_onblocked_Layer    [done]
+    │   ├── IDBOpenDBRequest_onsuccess_Layer    [done]
+    │   └── IDBOpenDBRequest_onerror_Layer      [done]
     │
     ├── IDBDatabase_onversionchange_Layer       []
     └── IDBDatabase_onclose_Layer               []
