@@ -11,6 +11,23 @@ class IDBContext:
         if db_name not in self.database_map:
             self.database_map[db_name] = {}
 
+    def get_database_name(self) -> str:
+        if not self.current_db:
+            raise RuntimeError("No active database")
+        return self.current_db
+
+    def new_object_store_name(self) -> str:
+        """生成一个唯一的 object store 名称，并不注册，仅返回"""
+        if self.current_db is None:
+            raise RuntimeError("No active database context")
+
+        i = 0
+        while True:
+            name = f"store_{i}"
+            if name not in self.database_map[self.current_db]:
+                return name
+            i += 1
+
     def register_object_store(self, store_name: str):
         if self.current_db is None:
             raise RuntimeError("No active database context")
@@ -34,7 +51,6 @@ class IDBContext:
             return self.database_map[self.current_db][store_name]
         return []
 
-    # ✅ 新增方法：随机获取一个 object store 名称
     def pick_random_object_store(self) -> str:
         stores = self.get_object_stores()
         if not stores:

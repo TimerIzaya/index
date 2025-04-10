@@ -2,6 +2,7 @@ import random
 
 from IR import IRContext
 from IR.IRNodes import Literal, Identifier
+from config import OPTIONAL_JUMP
 from schema.SchemaClass import ParamInfo
 
 
@@ -12,7 +13,7 @@ class ParameterGenerator:
     def generate_parameter(self, param: ParamInfo):
         # 处理 optional 参数：50% 概率跳过
         if param.optional and random.random() < 0.5:
-            return None
+            return Literal(OPTIONAL_JUMP)
 
         # 处理 enum 参数：直接从枚举中随机选择一个
         if param.enum:

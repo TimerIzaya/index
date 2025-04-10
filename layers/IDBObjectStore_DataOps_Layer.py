@@ -1,40 +1,42 @@
-from IR.IRNodes import CallExpression
-from IR.IRContext import IRContext
-from IR.IRParamGenerator import ParameterGenerator
-from IR.IRSchemaParser import get_parser
-from layers.IDBContext import IDBContext
+from IR.IRNodes import CallExpression, AssignmentExpression, Identifier, Literal
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
 
 class IDBObjectStore_DataOps_Layer(LayerBuilder):
+
     name = "IDBObjectStore_DataOps_Layer"
     layer_type = LayerType.EXECUTION
 
     @staticmethod
-    def build(ctx: IRContext, idb: IDBContext) -> Layer:
-        parser = get_parser()
-        gen = ParameterGenerator(ctx)
+    def build(irctx, idbctx):
+        ir_nodes = []
 
-        store = ctx.get_random_identifier("IDBObjectStore")
-        if not store:
-            return Layer(IDBObjectStore_DataOps_Layer.name, [])
-
-        ops = []
-        for method_name in ["put", "get", "delete"]:
-            method = parser.getInterface("IDBObjectStore").getInstanceMethod(method_name)
-            params = method.getParams().raw()
-            args = [arg for p in params if (arg := gen.generate_parameter(p)) is not None]
-            call = CallExpression(
-                callee_object=store,
-                callee_method=method_name,
-                args=args,
-                result_name=f"req_{method_name}"
-            )
-            ops.append(call)
-
-        return Layer(
-            IDBObjectStore_DataOps_Layer.name,
-            ir_nodes=ops,
-            layer_type=IDBObjectStore_DataOps_Layer.layer_type
+        # store.put(...)
+        call_put = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="put",
+            args=[Literal(True), Literal(42)],
+            result_name="req_put"
         )
+        ir_nodes.append(AssignmentExpression(left=Identifier("req_put"), right=call_put))
+
+        # store.get(...)
+        call_get = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="get",
+            args=[Literal("fallback")],
+            result_name="req_get"
+        )
+        ir_nodes.append(AssignmentExpression(left=Identifier("req_get"), right=call_get))
+
+        # store.delete(...)
+        call_del = CallExpression(
+            callee_object=Identifier("store"),
+            callee_method="delete",
+            args=[Literal(42)],
+            result_name="req_delete"
+        )
+        ir_nodes.append(AssignmentExpression(left=Identifier("req_delete"), right=call_del))
+
+        return Layer(IDBObjectStore_DataOps_Layer.name, ir_nodes, layer_type=LayerType.EXECUTION)

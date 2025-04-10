@@ -1,9 +1,22 @@
-from typing import List
+from typing import List, Union, Optional
+
+from config import OPTIONAL_JUMP
 
 
 class IRNode:
     def to_dict(self):
-        raise NotImplementedError()
+        raise NotImplementedError
+
+
+class Literal(IRNode):
+    def __init__(self, value: Union[str, int, float, bool, dict, None]):
+        self.value = value
+
+    def to_dict(self):
+        return {
+            "type": "Literal",
+            "value": self.value
+        }
 
 
 class Identifier(IRNode):
@@ -17,95 +30,81 @@ class Identifier(IRNode):
         }
 
 
-class Literal(IRNode):
-    def __init__(self, value):
-        self.value = value
-
-    def to_dict(self):
-        return {
-            "type": "Literal",
-            "value": self.value
-        }
-
-
 class MemberExpression(IRNode):
-    def __init__(self, object_name: str, property_name: str):
-        self.object_name = object_name
+    def __init__(self, object_expr: IRNode, property_name: str):
+        assert isinstance(object_expr, IRNode), "object_expr must be IRNode"
+        self.object_expr = object_expr
         self.property_name = property_name
 
     def to_dict(self):
         return {
             "type": "MemberExpression",
-            "object": self.object_name,
+            "object": self.object_expr.to_dict(),
             "property": self.property_name
         }
 
 
 class AssignmentExpression(IRNode):
-    def __init__(self, target: str, value: IRNode):
-        self.target = target
-        self.value = value
+    def __init__(self, left: IRNode, right: IRNode):
+        assert isinstance(left, IRNode), "left must be IRNode"
+        assert isinstance(right, IRNode), "right must be IRNode"
+        self.left = left
+        self.right = right
 
     def to_dict(self):
         return {
             "type": "AssignmentExpression",
-            "target": self.target,
-            "value": self.value.to_dict()
+            "left": self.left.to_dict(),
+            "right": self.right.to_dict()
         }
 
-
-class FunctionExpression(IRNode):
-    def __init__(self, params, body):
-        self.params = params  # List[str]
-        self.body = body  # List[IRNode]
-
-    def to_dict(self):
-        return {
-            "type": "FunctionExpression",
-            "params": self.params,
-            "body": [stmt.to_dict() for stmt in self.body]
-        }
 
 
 class CallExpression(IRNode):
-    def __init__(self, callee_object: IRNode, callee_method: str, args, result_name=None):
-        self.callee_object = callee_object  # IRNode (typically Identifier)
+    def __init__(self, callee_object: Identifier, callee_method: str,
+                 args: List[IRNode], result_name: Optional[str] = None):
+        assert isinstance(callee_object, Identifier)
+
+        # 过滤掉 Literal("__JUMP__")
+        filtered_args = []
+        for arg in args:
+            if isinstance(arg, Literal) and arg.value == OPTIONAL_JUMP:
+                continue
+            assert isinstance(arg, IRNode), f"Invalid arg: {arg}"
+            filtered_args.append(arg)
+
+        self.callee_object = callee_object
         self.callee_method = callee_method
-        self.args = args  # List[IRNode or raw value]
+        self.args = filtered_args
         self.result_name = result_name
 
     def to_dict(self):
-        def wrap(arg):
-            return arg.to_dict() if isinstance(arg, IRNode) else Literal(arg).to_dict()
-
         return {
             "type": "CallExpression",
             "callee_object": self.callee_object.to_dict(),
             "callee_method": self.callee_method,
-            "args": [wrap(arg) for arg in self.args],
+            "args": [arg.to_dict() for arg in self.args],
             "result_name": self.result_name
         }
 
-
-class Program:
-    def __init__(self, layers: List["Layer"]):
-        self.layers = layers
+class FunctionExpression(IRNode):
+    def __init__(self, params: List[Identifier], body: List[IRNode]):
+        assert all(isinstance(p, Identifier) for p in params), "All params must be Identifier"
+        self.params = params
+        self.body = body
 
     def to_dict(self):
         return {
-            "type": "Program",
-            "layers": [layer.to_dict() for layer in self.layers]
+            "type": "FunctionExpression",
+            "params": [p.to_dict() for p in self.params],
+            "body": [stmt.to_dict() for stmt in self.body]
         }
 
-    @staticmethod
-    def from_dict(d: dict):
-        from layers.Layer import Layer
-        return Program([Layer.from_dict(ld) for ld in d.get("layers", [])])
 
 class VariableDeclaration(IRNode):
-    def __init__(self, kind: str, name: str):
-        self.kind = kind  # typically 'let'
+    def __init__(self, name: str, kind: str = "let"):
         self.name = name
+        self.kind = kind  # let, const, var
 
     def to_dict(self):
         return {
@@ -113,36 +112,3 @@ class VariableDeclaration(IRNode):
             "kind": self.kind,
             "name": self.name
         }
-
-
-class IRNodeFactory:
-    @staticmethod
-    def from_dict(d: dict):
-        t = d.get("type")
-        if t == "CallExpression":
-            return CallExpression(
-                callee_object=IRNodeFactory.from_dict(d["callee_object"]),
-                callee_method=d["callee_method"],
-                args=[IRNodeFactory.from_dict(arg) for arg in d["args"]],
-                result_name=d.get("result_name")
-            )
-        elif t == "AssignmentExpression":
-            return AssignmentExpression(
-                target=d["target"],
-                value=IRNodeFactory.from_dict(d["value"])
-            )
-        elif t == "FunctionExpression":
-            return FunctionExpression(
-                params=d.get("params", []),
-                body=[IRNodeFactory.from_dict(n) for n in d["body"]]
-            )
-        elif t == "MemberExpression":
-            return MemberExpression(d["object"], d["property"])
-        elif t == "Identifier":
-            return Identifier(d["name"])
-        elif t == "Literal":
-            return Literal(d["value"])
-        elif t == "VariableDeclaration":
-            return VariableDeclaration(d["kind"], d["name"])
-        else:
-            raise ValueError(f"Unknown node type: {t}")

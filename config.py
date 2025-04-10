@@ -1,4 +1,6 @@
 import os
+from argparse import OPTIONAL
+
 from IR.IRTypeRegistry import IRTypeRegistry
 
 # 项目根目录
@@ -15,6 +17,9 @@ IDBOpenDBRequest_onsuccess_Layer = "IDBOpenDBRequest_onsuccess_Layer"
 IDBTransaction_ObjectStoreAccess_Layer = "IDBTransaction_ObjectStoreAccess_Layer"
 IDBObjectStore_DataOps_Layer = "IDBObjectStore_DataOps_Layer"
 
+OPTIONAL_JUMP = "__JUMP__"
+
+randomFuzzing = False
 
 class Consts:
     TypeName = "typename"

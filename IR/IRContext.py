@@ -1,4 +1,5 @@
-from typing import List, Dict
+import random
+from typing import List, Dict, Optional
 from IR.IRNodes import Identifier
 from IR.IRType import Type
 
@@ -42,3 +43,11 @@ class IRContext:
                 if var.type.typename == typename:
                     result.append(var)
         return result
+
+    def get_identifier_by_type(self, type_: Type) -> Optional[Identifier]:
+        candidates = []
+        for scope in reversed(self.scopes):
+            for var in scope.values():
+                if var.type == type_:
+                    candidates.append(Identifier(var.name))
+        return random.choice(candidates) if candidates else None

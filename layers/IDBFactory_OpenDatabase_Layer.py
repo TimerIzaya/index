@@ -4,6 +4,8 @@ from layers.IDBContext import IDBContext
 from IR.IRType import IDBOpenDBRequest
 from IR.IRParamGenerator import ParameterGenerator
 from IR.IRSchemaParser import get_parser
+from layers.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
+from layers.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
 from layers.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
 from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 from layers.Layer import Layer, LayerType
@@ -43,10 +45,12 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         # 注册子事件层
         upgrade_layer = IDBOpenDBRequest_onupgradeneeded_Layer.build(irctx, idbctx)
         success_layer = IDBOpenDBRequest_onsuccess_Layer.build(irctx, idbctx)
+        blocked_layer = IDBOpenDBRequest_onblocked_Layer.build(irctx, idbctx)
+        error_layer = IDBOpenDBRequest_onerror_Layer.build(irctx, idbctx)
 
         return Layer(
             name=IDBFactory_OpenDatabase_Layer.name,
             ir_nodes=[call],
-            children=[upgrade_layer, success_layer],
+            children=[upgrade_layer, success_layer, blocked_layer, error_layer],
             layer_type=IDBFactory_OpenDatabase_Layer.layer_type
         )

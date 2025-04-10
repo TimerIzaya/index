@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 from IR.IRFuzzer import loadFuzzerNeed, generate_ir_program
-from IR.IRNodes import Program
+from layers.Layer import Layer
 from lifter.IRToJSLifter import IRToJSLifter
 
 if __name__ == "__main__":
@@ -22,12 +22,10 @@ if __name__ == "__main__":
     with open(input_path, "r") as f:
         ir_data = json.load(f)
 
-    # 用于测试的 Program.from_dict (假设结构直接传递给 Program)
-    program = Program.from_dict(ir_data)
+    # lifter
+    with open("lifter/IRDemo.json", "r") as f:
+        ir_data = json.load(f)
 
-    # 转换为 JS 源码
-    converter = IRToJSLifter()
-    js_code = converter.lift_program(program)
-
-    # 输出
-    print(js_code)
+    root_layer = Layer.from_dict(ir_data)
+    lines = IRToJSLifter._convert_layer(root_layer)
+    print("\n".join(lines))

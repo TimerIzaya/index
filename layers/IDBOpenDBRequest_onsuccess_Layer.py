@@ -1,12 +1,6 @@
-from IR.IRNodes import (
-    AssignmentExpression,
-    MemberExpression,
-    Identifier,
-    FunctionExpression
-)
 from IR.IRContext import IRContext, Variable
-from IR.IRParamGenerator import ParameterGenerator
-from IR.IRType import IDBDatabase
+from IR.IRType import IDBDatabase, IDBOpenDBRequest
+from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
@@ -14,34 +8,37 @@ from layers.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
 
 
 class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
+
     name = "IDBOpenDBRequest_onsuccess_Layer"
     layer_type = LayerType.REGISTER
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         body = []
+        open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
 
         # db = request.result
         assign_db = AssignmentExpression(
-            target="db",
-            value=MemberExpression("request", "result")
+            left=Identifier("db"),
+            right=MemberExpression(open_request_id, "result")
         )
-        irctx.register_variable(Variable("db", IDBDatabase))
         body.append(assign_db)
 
-        # 构建并内联事务层
+        # 注册变量
+        irctx.register_variable(Variable("db", IDBDatabase))
+
+        # 构建 transaction 层
         txn_layer = IDBDatabase_Transaction_Layer.build(irctx, idbctx)
         body.extend(txn_layer.ir_nodes)
 
-        # 注册事件处理器
+        # 构造 request.onsuccess = function(event) { ... }
         handler = AssignmentExpression(
-            target="request.onsuccess",
-            value=FunctionExpression(params=["event"], body=body)
+            left=MemberExpression(open_request_id, "onsuccess"),
+            right=FunctionExpression([Identifier("event")], body)
         )
 
         return Layer(
-            name=IDBOpenDBRequest_onsuccess_Layer.name,
+            IDBOpenDBRequest_onsuccess_Layer.name,
             ir_nodes=[handler],
-            children=[txn_layer],
             layer_type=IDBOpenDBRequest_onsuccess_Layer.layer_type
         )
