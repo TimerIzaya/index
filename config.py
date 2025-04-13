@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # IndexedDB schema 文件路径
 SCHEMA_FILE = os.path.join(BASE_DIR, "schema", "indexeddb_schema.json")
 
-
+FATHER = "window.indexedDB"
 GlobalIRTypeRegistry = IRTypeRegistry()
 
 IDBFactory_OpenDatabase_Layer = "IDBFactory_OpenDatabase_Layer"

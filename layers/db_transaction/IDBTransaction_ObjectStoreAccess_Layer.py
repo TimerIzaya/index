@@ -4,7 +4,7 @@ from IR.IRNodes import AssignmentExpression, CallExpression, Identifier, Literal
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
+from layers.db_transaction.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
 
 
 class IDBTransaction_ObjectStoreAccess_Layer(LayerBuilder):

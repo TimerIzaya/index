@@ -4,7 +4,7 @@ from IR.IRNodes import VariableDeclaration
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBFactory_OpenDatabase_Layer import IDBFactory_OpenDatabase_Layer
+from layers.db_open.IDBFactory_OpenDatabase_Layer import IDBFactory_OpenDatabase_Layer
 from layers.db_delete.IDBFactory_DeleteDatabase_Layer import IDBFactory_DeleteDatabase_Layer
 
 
@@ -14,9 +14,6 @@ class IDBRootLayer(LayerBuilder):
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        # 注册 indexedDB 对象
-        irctx.register_variable(Variable("window.indexedDB", IDBFactory))
-
         # 全局声明 db 变量
         irctx.register_variable(Variable("db", IDBDatabase))
         db_decl = VariableDeclaration(name="db", kind="let")

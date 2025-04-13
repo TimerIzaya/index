@@ -15,7 +15,7 @@ class IDBDatabase_onclose_Layer(LayerBuilder):
         db_id = irctx.get_identifier_by_type(IDBDatabase)
 
         body = [
-            ConsoleLog(Literal("The version of this database has changed"))
+            ConsoleLog(Literal("The database connection is unexpectedly closed"))
         ]
 
         handler = AssignmentExpression(

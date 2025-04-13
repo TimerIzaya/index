@@ -1,6 +1,7 @@
 from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBDatabase, IDBObjectStore, IDBOpenDBRequest
-from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal
+from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal, \
+    ConsoleLog
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
@@ -12,8 +13,9 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        body = []
-
+        body = [
+            ConsoleLog(Literal("db onupgraded trigered"))
+        ]
         # db = event.target.result
         assign_db = AssignmentExpression(
             left=Identifier("db"),

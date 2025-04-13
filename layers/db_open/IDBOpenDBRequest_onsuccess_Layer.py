@@ -2,14 +2,14 @@ from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBDatabase, IDBOpenDBRequest
 from IR.IRNodes import (
     AssignmentExpression, FunctionExpression, Identifier,
-    MemberExpression
+    MemberExpression, Literal, CallExpression
 )
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
-from layers.IDBDatabase_onversionchange_Layer import IDBDatabase_onversionchange_Layer
-from layers.IDBDatabase_onclose_Layer import IDBDatabase_onclose_Layer
+from layers.db_transaction.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
+from layers.db_open.IDBDatabase_onversionchange_Layer import IDBDatabase_onversionchange_Layer
+from layers.db_open.IDBDatabase_onclose_Layer import IDBDatabase_onclose_Layer
 
 
 class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
@@ -19,8 +19,9 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        body = []
-
+        body = [
+            CallExpression(Identifier("console"), "log", [Literal("db onsuccess triggered")])
+        ]
         # 获取当前 openRequest
         open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
 

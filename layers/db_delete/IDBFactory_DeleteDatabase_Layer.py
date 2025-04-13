@@ -1,12 +1,9 @@
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBFactory, IDBOpenDBRequest
+from IR.IRType import IDBOpenDBRequest
 from IR.IRParamGenerator import ParameterGenerator
 from IR.IRNodes import Identifier, Literal, CallExpression
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
-from layers.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
-from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 from layers.IDBContext import IDBContext
 from layers.db_delete.IDBDeleteDBRequest_onblocked_Layer import IDBDeleteDBRequest_onblocked_Layer
 from layers.db_delete.IDBDeleteDBRequest_onerror_Layer import IDBDeleteDBRequest_onerror_Layer

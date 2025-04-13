@@ -1,5 +1,5 @@
-from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression
-from IR.IRType import IDBOpenDBRequest
+from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal
+from IR.IRType import IDBOpenDBRequest, IDBDatabase
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
@@ -11,11 +11,14 @@ class IDBOpenDBRequest_onerror_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx, idbctx):
+        body = [
+            CallExpression(Identifier("console"), "log", [Literal("open db onerror triggered")]),
+        ]
         # request.onerror = function(event) { ... }
         open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
         handler = AssignmentExpression(
             left=MemberExpression(open_request_id, "onerror"),
-            right=FunctionExpression([Identifier("event")], [])
+            right=FunctionExpression([Identifier("event")], body)
         )
 
         return Layer(

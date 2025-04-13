@@ -1,7 +1,8 @@
 from IR.IRContext import IRContext
 from IR.IRType import IDBDatabase
 from layers.IDBContext import IDBContext
-from IR.IRNodes import Identifier, MemberExpression, AssignmentExpression, FunctionExpression, ConsoleLog, Literal
+from IR.IRNodes import Identifier, MemberExpression, AssignmentExpression, FunctionExpression, ConsoleLog, Literal, \
+    CallExpression
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
@@ -15,7 +16,12 @@ class IDBDatabase_onversionchange_Layer(LayerBuilder):
         db_id = irctx.get_identifier_by_type(IDBDatabase)
 
         body = [
-            ConsoleLog(Literal("The version of this database has changed"))
+            ConsoleLog(Literal("The version of this database has changed, release this connection")),
+            CallExpression(
+                callee_object=db_id,
+                callee_method="close",
+                args=[]
+            )
         ]
 
         handler = AssignmentExpression(

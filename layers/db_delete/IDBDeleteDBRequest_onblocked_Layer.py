@@ -16,7 +16,7 @@ class IDBDeleteDBRequest_onblocked_Layer(LayerBuilder):
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         body = [
-            CallExpression(Identifier("console"), "log", [Literal("onblocked triggered")])
+            CallExpression(Identifier("console"), "log", [Literal("delete db onblocked triggered")])
         ]
 
         if randomFuzzing:

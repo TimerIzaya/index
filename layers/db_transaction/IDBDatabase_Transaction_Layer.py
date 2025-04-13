@@ -1,10 +1,13 @@
 from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBTransaction
-from IR.IRNodes import AssignmentExpression, CallExpression, Identifier, Literal
+from IR.IRNodes import CallExpression, Identifier, Literal
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
+from layers.db_transaction.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
+from layers.db_transaction.IDBTransaction_oncomplete_Layer import IDBTransaction_oncomplete_Layer
+from layers.db_transaction.IDBTransaction_onabort_Layer import IDBTransaction_onabort_Layer
+from layers.db_transaction.IDBTransaction_onerror_Layer import IDBTransaction_onerror_Layer
 
 
 class IDBDatabase_Transaction_Layer(LayerBuilder):
@@ -25,12 +28,20 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
             result_name="txn"
         )
 
+        # 注册 txn 变量
         irctx.register_variable(Variable("txn", IDBTransaction))
 
-        child = IDBTransaction_ObjectStoreAccess_Layer.build(irctx, idbctx)
+        # 构造子层级
+        children = [
+            IDBTransaction_ObjectStoreAccess_Layer.build(irctx, idbctx),
+            IDBTransaction_oncomplete_Layer.build(irctx, idbctx),
+            IDBTransaction_onabort_Layer.build(irctx, idbctx),
+            IDBTransaction_onerror_Layer.build(irctx, idbctx),
+        ]
+
         return Layer(
             IDBDatabase_Transaction_Layer.name,
             ir_nodes=[call],
-            children=[child],
+            children=children,
             layer_type=IDBDatabase_Transaction_Layer.layer_type
         )

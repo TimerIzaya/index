@@ -1,13 +1,14 @@
-from IR.IRNodes import CallExpression, AssignmentExpression, FunctionExpression, Identifier, Literal
+from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
+from config import FATHER
 from layers.IDBContext import IDBContext
-from IR.IRType import IDBOpenDBRequest
+from IR.IRType import IDBOpenDBRequest, IDBFactory
 from IR.IRParamGenerator import ParameterGenerator
 from IR.IRSchemaParser import get_parser
-from layers.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
-from layers.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
-from layers.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
-from layers.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
+from layers.db_open.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
+from layers.db_open.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
+from layers.db_open.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
+from layers.db_open.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
 
@@ -34,11 +35,14 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         args = [name_param, version_param]
 
         call = CallExpression(
-            callee_object=Identifier("indexedDB"),
+            callee_object=Identifier(FATHER),
             callee_method="open",
             args=args,
             result_name="openRequest"
         )
+
+        # 注册 indexedDB 对象
+        irctx.register_variable(Variable("FATHER", IDBFactory))
 
         irctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
 

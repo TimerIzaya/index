@@ -1,4 +1,4 @@
-from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression
+from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal
 from IR.IRType import IDBOpenDBRequest
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
@@ -11,11 +11,15 @@ class IDBOpenDBRequest_onblocked_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx, idbctx):
+        body = [
+            CallExpression(Identifier("console"), "log", [Literal("open db blocked triggered")])
+        ]
+
         # request.onblocked = function(event) { ... }
         open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
         handler = AssignmentExpression(
             left=MemberExpression(open_request_id, "onblocked"),
-            right=FunctionExpression([Identifier("event")], [])
+            right=FunctionExpression([Identifier("event")], body)
         )
 
         return Layer(

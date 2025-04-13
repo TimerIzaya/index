@@ -16,7 +16,7 @@ class IDBDeleteDBRequest_onsuccess_Layer(LayerBuilder):
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
         body = [
-            CallExpression(Identifier("console"), "log", [Literal("onsuccess triggered")])
+            CallExpression(Identifier("console"), "log", [Literal("delete db onsuccess triggered")])
         ]
         if randomFuzzing:
             handler = AssignmentExpression(
@@ -26,7 +26,7 @@ class IDBDeleteDBRequest_onsuccess_Layer(LayerBuilder):
         else:
             # just for debug
             handler = AssignmentExpression(
-                left=MemberExpression(Identifier("deleteRequest"), "onblocked"),
+                left=MemberExpression(Identifier("deleteRequest"), "onsuccess"),
                 right=FunctionExpression([Identifier("event")], body)
             )
         return Layer(
