@@ -22,6 +22,9 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         body = [
             CallExpression(Identifier("console"), "log", [Literal("db onsuccess triggered")])
         ]
+
+        children = []
+
         # 获取当前 openRequest
         open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
 
@@ -37,15 +40,15 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
 
         # 构建 transaction 层
         txn_layer = IDBDatabase_Transaction_Layer.build(irctx, idbctx)
-        body.extend(txn_layer.ir_nodes)
+        children.append(txn_layer)
 
         # 构建 db.onversionchange 层
         version_layer = IDBDatabase_onversionchange_Layer.build(irctx, idbctx)
-        body.extend(version_layer.ir_nodes)
+        children.append(version_layer)
 
         # 构建 db.onclose 层
         close_layer = IDBDatabase_onclose_Layer.build(irctx, idbctx)
-        body.extend(close_layer.ir_nodes)
+        children.append(close_layer)
 
         # 构造 request.onsuccess = function(event) { ... }
         handler = AssignmentExpression(
@@ -54,7 +57,8 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         )
 
         return Layer(
-            IDBOpenDBRequest_onsuccess_Layer.name,
+            name=IDBOpenDBRequest_onsuccess_Layer.name,
             ir_nodes=[handler],
+            children=children,
             layer_type=IDBOpenDBRequest_onsuccess_Layer.layer_type
         )

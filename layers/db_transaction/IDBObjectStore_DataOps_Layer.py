@@ -19,7 +19,7 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
             args=[Literal(True), Literal(42)],
             result_name="req_put"
         )
-        ir_nodes.append(AssignmentExpression(left=Identifier("req_put"), right=call_put))
+        ir_nodes.append(call_put)
 
         # store.get(...)
         call_get = CallExpression(
@@ -28,7 +28,7 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
             args=[Literal("fallback")],
             result_name="req_get"
         )
-        ir_nodes.append(AssignmentExpression(left=Identifier("req_get"), right=call_get))
+        ir_nodes.append(call_get)
 
         # store.delete(...)
         call_del = CallExpression(
@@ -37,6 +37,6 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
             args=[Literal(42)],
             result_name="req_delete"
         )
-        ir_nodes.append(AssignmentExpression(left=Identifier("req_delete"), right=call_del))
+        ir_nodes.append(call_del)
 
         return Layer(IDBObjectStore_DataOps_Layer.name, ir_nodes, layer_type=LayerType.EXECUTION)

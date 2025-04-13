@@ -23,17 +23,12 @@ class IDBTransaction_ObjectStoreAccess_Layer(LayerBuilder):
             result_name="store"
         )
 
-        assign = AssignmentExpression(
-            left=Identifier("store"),
-            right=call
-        )
-
         irctx.register_variable(Variable("store", IDBObjectStore))
 
         child = IDBObjectStore_DataOps_Layer.build(irctx, idbctx)
         return Layer(
             IDBTransaction_ObjectStoreAccess_Layer.name,
-            ir_nodes=[assign],
+            ir_nodes=[call],
             children=[child],
             layer_type=IDBTransaction_ObjectStoreAccess_Layer.layer_type
         )

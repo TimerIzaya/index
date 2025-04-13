@@ -31,11 +31,10 @@ class Layer:
     def from_dict(d: dict) -> 'Layer':
         return Layer(
             name=d["name"],
-            layer_type=d.get("layer_type"),
+            layer_type=LayerType(d.get("layer_type", LayerType.EXECUTION.value)),
             ir_nodes=[IRNodeFactory.from_dict(n) for n in d.get("ir_nodes", [])],
             children=[Layer.from_dict(c) for c in d.get("children", [])],
         )
-
 
 
 

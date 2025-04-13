@@ -25,11 +25,11 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_96"
+              "value": "v_34"
             },
             {
               "type": "Literal",
-              "value": 8
+              "value": 23
             }
           ],
           "result_name": "openRequest"
@@ -179,99 +179,317 @@
                       },
                       "property": "result"
                     }
-                  },
-                  {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "transaction",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "readwrite"
-                      }
-                    ],
-                    "result_name": "txn"
-                  },
-                  {
-                    "type": "AssignmentExpression",
-                    "left": {
-                      "type": "MemberExpression",
-                      "object": {
-                        "type": "Identifier",
-                        "name": "db"
-                      },
-                      "property": "onversionchange"
-                    },
-                    "right": {
-                      "type": "FunctionExpression",
-                      "params": [
-                        {
-                          "type": "Identifier",
-                          "name": "event"
-                        }
-                      ],
-                      "body": [
-                        {
-                          "type": "ConsoleLog",
-                          "value": {
-                            "type": "Literal",
-                            "value": "The version of this database has changed, release this connection"
-                          }
-                        },
-                        {
-                          "type": "CallExpression",
-                          "callee_object": {
-                            "type": "Identifier",
-                            "name": "db"
-                          },
-                          "callee_method": "close",
-                          "args": [],
-                          "result_name": null
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "AssignmentExpression",
-                    "left": {
-                      "type": "MemberExpression",
-                      "object": {
-                        "type": "Identifier",
-                        "name": "db"
-                      },
-                      "property": "onclose"
-                    },
-                    "right": {
-                      "type": "FunctionExpression",
-                      "params": [
-                        {
-                          "type": "Identifier",
-                          "name": "event"
-                        }
-                      ],
-                      "body": [
-                        {
-                          "type": "ConsoleLog",
-                          "value": {
-                            "type": "Literal",
-                            "value": "The database connection is unexpectedly closed"
-                          }
-                        }
-                      ]
-                    }
                   }
                 ]
               }
             }
           ],
-          "children": []
+          "children": [
+            {
+              "type": "Layer",
+              "name": "IDBDatabase_Transaction_Layer",
+              "layer_type": "\u8c03\u7528\u578b",
+              "ir_nodes": [
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "transaction",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    },
+                    {
+                      "type": "Literal",
+                      "value": "readwrite"
+                    }
+                  ],
+                  "result_name": "txn"
+                }
+              ],
+              "children": [
+                {
+                  "type": "Layer",
+                  "name": "IDBTransaction_ObjectStoreAccess_Layer",
+                  "layer_type": "\u8bbf\u95ee\u578b",
+                  "ir_nodes": [
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "txn"
+                      },
+                      "callee_method": "objectStore",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": "store_0"
+                        }
+                      ],
+                      "result_name": "store"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "type": "Layer",
+                      "name": "IDBObjectStore_DataOps_Layer",
+                      "layer_type": "\u6267\u884c\u578b",
+                      "ir_nodes": [
+                        {
+                          "type": "CallExpression",
+                          "callee_object": {
+                            "type": "Identifier",
+                            "name": "store"
+                          },
+                          "callee_method": "put",
+                          "args": [
+                            {
+                              "type": "Literal",
+                              "value": true
+                            },
+                            {
+                              "type": "Literal",
+                              "value": 42
+                            }
+                          ],
+                          "result_name": "req_put"
+                        },
+                        {
+                          "type": "CallExpression",
+                          "callee_object": {
+                            "type": "Identifier",
+                            "name": "store"
+                          },
+                          "callee_method": "get",
+                          "args": [
+                            {
+                              "type": "Literal",
+                              "value": "fallback"
+                            }
+                          ],
+                          "result_name": "req_get"
+                        },
+                        {
+                          "type": "CallExpression",
+                          "callee_object": {
+                            "type": "Identifier",
+                            "name": "store"
+                          },
+                          "callee_method": "delete",
+                          "args": [
+                            {
+                              "type": "Literal",
+                              "value": 42
+                            }
+                          ],
+                          "result_name": "req_delete"
+                        }
+                      ],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "type": "Layer",
+                  "name": "IDBTransaction_oncomplete_Layer",
+                  "layer_type": "\u6ce8\u518c\u578b",
+                  "ir_nodes": [
+                    {
+                      "type": "AssignmentExpression",
+                      "left": {
+                        "type": "MemberExpression",
+                        "object": {
+                          "type": "Identifier",
+                          "name": "txn"
+                        },
+                        "property": "oncomplete"
+                      },
+                      "right": {
+                        "type": "FunctionExpression",
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "event"
+                          }
+                        ],
+                        "body": [
+                          {
+                            "type": "ConsoleLog",
+                            "value": {
+                              "type": "Literal",
+                              "value": "Transaction completed successfully"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "type": "Layer",
+                  "name": "IDBTransaction_onabort_Layer",
+                  "layer_type": "\u6ce8\u518c\u578b",
+                  "ir_nodes": [
+                    {
+                      "type": "AssignmentExpression",
+                      "left": {
+                        "type": "MemberExpression",
+                        "object": {
+                          "type": "Identifier",
+                          "name": "txn"
+                        },
+                        "property": "onabort"
+                      },
+                      "right": {
+                        "type": "FunctionExpression",
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "event"
+                          }
+                        ],
+                        "body": [
+                          {
+                            "type": "ConsoleLog",
+                            "value": {
+                              "type": "Literal",
+                              "value": "Transaction was aborted"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "type": "Layer",
+                  "name": "IDBTransaction_onerror_Layer",
+                  "layer_type": "\u6ce8\u518c\u578b",
+                  "ir_nodes": [
+                    {
+                      "type": "AssignmentExpression",
+                      "left": {
+                        "type": "MemberExpression",
+                        "object": {
+                          "type": "Identifier",
+                          "name": "txn"
+                        },
+                        "property": "onerror"
+                      },
+                      "right": {
+                        "type": "FunctionExpression",
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "event"
+                          }
+                        ],
+                        "body": [
+                          {
+                            "type": "ConsoleLog",
+                            "value": {
+                              "type": "Literal",
+                              "value": "Transaction error occurred"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "Layer",
+              "name": "IDBDatabase_onversionchange_Layer",
+              "layer_type": "\u6ce8\u518c\u578b",
+              "ir_nodes": [
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "MemberExpression",
+                    "object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "property": "onversionchange"
+                  },
+                  "right": {
+                    "type": "FunctionExpression",
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "event"
+                      }
+                    ],
+                    "body": [
+                      {
+                        "type": "ConsoleLog",
+                        "value": {
+                          "type": "Literal",
+                          "value": "The version of this database has changed, release this connection"
+                        }
+                      },
+                      {
+                        "type": "CallExpression",
+                        "callee_object": {
+                          "type": "Identifier",
+                          "name": "db"
+                        },
+                        "callee_method": "close",
+                        "args": [],
+                        "result_name": null
+                      }
+                    ]
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "type": "Layer",
+              "name": "IDBDatabase_onclose_Layer",
+              "layer_type": "\u6ce8\u518c\u578b",
+              "ir_nodes": [
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "MemberExpression",
+                    "object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "property": "onclose"
+                  },
+                  "right": {
+                    "type": "FunctionExpression",
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "event"
+                      }
+                    ],
+                    "body": [
+                      {
+                        "type": "ConsoleLog",
+                        "value": {
+                          "type": "Literal",
+                          "value": "The database connection is unexpectedly closed"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "children": []
+            }
+          ]
         },
         {
           "type": "Layer",
@@ -380,7 +598,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_96"
+              "value": "v_34"
             }
           ],
           "result_name": "deleteRequest"

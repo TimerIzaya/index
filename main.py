@@ -27,5 +27,5 @@ if __name__ == "__main__":
         ir_data = json.load(f)
 
     root_layer = Layer.from_dict(ir_data)
-    lines = IRToJSLifter._convert_layer(root_layer)
+    lines = IRToJSLifter._convert_layer(root_layer, 0)
     print("\n".join(lines))
