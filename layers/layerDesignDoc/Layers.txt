@@ -11,14 +11,11 @@ IRProgram
     │   │       ├── IDBTransaction_onerror_Layer         [REGISTER]
     │   │       └── IDBTransaction_ObjectStoreAccess_Layer [ACCESS]
     │   │           ├── IDBObjectStore_DataOps_Layer     [EXECUTION]
-    │   │           ├── IDBObjectStore_IndexOps_Layer    [ACCESS]
     │   │           └── IDBObjectStore_CursorOps_Layer   [EXECUTION]
     │   └── IDBOpenDBRequest_onerror_Layer          [REGISTER]
-
     ├── IDBFactory_DeleteDatabase_Layer         [CALLING]
     │   ├── IDBOpenDBRequest_onblocked_Layer         [REGISTER]
     │   ├── IDBOpenDBRequest_onsuccess_Layer         [REGISTER]
     │   └── IDBOpenDBRequest_onerror_Layer          [REGISTER]
-
     ├── IDBDatabase_onversionchange_Layer       [REGISTER]
     └── IDBDatabase_onclose_Layer               [REGISTER]

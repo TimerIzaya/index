@@ -25,11 +25,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_34"
-            },
-            {
-              "type": "Literal",
-              "value": 23
+              "value": "v_20"
             }
           ],
           "result_name": "openRequest"
@@ -85,46 +81,36 @@
                       },
                       "property": "result"
                     }
-                  },
-                  {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_0"
-                      }
-                    ],
-                    "result_name": "store"
-                  },
-                  {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "v_index"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "v_index_prop"
-                      }
-                    ],
-                    "result_name": null
                   }
                 ]
               }
             }
           ],
-          "children": []
+          "children": [
+            {
+              "type": "Layer",
+              "name": "IDBDatabase_SchemaOps_Layer",
+              "layer_type": "\u6267\u884c\u578b",
+              "ir_nodes": [
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "createObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": "store123"
+                }
+              ],
+              "children": []
+            }
+          ]
         },
         {
           "type": "Layer",
@@ -286,6 +272,24 @@
                             }
                           ],
                           "result_name": "req_delete"
+                        }
+                      ],
+                      "children": []
+                    },
+                    {
+                      "type": "Layer",
+                      "name": "IDBObjectStore_CursorOps_Layer",
+                      "layer_type": "\u6267\u884c\u578b",
+                      "ir_nodes": [
+                        {
+                          "type": "CallExpression",
+                          "callee_object": {
+                            "type": "Identifier",
+                            "name": "store"
+                          },
+                          "callee_method": "openCursor",
+                          "args": [],
+                          "result_name": "cursorRequest"
                         }
                       ],
                       "children": []
@@ -598,7 +602,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_34"
+              "value": "v_20"
             }
           ],
           "result_name": "deleteRequest"

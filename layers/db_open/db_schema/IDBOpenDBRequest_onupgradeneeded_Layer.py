@@ -1,14 +1,16 @@
 from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBDatabase, IDBObjectStore, IDBOpenDBRequest
-from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal, \
-    ConsoleLog
+from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal, ConsoleLog
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
+from layers.db_open.db_schema.IDBDatabase_SchemaOps_Layer import IDBDatabase_SchemaOps_Layer
 
 
 class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
+
     name = "IDBOpenDBRequest_onupgradeneeded_Layer"
+
     layer_type = LayerType.REGISTER
 
     @staticmethod
@@ -16,6 +18,7 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
         body = [
             ConsoleLog(Literal("db onupgraded trigered"))
         ]
+
         # db = event.target.result
         assign_db = AssignmentExpression(
             left=Identifier("db"),
@@ -29,29 +32,10 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
         # 注册 db 到上下文
         irctx.register_variable(Variable("db", IDBDatabase))
 
-        # 构造 db.createObjectStore(...)
-        store_name = idbctx.new_object_store_name()
-        create_store_call = CallExpression(
-            callee_object=Identifier("db"),
-            callee_method="createObjectStore",
-            args=[Literal(store_name)],
-            result_name="store"  # 这里就足够了
-        )
-        body.append(create_store_call)
+        # ✅ 添加 schema 层
+        schema_layer = IDBDatabase_SchemaOps_Layer.build(irctx, idbctx)
 
-        # 注册到上下文
-        irctx.register_variable(Variable("store", IDBObjectStore))
-        idbctx.register_object_store(store_name)
-
-        # store.createIndex(...)
-        create_index_call = CallExpression(
-            callee_object=Identifier("store"),
-            callee_method="createIndex",
-            args=[Literal("v_index"), Literal("v_index_prop")]
-        )
-        body.append(create_index_call)
-
-        # 封装为 request.onupgradeneeded = function(event) { ... }
+        # 构造事件处理器
         open_request_id = irctx.get_identifier_by_type(IDBOpenDBRequest)
         handler = AssignmentExpression(
             left=MemberExpression(open_request_id, "onupgradeneeded"),
@@ -61,5 +45,6 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
         return Layer(
             IDBOpenDBRequest_onupgradeneeded_Layer.name,
             ir_nodes=[handler],
+            children=[schema_layer],  # ✅ 只将 schema 操作封装为子层
             layer_type=IDBOpenDBRequest_onupgradeneeded_Layer.layer_type
         )

@@ -7,7 +7,7 @@ from IR.IRParamGenerator import ParameterGenerator
 from IR.IRSchemaParser import get_parser
 from layers.db_open.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
 from layers.db_open.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
-from layers.db_open.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
+from layers.db_open.db_schema.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
 from layers.db_open.IDBOpenDBRequest_onsuccess_Layer import IDBOpenDBRequest_onsuccess_Layer
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder

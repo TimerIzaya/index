@@ -4,7 +4,7 @@ from IR.IRNodes import CallExpression, Identifier, Literal
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.db_transaction.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
+from layers.db_transaction.db_curd.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
 from layers.db_transaction.IDBTransaction_oncomplete_Layer import IDBTransaction_oncomplete_Layer
 from layers.db_transaction.IDBTransaction_onabort_Layer import IDBTransaction_onabort_Layer
 from layers.db_transaction.IDBTransaction_onerror_Layer import IDBTransaction_onerror_Layer

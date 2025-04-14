@@ -4,10 +4,12 @@ from typing import Dict, List, Optional
 class IDBContext:
     def __init__(self):
         self.current_db: Optional[str] = None
+        self.current_store: Optional[str] = None
         self.database_map: Dict[str, Dict[str, List[str]]] = {}
 
     def start_database(self, db_name: str):
         self.current_db = db_name
+        self.current_store = None
         if db_name not in self.database_map:
             self.database_map[db_name] = {}
 
@@ -33,6 +35,20 @@ class IDBContext:
             raise RuntimeError("No active database context")
         if store_name not in self.database_map[self.current_db]:
             self.database_map[self.current_db][store_name] = []
+        self.current_store = store_name  # ✅ 设置当前 store 上下文
+
+    def new_index_name(self) -> str:
+        """为当前 object store 生成一个唯一的 index 名称"""
+        if self.current_db is None or self.current_store is None:
+            raise RuntimeError("No active database or object store context")
+
+        i = 0
+        existing = self.database_map[self.current_db][self.current_store]
+        while True:
+            name = f"index_{i}"
+            if name not in existing:
+                return name
+            i += 1
 
     def register_index(self, store_name: str, index_name: str):
         if self.current_db is None:
