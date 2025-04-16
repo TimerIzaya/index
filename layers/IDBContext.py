@@ -38,16 +38,16 @@ class IDBContext:
         self.current_store = store_name  # ✅ 设置当前 store 上下文
 
     def new_index_name(self) -> str:
-        """为当前 object store 生成一个唯一的 index 名称"""
-        if self.current_db is None or self.current_store is None:
-            raise RuntimeError("No active database or object store context")
-
+        base = "index"
         i = 0
-        existing = self.database_map[self.current_db][self.current_store]
+        if self.current_db is None or self.current_store is None:
+            raise RuntimeError("No active DB or object store for generating index name")
+
+        existing = set(self.database_map.get(self.current_db, {}).get(self.current_store, []))
         while True:
-            name = f"index_{i}"
-            if name not in existing:
-                return name
+            candidate = f"{base}_{i}"
+            if candidate not in existing:
+                return candidate
             i += 1
 
     def register_index(self, store_name: str, index_name: str):
@@ -72,3 +72,32 @@ class IDBContext:
         if not stores:
             raise RuntimeError("No object stores available in current database context")
         return random.choice(stores)
+
+    def pick_random_index(self) -> Optional[str]:
+        """从当前 object store 中随机挑选一个 index 名称"""
+        if self.current_db is None or self.current_store is None:
+            return None
+        indexes = self.database_map.get(self.current_db, {}).get(self.current_store, [])
+        if not indexes:
+            return None
+        return random.choice(indexes)
+
+    def has_object_store(self, store_name: str) -> bool:
+        """检查当前数据库中是否存在指定 object store"""
+        return self.current_db is not None and store_name in self.database_map.get(self.current_db, {})
+
+    def has_index(self, store_name: str, index_name: str) -> bool:
+        """检查某个 object store 中是否存在指定 index"""
+        if self.current_db is None:
+            return False
+        return index_name in self.database_map.get(self.current_db, {}).get(store_name, [])
+
+    def get_current_store(self) -> Optional[str]:
+        """返回当前上下文中的 object store 名称"""
+        return self.current_store
+
+    def get_all_indexes(self) -> List[str]:
+        """获取当前 store 下的所有 index 名称"""
+        if self.current_db is None or self.current_store is None:
+            return []
+        return self.database_map[self.current_db][self.current_store]
