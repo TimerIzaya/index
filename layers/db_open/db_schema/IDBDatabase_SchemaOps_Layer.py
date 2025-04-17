@@ -14,21 +14,7 @@ class IDBDatabase_SchemaOps_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        db_ident = irctx.get_identifier_by_type(IDBDatabase)
         body = []
-
-        # 注册一个初始 store（防止 index 创建失败）
-        store_name = idbctx.new_object_store_name()
-        irctx.register_variable(Variable("store", IDBObjectStore))
-        idbctx.register_object_store(store_name)
-
-        # store = db.createObjectStore("store_xxx")
-        body.append(
-            AssignmentExpression(
-                Identifier("store"),
-                CallExpression(db_ident, "createObjectStore", [Literal(store_name)])
-            )
-        )
 
         # 可配置的读写比
         N = 20

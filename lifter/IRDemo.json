@@ -25,11 +25,11 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_1"
+              "value": "v_77"
             },
             {
               "type": "Literal",
-              "value": 46
+              "value": 2
             }
           ],
           "result_name": "openRequest"
@@ -97,10 +97,15 @@
               "layer_type": "\u6267\u884c\u578b",
               "ir_nodes": [
                 {
+                  "type": "VariableDeclaration",
+                  "kind": "let",
+                  "name": "store_0"
+                },
+                {
                   "type": "AssignmentExpression",
                   "left": {
                     "type": "Identifier",
-                    "name": "store"
+                    "name": "store_0"
                   },
                   "right": {
                     "type": "CallExpression",
@@ -119,130 +124,6 @@
                   }
                 },
                 {
-                  "type": "VariableDeclaration",
-                  "kind": "let",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "index_0_prop"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "store"
-                  },
-                  "property": "indexNames"
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "property": "name"
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "let",
-                  "name": "index_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_1"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "index_1_prop"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_0"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "let",
-                  "name": "index_2"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_2"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_2"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "index_2_prop"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
                   "type": "CallExpression",
                   "callee_object": {
                     "type": "Identifier",
@@ -276,36 +157,6 @@
                   "type": "CallExpression",
                   "callee_object": {
                     "type": "Identifier",
-                    "name": "store"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_1"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "store"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_1"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
                     "name": "db"
                   },
                   "callee_method": "deleteObjectStore",
@@ -316,45 +167,6 @@
                     }
                   ],
                   "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "let",
-                  "name": "index_3"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_3"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_3"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "index_3_prop"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "index_1"
-                  },
-                  "property": "keyPath"
                 },
                 {
                   "type": "VariableDeclaration",
@@ -382,6 +194,38 @@
                     ],
                     "result_name": null
                   }
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "property": "indexNames"
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "property": "indexNames"
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_1"
+                  },
+                  "property": "indexNames"
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_1"
+                  },
+                  "property": "keyPath"
                 },
                 {
                   "type": "VariableDeclaration",
@@ -413,29 +257,25 @@
                 {
                   "type": "VariableDeclaration",
                   "kind": "let",
-                  "name": "index_0"
+                  "name": "store_3"
                 },
                 {
                   "type": "AssignmentExpression",
                   "left": {
                     "type": "Identifier",
-                    "name": "index_0"
+                    "name": "store_3"
                   },
                   "right": {
                     "type": "CallExpression",
                     "callee_object": {
                       "type": "Identifier",
-                      "name": "store_2"
+                      "name": "db"
                     },
-                    "callee_method": "createIndex",
+                    "callee_method": "createObjectStore",
                     "args": [
                       {
                         "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "index_0_prop"
+                        "value": "store_3"
                       }
                     ],
                     "result_name": null
@@ -445,30 +285,7 @@
                   "type": "MemberExpression",
                   "object": {
                     "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "property": "keyPath"
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "store_1"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_0"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "store"
+                    "name": "store_3"
                   },
                   "property": "autoIncrement"
                 }
@@ -551,7 +368,7 @@
                   "args": [
                     {
                       "type": "Literal",
-                      "value": "store_2"
+                      "value": "store_1"
                     },
                     {
                       "type": "Literal",
@@ -577,7 +394,7 @@
                       "args": [
                         {
                           "type": "Literal",
-                          "value": "store_0"
+                          "value": "store_1"
                         }
                       ],
                       "result_name": "store"
@@ -593,7 +410,7 @@
                           "type": "CallExpression",
                           "callee_object": {
                             "type": "Identifier",
-                            "name": "store_1"
+                            "name": "store_3"
                           },
                           "callee_method": "put",
                           "args": [
@@ -612,7 +429,7 @@
                           "type": "CallExpression",
                           "callee_object": {
                             "type": "Identifier",
-                            "name": "store_1"
+                            "name": "store_3"
                           },
                           "callee_method": "get",
                           "args": [
@@ -627,7 +444,7 @@
                           "type": "CallExpression",
                           "callee_object": {
                             "type": "Identifier",
-                            "name": "store_1"
+                            "name": "store_3"
                           },
                           "callee_method": "delete",
                           "args": [
@@ -967,7 +784,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "v_1"
+              "value": "v_77"
             }
           ],
           "result_name": "deleteRequest"
