@@ -30,7 +30,7 @@ class IDBTransaction_ObjectStoreAccess_Layer(LayerBuilder):
 
         children = [
             IDBObjectStore_DataOps_Layer.build(irctx, idbctx),
-            IDBObjectStore_CursorOps_Layer.build(irctx, idbctx),
+            # IDBObjectStore_CursorOps_Layer.build(irctx, idbctx),
         ]
         return Layer(
             IDBTransaction_ObjectStoreAccess_Layer.name,

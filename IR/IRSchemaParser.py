@@ -67,7 +67,7 @@ class IndexedDBSchemaParser:
         self.populate_all_types_from_parser()
 
     def getInterface(self, name: str):
-        return self.root.get(name)
+         return self.root.get(name)
 
     def populate_all_types_from_parser(self):
         def visit(node: SchemaNode):

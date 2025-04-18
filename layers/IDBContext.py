@@ -101,3 +101,18 @@ class IDBContext:
         if self.current_db is None or self.current_store is None:
             return []
         return self.database_map[self.current_db][self.current_store]
+
+    def unregister_object_store(self, store_name: str):
+        """从当前数据库中注销 object store（连同其所有 index）"""
+        if self.current_db and store_name in self.database_map.get(self.current_db, {}):
+            del self.database_map[self.current_db][store_name]
+            if self.current_store == store_name:
+                self.current_store = None
+
+    def unregister_index(self, store_name: str, index_name: str):
+        """从指定 object store 中注销 index"""
+        if self.current_db is None:
+            return
+        store = self.database_map.get(self.current_db, {}).get(store_name, [])
+        if index_name in store:
+            store.remove(index_name)

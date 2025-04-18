@@ -17,6 +17,6 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
 
         body.append(CallExpression(store_id, "put", [Literal(True), Literal(42)], result_name="req_put"))
         body.append(CallExpression(store_id, "get", [Literal("fallback")], result_name="req_get"))
-        body.append(CallExpression(store_id, "delete", [Literal(42)], result_name="req_delete"))
+        # body.append(CallExpression(store_id, "delete", [Literal(42)], result_name="req_delete"))
 
         return Layer(IDBObjectStore_DataOps_Layer.name, body, layer_type=IDBObjectStore_DataOps_Layer.layer_type)

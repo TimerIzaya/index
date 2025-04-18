@@ -1,5 +1,7 @@
 from IR.IRNodes import MemberExpression, CallExpression, Literal, VariableDeclaration, AssignmentExpression, Identifier
 from IR.IRContext import IRContext, Variable
+from IR.IRParamGenerator import ParameterGenerator
+from IR.IRSchemaParser import get_parser
 from layers.IDBContext import IDBContext
 from IR.IRType import IDBObjectStore, IDBIndex, IDBDatabase
 import random
@@ -84,37 +86,60 @@ def delete_object_store(irctx: IRContext, idbctx: IDBContext):
     name = idbctx.pick_random_object_store()
     if name is None:
         raise RuntimeError("No object store available to delete.")
+    idbctx.unregister_object_store(name)
     return CallExpression(db, "deleteObjectStore", [Literal(name)])
 
 
+
 def create_index(irctx: IRContext, idbctx: IDBContext):
+    parser = get_parser()
+    method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
+    gen = ParameterGenerator(irctx)
+
     store = irctx.get_identifier_by_type(IDBObjectStore)
     if store is None:
-        raise RuntimeError("No IDBObjectStore identifier available for create_index")
-    store_name = idbctx.pick_random_object_store()
-    if store_name is None:
-        raise RuntimeError("No object store available to create index on.")
+        raise RuntimeError("No IDBObjectStore available")
+
+    store_name = idbctx.get_current_store()
+    if not store_name:
+        raise RuntimeError("No current store in context")
+
     index_name = idbctx.new_index_name()
-    key_path = Literal(index_name + "_prop")
     idbctx.register_index(store_name, index_name)
+
+    params = method.getParams().raw()
+    args = [Literal(index_name)]
+
+    for param in params[1:]:
+        arg = gen.generate_parameter(param)
+        args.append(arg)
 
     ident = Identifier(index_name)
     irctx.register_variable(Variable(index_name, IDBIndex))
 
     return [
         VariableDeclaration(ident.name),
-        AssignmentExpression(ident, CallExpression(store, "createIndex", [Literal(index_name), key_path]))
+        AssignmentExpression(
+            ident,
+            CallExpression(store, "createIndex", args)
+        )
     ]
+
 
 
 def delete_index(irctx: IRContext, idbctx: IDBContext):
     store = irctx.get_identifier_by_type(IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for delete_index")
+
     idx = idbctx.pick_random_index()
     if idx is None:
         raise RuntimeError("No index available to delete.")
+    store_name = idbctx.current_store
+
+    idbctx.unregister_index(store_name, idx)
     return CallExpression(store, "deleteIndex", [Literal(idx)])
+
 
 
 ReadSchemaOps = [

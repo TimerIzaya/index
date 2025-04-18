@@ -1,4 +1,5 @@
 import random
+from typing import Optional
 
 from IR import IRContext
 from IR.IRNodes import Literal, Identifier
@@ -29,7 +30,7 @@ class ParameterGenerator:
             return random.choice(candidates).identifier  # 返回 Identifier
 
         # 否则生成 Literal
-        value = self.generate_value_from_typename(typename)
+        value = self.generate_value_from_typename(typename, param)
         return Literal(value)
 
     def _resolve_typename(self, type_info):
@@ -39,27 +40,33 @@ class ParameterGenerator:
             return type_info.get("typename", "any")
         return "any"
 
-    def generate_value_from_typename(self, typename):
-        # ✅ 特殊类型：IDB 开头 或 DOMException/TypeError 等异常类
+    def generate_value_from_typename(self, typename: str, param: Optional[ParamInfo] = None):
+        if typename == "boolean":
+            return random.choice([True, False])
+        if typename == "number":
+            return random.randint(0, 100)
+        if typename == "string":
+            return "str_" + str(random.randint(0, 9999))
+        if typename == "array":
+            return []
+        if typename == "object" and param and param.properties:
+            obj = {}
+            for prop in param.properties:
+                sub_type = self._resolve_typename(prop["type"])
+                if sub_type == "boolean":
+                    obj[prop["name"]] = random.choice([True, False])
+                elif sub_type == "number":
+                    obj[prop["name"]] = random.randint(0, 100)
+                elif sub_type == "string":
+                    obj[prop["name"]] = "str_" + str(random.randint(0, 9999))
+            return obj
+        if typename == "null":
+            return None
+        if typename == "any":
+            return random.choice(["fallback", 42, True])
         if typename.startswith("IDB") or "Exception" in typename or "Error" in typename:
             return None
 
-        # ✅ 基础类型随机值生成
-        if typename == "string":
-            return "v_" + str(random.randint(1, 100))
-        elif typename == "number":
-            return random.randint(1, 100)
-        elif typename == "boolean":
-            return random.choice([True, False])
-        elif typename == "array":
-            return []
-        elif typename == "object":
-            return {"key": "value"}
-        elif typename == "null":
-            return None
-        elif typename == "any":
-            return random.choice(["fallback", 42, True])
-        else:
-            # 默认处理（可以是空值、占位对象等）
-            return f"{typename}_instance"
+        # 默认 fallback
+        return f"{typename}_instance"
 

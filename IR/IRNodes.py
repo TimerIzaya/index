@@ -102,7 +102,7 @@ class FunctionExpression(IRNode):
 
 
 class VariableDeclaration(IRNode):
-    def __init__(self, name: str, kind: str = "let"):
+    def __init__(self, name: str, kind: str = ""):
         self.name = name
         self.kind = kind  # let, const, var
 
