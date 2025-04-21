@@ -3,6 +3,7 @@
 from layers.db_open.db_schema.db_schema_opt.AtomicSchemaOps import *
 import random
 
+
 # replace 系列（含 recreate 行为）
 
 def replace_index(irctx, idbctx):
@@ -11,32 +12,41 @@ def replace_index(irctx, idbctx):
         *create_index(irctx, idbctx)
     ]
 
+
 def replace_object_store(irctx, idbctx):
     return [
         delete_object_store(irctx, idbctx),
         *create_object_store(irctx, idbctx)
     ]
 
+
 def replace_store_name(irctx, idbctx):
     return replace_object_store(irctx, idbctx)
+
 
 def replace_store_keypath(irctx, idbctx):
     return replace_object_store(irctx, idbctx)
 
+
 def replace_store_autoincrement(irctx, idbctx):
     return replace_object_store(irctx, idbctx)
+
 
 def replace_index_name(irctx, idbctx):
     return replace_index(irctx, idbctx)
 
+
 def replace_index_keypath(irctx, idbctx):
     return replace_index(irctx, idbctx)
+
 
 def replace_index_unique(irctx, idbctx):
     return replace_index(irctx, idbctx)
 
+
 def replace_index_multiEntry(irctx, idbctx):
     return replace_index(irctx, idbctx)
+
 
 # add 系列
 
@@ -58,6 +68,7 @@ def drop_all_indexes(irctx, idbctx):
         stmts.append(delete_index(irctx, idbctx))
     return stmts
 
+
 # reset 系列
 
 def reset_schema(irctx, idbctx):
@@ -68,34 +79,29 @@ def reset_schema(irctx, idbctx):
         *create_index(irctx, idbctx)
     ]
 
-CompoundSchemaOps = {
-    "replace": [
-        replace_index,
-        replace_object_store,
-        replace_store_name,
-        replace_store_keypath,
-        replace_store_autoincrement,
-        replace_index_name,
-        replace_index_keypath,
-        replace_index_unique,
-        replace_index_multiEntry
-    ],
-    "add": [add_multiple_indexes],
-    "drop": [drop_all_indexes],
-    "reset": [reset_schema],
+
+# 每个复合操作函数绑定权重
+CompoundOpWeights = {
+    replace_index: 3,
+    replace_object_store: 3,
+    replace_store_name: 2,
+    replace_store_keypath: 2,
+    replace_store_autoincrement: 2,
+    replace_index_name: 2,
+    replace_index_keypath: 2,
+    replace_index_unique: 2,
+    replace_index_multiEntry: 2,
+    add_multiple_indexes: 3,
+    drop_all_indexes: 1,
+    reset_schema: 1,
 }
 
-CompoundSchemaWeights = {
-    "replace": 5,
-    "add": 3,
-    "drop": 2,
-    "reset": 1,
-}
+# 平铺所有操作（替代旧的分组方式）
+FlatCompoundOps = [
+    f for f, w in CompoundOpWeights.items() if w > 0
+]
 
 def choose_random_compound_op():
-    op_type = random.choices(
-        population=list(CompoundSchemaOps.keys()),
-        weights=[CompoundSchemaWeights[k] for k in CompoundSchemaOps.keys()],
-        k=1
-    )[0]
-    return random.choice(CompoundSchemaOps[op_type])
+    ops = FlatCompoundOps
+    weights = [CompoundOpWeights[f] for f in ops]
+    return random.choices(ops, weights=weights, k=1)[0]

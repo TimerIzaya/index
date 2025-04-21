@@ -18,23 +18,37 @@ class Layer:
         self.children = children or []
         self.layer_type = layer_type
 
-    def to_dict(self):
-        return {
-            "type": "Layer",
+    def to_dict(self) -> dict:
+        result = {
             "name": self.name,
             "layer_type": self.layer_type.value,
-            "ir_nodes": [node.to_dict() for node in self.ir_nodes],
-            "children": [child.to_dict() for child in self.children]
         }
+
+        if self.ir_nodes:
+            result["ir_nodes"] = [n.to_dict() for n in self.ir_nodes]
+
+        if self.children:
+            children_serialized = [c.to_dict() for c in self.children if c is not None]
+            if children_serialized:
+                result["children"] = children_serialized
+
+        return result
 
     @staticmethod
     def from_dict(d: dict) -> 'Layer':
         return Layer(
             name=d["name"],
             layer_type=LayerType(d.get("layer_type", LayerType.EXECUTION.value)),
-            ir_nodes=[IRNodeFactory.from_dict(n) for n in d.get("ir_nodes", [])],
-            children=[Layer.from_dict(c) for c in d.get("children", [])],
+            ir_nodes=[
+                IRNodeFactory.from_dict(n) for n in d.get("ir_nodes", [])
+                if n is not None
+            ],
+            children=[
+                Layer.from_dict(c) for c in d.get("children", [])
+                if c is not None
+            ],
         )
+
 
 
 

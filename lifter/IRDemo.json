@@ -1,5 +1,4 @@
 {
-  "type": "Layer",
   "name": "IDBRootLayer",
   "layer_type": "\u8c03\u7528\u578b",
   "ir_nodes": [
@@ -11,7 +10,6 @@
   ],
   "children": [
     {
-      "type": "Layer",
       "name": "IDBFactory_OpenDatabase_Layer",
       "layer_type": "\u8c03\u7528\u578b",
       "ir_nodes": [
@@ -25,11 +23,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_6898"
-            },
-            {
-              "type": "Literal",
-              "value": 36
+              "value": "str_614"
             }
           ],
           "result_name": "openRequest"
@@ -37,7 +31,6 @@
       ],
       "children": [
         {
-          "type": "Layer",
           "name": "IDBOpenDBRequest_onupgradeneeded_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -92,7 +85,6 @@
           ],
           "children": [
             {
-              "type": "Layer",
               "name": "IDBDatabase_SchemaOps_Layer",
               "layer_type": "\u6267\u884c\u578b",
               "ir_nodes": [
@@ -148,26 +140,159 @@
                       },
                       {
                         "type": "Literal",
-                        "value": "str_4216"
+                        "value": "str_2747"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "property": "autoIncrement"
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "index_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "index_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "store_0"
+                    },
+                    "callee_method": "createIndex",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "index_0"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": "str_1077"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "index_1"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "index_1"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "store_0"
+                    },
+                    "callee_method": "createIndex",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "index_1"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": []
                       },
                       {
                         "type": "Literal",
                         "value": {
-                          "unique": false,
-                          "multiEntry": false
+                          "unique": true,
+                          "multiEntry": true
                         }
                       }
                     ],
                     "result_name": null
                   }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "index_1"
+                  },
+                  "property": "keyPath"
                 }
-              ],
-              "children": []
+              ]
             }
           ]
         },
         {
-          "type": "Layer",
           "name": "IDBOpenDBRequest_onsuccess_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -226,212 +351,6 @@
           ],
           "children": [
             {
-              "type": "Layer",
-              "name": "IDBDatabase_Transaction_Layer",
-              "layer_type": "\u8c03\u7528\u578b",
-              "ir_nodes": [
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "transaction",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_0"
-                    },
-                    {
-                      "type": "Literal",
-                      "value": "readwrite"
-                    }
-                  ],
-                  "result_name": "txn"
-                }
-              ],
-              "children": [
-                {
-                  "type": "Layer",
-                  "name": "IDBTransaction_ObjectStoreAccess_Layer",
-                  "layer_type": "\u8bbf\u95ee\u578b",
-                  "ir_nodes": [
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "txn"
-                      },
-                      "callee_method": "objectStore",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": "store_0"
-                        }
-                      ],
-                      "result_name": "store"
-                    }
-                  ],
-                  "children": [
-                    {
-                      "type": "Layer",
-                      "name": "IDBObjectStore_DataOps_Layer",
-                      "layer_type": "\u6267\u884c\u578b",
-                      "ir_nodes": [
-                        {
-                          "type": "CallExpression",
-                          "callee_object": {
-                            "type": "Identifier",
-                            "name": "store_0"
-                          },
-                          "callee_method": "put",
-                          "args": [
-                            {
-                              "type": "Literal",
-                              "value": true
-                            },
-                            {
-                              "type": "Literal",
-                              "value": 42
-                            }
-                          ],
-                          "result_name": "req_put"
-                        },
-                        {
-                          "type": "CallExpression",
-                          "callee_object": {
-                            "type": "Identifier",
-                            "name": "store_0"
-                          },
-                          "callee_method": "get",
-                          "args": [
-                            {
-                              "type": "Literal",
-                              "value": "fallback"
-                            }
-                          ],
-                          "result_name": "req_get"
-                        }
-                      ],
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "type": "Layer",
-                  "name": "IDBTransaction_oncomplete_Layer",
-                  "layer_type": "\u6ce8\u518c\u578b",
-                  "ir_nodes": [
-                    {
-                      "type": "AssignmentExpression",
-                      "left": {
-                        "type": "MemberExpression",
-                        "object": {
-                          "type": "Identifier",
-                          "name": "txn"
-                        },
-                        "property": "oncomplete"
-                      },
-                      "right": {
-                        "type": "FunctionExpression",
-                        "params": [
-                          {
-                            "type": "Identifier",
-                            "name": "event"
-                          }
-                        ],
-                        "body": [
-                          {
-                            "type": "ConsoleLog",
-                            "value": {
-                              "type": "Literal",
-                              "value": "Transaction completed successfully"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "children": []
-                },
-                {
-                  "type": "Layer",
-                  "name": "IDBTransaction_onabort_Layer",
-                  "layer_type": "\u6ce8\u518c\u578b",
-                  "ir_nodes": [
-                    {
-                      "type": "AssignmentExpression",
-                      "left": {
-                        "type": "MemberExpression",
-                        "object": {
-                          "type": "Identifier",
-                          "name": "txn"
-                        },
-                        "property": "onabort"
-                      },
-                      "right": {
-                        "type": "FunctionExpression",
-                        "params": [
-                          {
-                            "type": "Identifier",
-                            "name": "event"
-                          }
-                        ],
-                        "body": [
-                          {
-                            "type": "ConsoleLog",
-                            "value": {
-                              "type": "Literal",
-                              "value": "Transaction was aborted"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "children": []
-                },
-                {
-                  "type": "Layer",
-                  "name": "IDBTransaction_onerror_Layer",
-                  "layer_type": "\u6ce8\u518c\u578b",
-                  "ir_nodes": [
-                    {
-                      "type": "AssignmentExpression",
-                      "left": {
-                        "type": "MemberExpression",
-                        "object": {
-                          "type": "Identifier",
-                          "name": "txn"
-                        },
-                        "property": "onerror"
-                      },
-                      "right": {
-                        "type": "FunctionExpression",
-                        "params": [
-                          {
-                            "type": "Identifier",
-                            "name": "event"
-                          }
-                        ],
-                        "body": [
-                          {
-                            "type": "ConsoleLog",
-                            "value": {
-                              "type": "Literal",
-                              "value": "Transaction error occurred"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "children": []
-                }
-              ]
-            },
-            {
-              "type": "Layer",
               "name": "IDBDatabase_onversionchange_Layer",
               "layer_type": "\u6ce8\u518c\u578b",
               "ir_nodes": [
@@ -474,11 +393,9 @@
                     ]
                   }
                 }
-              ],
-              "children": []
+              ]
             },
             {
-              "type": "Layer",
               "name": "IDBDatabase_onclose_Layer",
               "layer_type": "\u6ce8\u518c\u578b",
               "ir_nodes": [
@@ -511,13 +428,11 @@
                     ]
                   }
                 }
-              ],
-              "children": []
+              ]
             }
           ]
         },
         {
-          "type": "Layer",
           "name": "IDBOpenDBRequest_onblocked_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -558,11 +473,9 @@
                 ]
               }
             }
-          ],
-          "children": []
+          ]
         },
         {
-          "type": "Layer",
           "name": "IDBOpenDBRequest_onerror_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -603,13 +516,11 @@
                 ]
               }
             }
-          ],
-          "children": []
+          ]
         }
       ]
     },
     {
-      "type": "Layer",
       "name": "IDBFactory_DeleteDatabase_Layer",
       "layer_type": "\u8c03\u7528\u578b",
       "ir_nodes": [
@@ -623,7 +534,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_6898"
+              "value": "str_614"
             }
           ],
           "result_name": "deleteRequest"
@@ -631,7 +542,6 @@
       ],
       "children": [
         {
-          "type": "Layer",
           "name": "IDBDeleteDBRequest_onblocked_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -672,11 +582,9 @@
                 ]
               }
             }
-          ],
-          "children": []
+          ]
         },
         {
-          "type": "Layer",
           "name": "IDBDeleteDBRequest_onsuccess_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -717,11 +625,9 @@
                 ]
               }
             }
-          ],
-          "children": []
+          ]
         },
         {
-          "type": "Layer",
           "name": "IDBDeleteDBRequest_onerror_Layer",
           "layer_type": "\u6ce8\u518c\u578b",
           "ir_nodes": [
@@ -762,8 +668,7 @@
                 ]
               }
             }
-          ],
-          "children": []
+          ]
         }
       ]
     }

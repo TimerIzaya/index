@@ -16,11 +16,14 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
     layer_type = LayerType.CALLING
 
     @staticmethod
-    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        # 获取一个 object store 名称
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer | None:
+        # 如果当前上下文中没有任何 object store，则不生成该层
+        if not idbctx.get_object_stores():
+            print("[TransactionLayer] skipped: no object store available")
+            return None
+
         store_name = idbctx.pick_random_object_store()
 
-        # 构造调用 db.transaction(...)
         call = CallExpression(
             callee_object=Identifier("db"),
             callee_method="transaction",
@@ -28,10 +31,8 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
             result_name="txn"
         )
 
-        # 注册 txn 变量
         irctx.register_variable(Variable("txn", IDBTransaction))
 
-        # 构造子层级
         children = [
             IDBTransaction_ObjectStoreAccess_Layer.build(irctx, idbctx),
             IDBTransaction_oncomplete_Layer.build(irctx, idbctx),
