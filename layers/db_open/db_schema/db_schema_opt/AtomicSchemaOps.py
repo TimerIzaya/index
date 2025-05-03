@@ -155,7 +155,7 @@ AtomicSchemaWeights = {
     create_object_store: 5,
     delete_object_store: 5,
     create_index: 10,
-    delete_index: 10,
+    delete_index: 2,
 }
 
 # 自动构造列表
