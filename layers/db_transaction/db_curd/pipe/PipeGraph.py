@@ -3,14 +3,22 @@ from schema.SchemaInstanceTree import initialize_interfaces, ALL_INTERFACES
 from typing import List
 import random
 
-# === STEP 1: 定义 PipeEnd 类 ===
 class PipeEnd:
     def __init__(self, method_info: MethodInfo):
         self.name = method_info.name
         self.method_info = method_info
+        self.is_read = self._infer_is_read()
+        self.is_write = self._infer_is_write()
+
+    def _infer_is_read(self):
+        return self.name in {"get", "getAll", "getAllKeys", "getKey", "count", "openCursor", "openKeyCursor"}
+
+    def _infer_is_write(self):
+        return self.name in {"put", "add", "delete", "clear"}
 
     def __repr__(self):
         return f"PipeEnd({self.name})"
+
 
 # === STEP 2: 定义 Pipe ===
 class Pipe:
@@ -180,21 +188,26 @@ class PipeGraph:
     def _add_pipe(self, src: PipeEnd, dst: PipeEnd, key_aware: bool, weight: float):
         self.pipes.append(Pipe(src, dst, key_aware, weight))
 
-    def generate_weighted_path(self, max_length: int = 6) -> List[PipeEnd]:
-        if not self.pipe_ends:
-            return []
+    def generate_weighted_path(self, max_length=6, transaction_mode="readwrite"):
         path = []
         current = random.choice(self.pipe_ends)
         path.append(current)
 
         for _ in range(max_length - 1):
             candidates = [p for p in self.pipes if p.src == current]
+
+            # 根据事务模式调整权重
+            if transaction_mode == "readonly":
+                weights = [p.weight * 0.1 if p.dst.is_write else p.weight for p in candidates]
+            else:
+                weights = [p.weight for p in candidates]
+
             if not candidates:
                 break
-            weights = [p.weight for p in candidates]
             next_pipe = random.choices(candidates, weights=weights)[0]
             current = next_pipe.dst
             path.append(current)
+
         return path
 
     def __repr__(self):
@@ -202,6 +215,6 @@ class PipeGraph:
 
 if __name__ == "__main__":
     graph = PipeGraph()
-    g = graph.generate_weighted_path(16)
+    g = graph.generate_weighted_path(16, "readonly")
     for i in g:
         print(i)
