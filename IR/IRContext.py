@@ -16,6 +16,7 @@ class IRContext:
     def __init__(self):
         self.scopes: List[Dict[str, Variable]] = [{}]
         self.layer_stack: List[str] = []
+        self.unique_counter = 0
 
     def enter_layer(self, layer):
         self.scopes.append({})
@@ -51,3 +52,8 @@ class IRContext:
                 if var.type == type_:
                     candidates.append(Identifier(var.name))
         return random.choice(candidates) if candidates else None
+
+    def generate_unique_name(self, base: str) -> str:
+        name = f"{base}_{self.unique_counter}"
+        self.unique_counter += 1
+        return name

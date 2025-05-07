@@ -4,10 +4,10 @@ from IR.IRNodes import CallExpression, Identifier, Literal
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
-from layers.db_transaction.db_curd.IDBTransaction_ObjectStoreAccess_Layer import IDBTransaction_ObjectStoreAccess_Layer
 from layers.db_transaction.IDBTransaction_oncomplete_Layer import IDBTransaction_oncomplete_Layer
 from layers.db_transaction.IDBTransaction_onabort_Layer import IDBTransaction_onabort_Layer
 from layers.db_transaction.IDBTransaction_onerror_Layer import IDBTransaction_onerror_Layer
+from layers.db_transaction.db_curd.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
 
 
 class IDBDatabase_Transaction_Layer(LayerBuilder):
@@ -34,7 +34,7 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
         irctx.register_variable(Variable("txn", IDBTransaction))
 
         children = [
-            IDBTransaction_ObjectStoreAccess_Layer.build(irctx, idbctx),
+            IDBObjectStore_DataOps_Layer.build(irctx, idbctx),
             IDBTransaction_oncomplete_Layer.build(irctx, idbctx),
             IDBTransaction_onabort_Layer.build(irctx, idbctx),
             IDBTransaction_onerror_Layer.build(irctx, idbctx),

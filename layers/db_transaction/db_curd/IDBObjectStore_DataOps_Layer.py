@@ -1,22 +1,47 @@
 from IR.IRContext import IRContext
-from IR.IRNodes import CallExpression, AssignmentExpression, Identifier, Literal
+from IR.IRNodes import CallExpression, Identifier
 from IR.IRType import IDBObjectStore
 from layers.IDBContext import IDBContext
 from layers.Layer import Layer, LayerType
 from layers.LayerBuilder import LayerBuilder
+from layers.db_transaction.db_curd.PipeFlow import PipeFlow
+from layers.db_transaction.db_curd.PipeGraph import PipeGraph
 
 
 class IDBObjectStore_DataOps_Layer(LayerBuilder):
     name = "IDBObjectStore_DataOps_Layer"
     layer_type = LayerType.EXECUTION
 
+    # 可配置项：pipeflow 个数 和 每个长度
+    pipeflow_count = 2
+    pipeflow_length = 4
+
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        store_id = irctx.get_identifier_by_type(IDBObjectStore)
         body = []
 
-        body.append(CallExpression(store_id, "put", [Literal(True), Literal(42)], result_name="req_put"))
-        body.append(CallExpression(store_id, "get", [Literal("fallback")], result_name="req_get"))
-        # body.append(CallExpression(store_id, "delete", [Literal(42)], result_name="req_delete"))
+        # 获取当前 object store 变量标识符（用于 IL）
+        store_id: Identifier = irctx.get_identifier_by_type(IDBObjectStore)
+        if store_id is None:
+            raise Exception("No IDBObjectStore found in context")
+
+        # 获取当前 object store 名（用于 IL 参数）
+        current_store = idbctx.get_current_store()
+        if current_store is None:
+            raise Exception("No current object store in IDBContext")
+
+        # PipeGraph 用于生成 pipeflow
+        graph = PipeGraph()
+
+        for flow_id in range(IDBObjectStore_DataOps_Layer.pipeflow_count):
+            key = flow_id + 1  # 每个 flow 对应一个不同的 key
+            pipe_ends = graph.generate_weighted_path(
+                max_length=IDBObjectStore_DataOps_Layer.pipeflow_length,
+                transaction_mode="readwrite"
+            )
+
+            pipeflow = PipeFlow(store_id=store_id, key=key, pipe_ends=pipe_ends)
+            flow_il = pipeflow.generate_il_sequence(irctx, idbctx)
+            body.extend(flow_il)
 
         return Layer(IDBObjectStore_DataOps_Layer.name, body, layer_type=IDBObjectStore_DataOps_Layer.layer_type)

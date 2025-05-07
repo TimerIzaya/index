@@ -64,3 +64,30 @@ class ReturnInfo:
     def __init__(self, data: dict):
         self.returnGeneric = data.get("returnGeneric")
         self.returns = data.get("returns")
+
+
+# ========== IDBType Enum In JS==========
+from enum import Enum
+
+class IDBType(Enum):
+    DOMException = "DOMException"
+    DOMStringList = "DOMStringList"
+    IDBCursor = "IDBCursor"
+    IDBDatabase = "IDBDatabase"
+    IDBIndex = "IDBIndex"
+    IDBKeyRange = "IDBKeyRange"
+    IDBObjectStore = "IDBObjectStore"
+    IDBOpenDBRequest = "IDBOpenDBRequest"
+    IDBRequest = "IDBRequest"
+    IDBTransaction = "IDBTransaction"
+    Promise = "Promise"
+    TypeError = "TypeError"
+    Any = "any"
+    Array = "array"
+    Boolean = "boolean"
+    Function = "function"
+    Null = "null"
+    Number = "number"
+    Object = "object"
+    String = "string"
+    Void = "void"

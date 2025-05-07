@@ -1,35 +1,9 @@
+from layers.db_transaction.db_curd.Pipe import Pipe
+from layers.db_transaction.db_curd.PipeEnd import PipeEnd
 from schema.SchemaClass import MethodInfo
 from schema.SchemaInstanceTree import initialize_interfaces, ALL_INTERFACES
 from typing import List
 import random
-
-class PipeEnd:
-    def __init__(self, method_info: MethodInfo):
-        self.name = method_info.name
-        self.method_info = method_info
-        self.is_read = self._infer_is_read()
-        self.is_write = self._infer_is_write()
-
-    def _infer_is_read(self):
-        return self.name in {"get", "getAll", "getAllKeys", "getKey", "count", "openCursor", "openKeyCursor"}
-
-    def _infer_is_write(self):
-        return self.name in {"put", "add", "delete", "clear"}
-
-    def __repr__(self):
-        return f"PipeEnd({self.name})"
-
-
-# === STEP 2: 定义 Pipe ===
-class Pipe:
-    def __init__(self, src: PipeEnd, dst: PipeEnd, key_aware: bool, weight: float):
-        self.src = src
-        self.dst = dst
-        self.key_aware = key_aware
-        self.weight = weight
-
-    def __repr__(self):
-        return f"Pipe({self.src.name} -> {self.dst.name}, {'key-aware' if self.key_aware else 'non-aware'}, weight={self.weight})"
 
 # === STEP 3: PipeGraph 类 ===
 class PipeGraph:
@@ -217,4 +191,4 @@ if __name__ == "__main__":
     graph = PipeGraph()
     g = graph.generate_weighted_path(16, "readonly")
     for i in g:
-        print(i)
+        print(i.gen)
