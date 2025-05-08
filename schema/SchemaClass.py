@@ -36,7 +36,9 @@ class ParamInfo:
 # ========== TypeInfo ==========
 class TypeInfo:
     def __init__(self, data: dict):
-        self.items = data.get("items")
+        self.items = data["items"] if "items" in data else None
+        if isinstance(data, list):
+            print(1)
         self.typename = data.get("typename")
 
 # ========== PropertyInfo ==========

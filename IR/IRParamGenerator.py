@@ -4,7 +4,7 @@ from typing import Optional
 from IR import IRContext
 from IR.IRNodes import Literal, Identifier
 from config import OPTIONAL_JUMP
-from schema.SchemaClass import ParamInfo
+from schema.SchemaClass import ParamInfo, TypeInfo
 
 
 class ParameterGenerator:
@@ -20,9 +20,15 @@ class ParameterGenerator:
         if param.enum:
             return Literal(random.choice(param.enum))
 
-        # 正常流程
-        param_type_info = param.type
-        typename = self._resolve_typename(param_type_info)
+        # 获得type，有些可以是string 也可以是list string
+        if isinstance(param.type, list):
+            type_dict = random.choice(param.type)
+        else:
+            type_dict = param.type
+
+        typeInfo = TypeInfo(type_dict)
+
+        typename = self._resolve_typename(typeInfo)
 
         # 优先重用已有变量
         candidates = self.context.get_visible_variables(typename)
@@ -30,7 +36,7 @@ class ParameterGenerator:
             return random.choice(candidates).identifier  # 返回 Identifier
 
         # 否则生成 Literal
-        value = self.generate_value_from_typename(typename, param)
+        value = self.generate_value_from_type(typeInfo)
         return Literal(value)
 
     def _resolve_typename(self, type_info):
@@ -40,33 +46,38 @@ class ParameterGenerator:
             return type_info.get("typename", "any")
         return "any"
 
-    def generate_value_from_typename(self, typename: str, param: Optional[ParamInfo] = None):
+    def generate_value_from_type(self, typeinfo: TypeInfo):
+        x = typeinfo.typename
+        typename = typeinfo.typename or "any"
+        items = typeinfo.items
+
         if typename == "boolean":
             return random.choice([True, False])
+
         if typename == "number":
             return random.randint(0, 100)
+
         if typename == "string":
             return "str_" + str(random.randint(0, 9999))
+
         if typename == "array":
-            return []
-        if typename == "object" and param and param.properties:
-            obj = {}
-            for prop in param.properties:
-                sub_type = self._resolve_typename(prop["type"])
-                if sub_type == "boolean":
-                    obj[prop["name"]] = random.choice([True, False])
-                elif sub_type == "number":
-                    obj[prop["name"]] = random.randint(0, 100)
-                elif sub_type == "string":
-                    obj[prop["name"]] = "str_" + str(random.randint(0, 9999))
-            return obj
+            count = random.randint(1, 5)
+            element_type = TypeInfo({"typename": "any"})
+
+            if isinstance(items, list) and len(items) == 1:
+                element_type = TypeInfo(items[0])
+            elif isinstance(items, dict):
+                element_type = TypeInfo(items)
+
+            return [self.generate_value_from_type(element_type) for _ in range(count)]
+
         if typename == "null":
             return None
+
         if typename == "any":
             return random.choice(["fallback", 42, True])
+
         if typename.startswith("IDB") or "Exception" in typename or "Error" in typename:
             return None
 
-        # 默认 fallback
         return f"{typename}_instance"
-

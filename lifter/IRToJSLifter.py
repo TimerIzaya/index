@@ -61,6 +61,15 @@ class IRToJSLifter:
                 return f"'{val}'"
             if isinstance(val, bool):
                 return "true" if val else "false"
+            if isinstance(val, dict):
+                js_items = [
+                    f"'{k}': {IRToJSLifter._convert_node(Literal(v), 0)}"
+                    for k, v in val.items()
+                ]
+                return "{" + ", ".join(js_items) + "}"
+            if isinstance(val, list):
+                js_items = [IRToJSLifter._convert_node(Literal(v), 0) for v in val]
+                return "[" + ", ".join(js_items) + "]"
             return str(val)
 
         elif isinstance(node, AssignmentExpression):
