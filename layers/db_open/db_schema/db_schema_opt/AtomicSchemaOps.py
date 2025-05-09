@@ -90,8 +90,16 @@ def delete_object_store(irctx: IRContext, idbctx: IDBContext):
     return CallExpression(db, "deleteObjectStore", [Literal(name)])
 
 
-
 def create_index(irctx: IRContext, idbctx: IDBContext):
+    """
+    构造 IDBObjectStore.createIndex 调用的 IL 表达式：
+    - 首先确保当前上下文中有有效的 object store
+    - 尝试生成一个唯一的 index 名称，避免与已有 index 冲突
+    - 通过 schema 获取 createIndex 方法签名
+    - 调用 ParameterGenerator 生成参数
+    - 注册变量至 IRContext 和 IDBContext
+    - 返回对应的 VariableDeclaration 和 AssignmentExpression 节点
+    """
     parser = get_parser()
     method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
     gen = ParameterGenerator(irctx)
@@ -104,9 +112,18 @@ def create_index(irctx: IRContext, idbctx: IDBContext):
     if not store_name:
         raise RuntimeError("No current store in context")
 
-    index_name = idbctx.new_index_name()
+    # 尝试最多 5 次获取一个不重复的 index 名称
+    for _ in range(5):
+        index_name = idbctx.new_index_name()
+        if not idbctx.has_index(store_name, index_name):
+            break
+    else:
+        raise RuntimeError(f"Unable to generate unique index name for store: {store_name}")
+
+    # 注册该索引名称
     idbctx.register_index(store_name, index_name)
 
+    # 生成参数列表
     params = method.getParams().raw()
     args = [Literal(index_name)]
 
@@ -126,7 +143,6 @@ def create_index(irctx: IRContext, idbctx: IDBContext):
     ]
 
 
-
 def delete_index(irctx: IRContext, idbctx: IDBContext):
     store = irctx.get_identifier_by_type(IDBObjectStore)
     if store is None:
@@ -139,7 +155,6 @@ def delete_index(irctx: IRContext, idbctx: IDBContext):
 
     idbctx.unregister_index(store_name, idx)
     return CallExpression(store, "deleteIndex", [Literal(idx)])
-
 
 
 # 每个操作函数的独立权重配置

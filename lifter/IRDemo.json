@@ -23,11 +23,11 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_5551"
+              "value": "str_9734"
             },
             {
               "type": "Literal",
-              "value": 75
+              "value": 53
             }
           ],
           "result_name": "openRequest"
@@ -144,12 +144,11 @@
                       },
                       {
                         "type": "Literal",
-                        "value": [
-                          "str_7416",
-                          "str_2048",
-                          "str_4036",
-                          "str_6809"
-                        ]
+                        "value": "str_2107"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": "object_instance"
                       }
                     ],
                     "result_name": null
@@ -159,9 +158,51 @@
                   "type": "MemberExpression",
                   "object": {
                     "type": "Identifier",
-                    "name": "index_0"
+                    "name": "store_0"
                   },
-                  "property": "name"
+                  "property": "autoIncrement"
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
                 },
                 {
                   "type": "VariableDeclaration",
@@ -185,166 +226,6 @@
                       {
                         "type": "Literal",
                         "value": "store_1"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "store_0"
-                  },
-                  "property": "keyPath"
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_2"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_2"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_1"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_9896",
-                          "str_9081",
-                          "str_5502",
-                          "str_2137",
-                          "str_232"
-                        ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "object_instance"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_2"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_2"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_2"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_2"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_2"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_2"
                       }
                     ],
                     "result_name": null
@@ -376,12 +257,10 @@
                       {
                         "type": "Literal",
                         "value": [
-                          "str_7223"
+                          "str_3884",
+                          "str_7235",
+                          "str_605"
                         ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "object_instance"
                       }
                     ],
                     "result_name": null
@@ -412,7 +291,16 @@
                       },
                       {
                         "type": "Literal",
-                        "value": "str_1696"
+                        "value": [
+                          "str_325",
+                          "str_6991",
+                          "str_3525",
+                          "str_6560"
+                        ]
+                      },
+                      {
+                        "type": "Literal",
+                        "value": "object_instance"
                       }
                     ],
                     "result_name": null
@@ -444,378 +332,13 @@
                       {
                         "type": "Literal",
                         "value": [
-                          "str_3994",
-                          "str_6255"
+                          "str_4768",
+                          "str_2133"
                         ]
                       }
                     ],
                     "result_name": null
                   }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_3"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_3"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_1"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_3"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_4982",
-                          "str_3090",
-                          "str_726",
-                          "str_2446"
-                        ]
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_4"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_4"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_4"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "str_4068"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_5"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_5"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_5"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_9331",
-                          "str_7764"
-                        ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "object_instance"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_6"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_6"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_6"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_8425",
-                          "str_1329",
-                          "str_2870",
-                          "str_6819"
-                        ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "object_instance"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_5"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_5"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_5"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_1"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_5"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "str_1281"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_7"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_7"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_1"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_7"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_8795",
-                          "str_7845",
-                          "str_1498",
-                          "str_917"
-                        ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "object_instance"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_5"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_1"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_1"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_3"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_3"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_3"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_1"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_1"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "MemberExpression",
-                  "object": {
-                    "type": "Identifier",
-                    "name": "index_1"
-                  },
-                  "property": "keyPath"
                 },
                 {
                   "type": "CallExpression",
@@ -869,6 +392,167 @@
                       {
                         "type": "Literal",
                         "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "index_0"
+                  },
+                  "property": "multiEntry"
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_1"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_1"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_1"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_1"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_1"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_1"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_1"
                       }
                     ],
                     "result_name": null
@@ -950,7 +634,7 @@
                   "args": [
                     {
                       "type": "Literal",
-                      "value": "store_3"
+                      "value": "store_1"
                     },
                     {
                       "type": "Literal",
@@ -969,7 +653,7 @@
                       "type": "CallExpression",
                       "callee_object": {
                         "type": "Identifier",
-                        "name": "store_0"
+                        "name": "store_1"
                       },
                       "callee_method": "clear",
                       "args": [],
@@ -979,280 +663,529 @@
                       "type": "CallExpression",
                       "callee_object": {
                         "type": "Identifier",
-                        "name": "store_0"
+                        "name": "store_1"
                       },
-                      "callee_method": "openKeyCursor",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": "next"
-                        }
-                      ],
-                      "result_name": "req_openKeyCursor_1"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_0"
-                      },
-                      "callee_method": "count",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": "JXH"
-                        }
-                      ],
-                      "result_name": "req_count_2"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_0"
-                      },
-                      "callee_method": "count",
+                      "callee_method": "add",
                       "args": [
                         {
                           "type": "Literal",
                           "value": {
-                            "f0_s": true,
-                            "f1_o": true,
-                            "f2_h": "WJNWZNFdq",
-                            "f3_x": [
+                            "f0_b": true,
+                            "f1_u": null,
+                            "f2_y": [
+                              55
+                            ],
+                            "f3_s": {
+                              "f0_n": false,
+                              "f1_c": [
+                                "Qiv"
+                              ],
+                              "f2_r": {
+                                "f0_t": [
+                                  8
+                                ],
+                                "f1_s": null,
+                                "f2_e": [
+                                  "LjhST"
+                                ],
+                                "f3_z": [
+                                  "ZqcDgVclQgH"
+                                ],
+                                "f4_j": {
+                                  "f0_i": {
+                                    "f0_o": false,
+                                    "f1_g": 22,
+                                    "f2_e": 3,
+                                    "f3_p": true,
+                                    "f4_q": 73,
+                                    "f5_k": null,
+                                    "f6_d": false,
+                                    "f7_g": true,
+                                    "f8_m": {
+                                      "f0_b": "ALeZJC",
+                                      "f1_w": null,
+                                      "f2_p": 100,
+                                      "f3_i": {
+                                        "f0_t": "nWSQM",
+                                        "f1_s": "CgKLBK",
+                                        "f2_x": true,
+                                        "f3_g": 61,
+                                        "f4_d": true
+                                      },
+                                      "f4_h": true,
+                                      "f5_i": {
+                                        "f0_x": null
+                                      },
+                                      "f6_n": {
+                                        "f0_x": 46
+                                      }
+                                    }
+                                  },
+                                  "f1_f": [
+                                    null,
+                                    "QmpPne"
+                                  ],
+                                  "f2_e": null,
+                                  "f3_k": {
+                                    "f0_f": true,
+                                    "f1_k": "HJj",
+                                    "f2_b": [
+                                      false,
+                                      null,
+                                      99
+                                    ]
+                                  },
+                                  "f4_p": true,
+                                  "f5_a": null,
+                                  "f6_r": null,
+                                  "f7_g": "iGi"
+                                },
+                                "f5_z": null,
+                                "f6_x": "CaVT",
+                                "f7_d": null,
+                                "f8_f": [
+                                  44,
+                                  true
+                                ]
+                              }
+                            },
+                            "f4_s": null,
+                            "f5_z": [
+                              34,
+                              73,
                               false
                             ],
-                            "f4_l": 52,
-                            "f5_z": "lImON",
-                            "f6_t": [
-                              97,
-                              9,
-                              "tEmcgpVOnyb"
+                            "f6_v": "LcsYGakGNmWH",
+                            "f7_n": true,
+                            "f8_y": 16,
+                            "f9_a": {
+                              "f0_b": 86,
+                              "f1_f": "RuPPogvhBTwu"
+                            },
+                            "id": 1
+                          }
+                        },
+                        {
+                          "type": "Literal",
+                          "value": {
+                            "f0_i": {
+                              "f0_x": {
+                                "f0_c": 36,
+                                "f1_j": [
+                                  "EYeeRwEBHbz",
+                                  17,
+                                  "nZuAfCnjraJw"
+                                ],
+                                "f2_p": {
+                                  "f0_s": null
+                                },
+                                "f3_m": "BzDyHoPWVVY"
+                              },
+                              "f1_c": 0,
+                              "f2_h": {
+                                "f0_j": true,
+                                "f1_p": {
+                                  "f0_i": "JbtDXIhnBPE"
+                                },
+                                "f2_z": 63,
+                                "f3_s": 64,
+                                "f4_u": true,
+                                "f5_c": 14,
+                                "f6_p": null,
+                                "f7_n": {
+                                  "f0_r": true
+                                }
+                              },
+                              "f3_p": [
+                                "BJJQShDacdEN",
+                                10,
+                                29
+                              ]
+                            },
+                            "f1_i": false,
+                            "f2_h": [
+                              false
                             ],
-                            "f7_s": 68,
-                            "f8_s": 73,
-                            "f9_q": true,
+                            "f3_p": false,
+                            "f4_t": true,
+                            "f5_o": "VeQatzwrb",
+                            "f6_q": null,
+                            "f7_z": 36,
+                            "f8_o": true,
                             "id": 1
                           }
                         }
                       ],
-                      "result_name": "req_count_3"
+                      "result_name": "req_add_1"
                     },
                     {
                       "type": "CallExpression",
                       "callee_object": {
                         "type": "Identifier",
-                        "name": "store_0"
+                        "name": "store_1"
                       },
-                      "callee_method": "add",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": "Sqa"
-                        },
-                        {
-                          "type": "Literal",
-                          "value": [
-                            "mpVHrGr",
-                            null
-                          ]
-                        }
-                      ],
-                      "result_name": "req_add_4"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_0"
-                      },
-                      "callee_method": "getAll",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": false
-                        },
-                        {
-                          "type": "Literal",
-                          "value": 2
-                        }
-                      ],
-                      "result_name": "req_getAll_5"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_0"
-                      },
-                      "callee_method": "add",
-                      "args": [
-                        {
-                          "type": "Literal",
-                          "value": null
-                        },
-                        {
-                          "type": "Literal",
-                          "value": 2
-                        }
-                      ],
-                      "result_name": "req_add_6"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_0"
-                      },
-                      "callee_method": "delete",
+                      "callee_method": "get",
                       "args": [
                         {
                           "type": "Literal",
                           "value": {
-                            "f0_m": {
-                              "f0_o": "aJZJunehrd",
-                              "f1_w": true,
-                              "f2_j": [
-                                93,
-                                97
-                              ],
-                              "f3_j": {
-                                "f0_t": {
-                                  "f0_w": null
-                                },
-                                "f1_f": "VVDZv",
-                                "f2_s": [
-                                  65,
-                                  18,
-                                  null
-                                ],
-                                "f3_m": 91
-                              },
-                              "f4_m": 50,
-                              "f5_e": {
-                                "f0_x": 83,
-                                "f1_d": 12,
-                                "f2_w": {
-                                  "f0_g": [
-                                    null,
-                                    19
-                                  ],
-                                  "f1_r": 46,
-                                  "f2_o": false,
-                                  "f3_o": {
-                                    "f0_n": true,
-                                    "f1_l": {
-                                      "f0_j": {
-                                        "f0_f": false,
-                                        "f1_y": true,
-                                        "f2_j": true,
-                                        "f3_o": false
-                                      }
-                                    },
-                                    "f2_k": "DSgjJcN",
-                                    "f3_b": 81,
-                                    "f4_g": false,
-                                    "f5_w": "CByOA",
-                                    "f6_u": 30,
-                                    "f7_o": "mguei",
-                                    "f8_k": "bPQunJFHo"
-                                  },
-                                  "f4_j": {
-                                    "f0_j": {
-                                      "f0_m": false,
-                                      "f1_r": 38,
-                                      "f2_m": {
-                                        "f0_y": {
-                                          "f0_m": {
-                                            "f0_e": "jwnys",
-                                            "f1_m": 38,
-                                            "f2_c": null,
-                                            "f3_t": "xjUfOiD",
-                                            "f4_s": [
-                                              13,
-                                              null
-                                            ],
-                                            "f5_b": {
-                                              "f0_d": [
-                                                81,
-                                                "wCaGqjAm",
-                                                10
-                                              ],
-                                              "f1_a": false,
-                                              "f2_a": false,
-                                              "f3_j": [
-                                                "SzLXybcT",
-                                                true
-                                              ]
-                                            },
-                                            "f6_f": [
-                                              4,
-                                              false,
-                                              null
-                                            ],
-                                            "f7_b": 77,
-                                            "f8_i": true
-                                          },
-                                          "f1_j": [
-                                            true,
-                                            null
-                                          ],
-                                          "f2_y": [
-                                            null,
-                                            false,
-                                            null
-                                          ]
-                                        }
-                                      },
-                                      "f3_v": {
-                                        "f0_i": 21,
-                                        "f1_e": false
-                                      },
-                                      "f4_r": null,
-                                      "f5_u": true,
-                                      "f6_c": [
-                                        true
-                                      ]
-                                    },
-                                    "f1_w": null,
-                                    "f2_i": null,
-                                    "f3_h": true,
-                                    "f4_i": [
-                                      "OXpdFk",
-                                      null
-                                    ]
-                                  }
-                                },
-                                "f3_x": [
-                                  12,
-                                  66,
-                                  false
-                                ],
-                                "f4_g": null
-                              }
-                            },
-                            "f1_a": {
-                              "f0_p": null,
-                              "f1_k": [
-                                81
-                              ],
-                              "f2_g": {
-                                "f0_t": [
-                                  "GxMOIu",
-                                  "XJxrKKUzCk",
-                                  68
-                                ],
-                                "f1_n": false
-                              }
-                            },
-                            "f2_k": "tQLsJRw",
-                            "f3_g": null,
-                            "f4_i": false,
-                            "id": 2
+                            "f0_f": false,
+                            "f1_z": null,
+                            "f2_l": [
+                              false
+                            ],
+                            "f3_s": null,
+                            "f4_g": "sFOBbkUWBGP",
+                            "f5_c": "nucsMBS",
+                            "f6_f": 14,
+                            "id": 1
                           }
                         }
                       ],
-                      "result_name": "req_delete_7"
+                      "result_name": "req_get_2"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_1"
+                      },
+                      "callee_method": "getAllKeys",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": {
+                            "f0_q": false,
+                            "f1_u": "zLDtzhxq",
+                            "f2_b": "mGPJvT",
+                            "f3_y": {
+                              "f0_y": [
+                                null,
+                                false
+                              ],
+                              "f1_a": "ssqCSUeyTY",
+                              "f2_c": {
+                                "f0_p": null,
+                                "f1_q": "mFIM",
+                                "f2_c": false,
+                                "f3_m": 87,
+                                "f4_d": [
+                                  true
+                                ],
+                                "f5_b": [
+                                  null,
+                                  false,
+                                  true
+                                ],
+                                "f6_l": true,
+                                "f7_q": [
+                                  "EjoJH"
+                                ],
+                                "f8_o": null
+                              },
+                              "f3_o": null,
+                              "f4_p": [
+                                true
+                              ],
+                              "f5_r": null,
+                              "f6_o": [
+                                null
+                              ],
+                              "f7_c": [
+                                false,
+                                null,
+                                false
+                              ]
+                            },
+                            "id": 1
+                          }
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 1
+                        }
+                      ],
+                      "result_name": "req_getAllKeys_3"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_1"
+                      },
+                      "callee_method": "getAllKeys",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": {
+                            "f0_b": null,
+                            "f1_g": {
+                              "f0_u": [
+                                false
+                              ],
+                              "f1_v": "PbQD",
+                              "f2_m": [
+                                true
+                              ],
+                              "f3_q": {
+                                "f0_o": 90,
+                                "f1_z": [
+                                  "DSuZ"
+                                ],
+                                "f2_k": null,
+                                "f3_a": null,
+                                "f4_l": null
+                              },
+                              "f4_b": "mqbGSERlBOs",
+                              "f5_q": {
+                                "f0_r": [
+                                  true
+                                ],
+                                "f1_v": {
+                                  "f0_b": [
+                                    false
+                                  ],
+                                  "f1_s": "TSmfvnHtyi",
+                                  "f2_s": null
+                                }
+                              },
+                              "f6_u": false,
+                              "f7_s": {
+                                "f0_p": [
+                                  true
+                                ],
+                                "f1_z": [
+                                  true
+                                ]
+                              }
+                            },
+                            "f2_a": 63,
+                            "f3_s": [
+                              false
+                            ],
+                            "f4_f": {
+                              "f0_j": true,
+                              "f1_r": null,
+                              "f2_y": {
+                                "f0_f": [
+                                  true,
+                                  "wzDKQ"
+                                ],
+                                "f1_t": {
+                                  "f0_q": false
+                                },
+                                "f2_z": 75,
+                                "f3_b": "WnaFmMfPBRoT",
+                                "f4_r": "CRQo",
+                                "f5_g": false,
+                                "f6_i": "ScT",
+                                "f7_n": null
+                              },
+                              "f3_u": {
+                                "f0_a": 62,
+                                "f1_d": null,
+                                "f2_p": false,
+                                "f3_b": null,
+                                "f4_j": true,
+                                "f5_e": null,
+                                "f6_e": 57,
+                                "f7_y": null,
+                                "f8_r": [
+                                  "dWwG",
+                                  null,
+                                  13
+                                ],
+                                "f9_e": {
+                                  "f0_j": null,
+                                  "f1_g": 19,
+                                  "f2_v": true,
+                                  "f3_i": [
+                                    null,
+                                    false
+                                  ],
+                                  "f4_v": 47,
+                                  "f5_d": [
+                                    true,
+                                    false,
+                                    null
+                                  ]
+                                }
+                              },
+                              "f4_r": true,
+                              "f5_j": null,
+                              "f6_x": [
+                                97
+                              ],
+                              "f7_x": 25,
+                              "f8_p": "CMhhMarDr",
+                              "f9_c": null
+                            },
+                            "f5_i": "UBQn",
+                            "f6_x": null,
+                            "f7_p": [
+                              true,
+                              true,
+                              "bXvXXTtF"
+                            ],
+                            "f8_y": {
+                              "f0_w": {
+                                "f0_d": false,
+                                "f1_d": 89,
+                                "f2_e": true,
+                                "f3_c": [
+                                  74,
+                                  "lAYFaOODcfOe"
+                                ],
+                                "f4_y": false,
+                                "f5_h": true,
+                                "f6_t": "WjJzgaQv",
+                                "f7_t": [
+                                  true,
+                                  59,
+                                  94
+                                ]
+                              },
+                              "f1_g": "BBxjndie",
+                              "f2_h": 13,
+                              "f3_l": null,
+                              "f4_v": 48,
+                              "f5_e": null,
+                              "f6_j": null,
+                              "f7_f": {
+                                "f0_z": [
+                                  28,
+                                  80
+                                ],
+                                "f1_n": false,
+                                "f2_y": {
+                                  "f0_n": {
+                                    "f0_a": "SBQOehSKJ",
+                                    "f1_a": 50,
+                                    "f2_h": [
+                                      false,
+                                      86,
+                                      true
+                                    ],
+                                    "f3_u": null,
+                                    "f4_t": null,
+                                    "f5_i": "xPTSW",
+                                    "f6_x": true
+                                  },
+                                  "f1_v": true,
+                                  "f2_c": false,
+                                  "f3_d": {
+                                    "f0_n": [
+                                      false,
+                                      false,
+                                      29
+                                    ],
+                                    "f1_k": null,
+                                    "f2_n": [
+                                      null
+                                    ],
+                                    "f3_v": false,
+                                    "f4_x": [
+                                      null,
+                                      false
+                                    ],
+                                    "f5_d": false,
+                                    "f6_c": [
+                                      3,
+                                      false
+                                    ],
+                                    "f7_l": "iKKY"
+                                  },
+                                  "f4_c": false,
+                                  "f5_k": {
+                                    "f0_z": null,
+                                    "f1_b": [
+                                      58,
+                                      42
+                                    ]
+                                  },
+                                  "f6_y": false,
+                                  "f7_w": 41,
+                                  "f8_o": "XkrRDMeCrK"
+                                },
+                                "f3_n": false,
+                                "f4_y": true,
+                                "f5_m": {
+                                  "f0_t": false,
+                                  "f1_h": null
+                                },
+                                "f6_o": 67,
+                                "f7_i": "MYWcttLWT",
+                                "f8_d": null,
+                                "f9_p": 44
+                              },
+                              "f8_z": false
+                            },
+                            "f9_e": null,
+                            "id": 2
+                          }
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 2
+                        }
+                      ],
+                      "result_name": "req_getAllKeys_4"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_1"
+                      },
+                      "callee_method": "count",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": null
+                        }
+                      ],
+                      "result_name": "req_count_5"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_1"
+                      },
+                      "callee_method": "getAllKeys",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": 2
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 2
+                        }
+                      ],
+                      "result_name": "req_getAllKeys_6"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_1"
+                      },
+                      "callee_method": "getAllKeys",
+                      "args": [
+                        {
+                          "type": "Literal",
+                          "value": {
+                            "f0_a": 57,
+                            "id": 2
+                          }
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 2
+                        }
+                      ],
+                      "result_name": "req_getAllKeys_7"
                     }
                   ]
                 },
@@ -1547,7 +1480,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_5551"
+              "value": "str_9734"
             }
           ],
           "result_name": "deleteRequest"

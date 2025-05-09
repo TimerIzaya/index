@@ -4,7 +4,7 @@ from typing import List, Optional, Dict
 class InterfaceInfo:
     def __init__(self, data: dict):
         self.category = data.get("category")
-        self.events = data.get("events")
+        self.events: list[EventInfo] = data.get("events")
         self.inherits = data.get("inherits")
         self.instanceMethods = data.get("instanceMethods")
         self.instanceProperties = data.get("instanceProperties")
@@ -37,8 +37,6 @@ class ParamInfo:
 class TypeInfo:
     def __init__(self, data: dict):
         self.items = data["items"] if "items" in data else None
-        if isinstance(data, list):
-            print(1)
         self.typename = data.get("typename")
 
 # ========== PropertyInfo ==========
@@ -47,7 +45,9 @@ class PropertyInfo:
         self.enum = data.get("enum")
         self.name = data.get("name")
         self.readonly = data.get("readonly")
-        self.type = data.get("type")
+        if isinstance(data["type"], list):
+            print()
+        self.type = TypeInfo(data["type"]) if "type" in data else None
 
 # ========== EventInfo ==========
 class EventInfo:

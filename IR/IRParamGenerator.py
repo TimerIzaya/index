@@ -21,10 +21,22 @@ class ParameterGenerator:
             return Literal(random.choice(param.enum))
 
         # 获得type，有些可以是string 也可以是list string
+        # list<string>意思是可以接受多种类型的参数，例如createIndex的keyPath，支持字符串或者字符串数组
         if isinstance(param.type, list):
             type_dict = random.choice(param.type)
         else:
             type_dict = param.type
+
+        # 如果参数是一个object，并且有properties，说明是schema要求的固定类型的object
+        # 例如createIndex的options，必须是 { unique?: t/f, multiEntry?: t/f}
+        if isinstance(param.type, object) and param.properties is not None:
+            # 固定字段组成的对象类型，例如 IDBIndexParameters
+            objParam = {}
+            for property in param.properties:
+                if 'type' not in property:
+                    print(1)
+                objParam[property.name] = self.generate_parameter(property.type)
+            return Literal(objParam)
 
         typeInfo = TypeInfo(type_dict)
 

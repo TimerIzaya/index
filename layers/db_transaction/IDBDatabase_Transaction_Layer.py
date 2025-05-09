@@ -33,12 +33,12 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
 
         irctx.register_variable(Variable("txn", IDBTransaction))
 
-        children = [
+        children = list(filter(None, [
             IDBObjectStore_DataOps_Layer.build(irctx, idbctx),
             IDBTransaction_oncomplete_Layer.build(irctx, idbctx),
             IDBTransaction_onabort_Layer.build(irctx, idbctx),
             IDBTransaction_onerror_Layer.build(irctx, idbctx),
-        ]
+        ]))
 
         return Layer(
             IDBDatabase_Transaction_Layer.name,

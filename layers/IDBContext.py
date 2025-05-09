@@ -116,3 +116,4 @@ class IDBContext:
         store = self.database_map.get(self.current_db, {}).get(store_name, [])
         if index_name in store:
             store.remove(index_name)
+

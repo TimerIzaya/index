@@ -17,18 +17,15 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
     pipeflow_length = 4
 
     @staticmethod
-    def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
+    def build(irctx: IRContext, idbctx: IDBContext) -> Layer | None:
         body = []
 
-        # 获取当前 object store 变量标识符（用于 IL）
         store_id: Identifier = irctx.get_identifier_by_type(IDBObjectStore)
-        if store_id is None:
-            raise Exception("No IDBObjectStore found in context")
-
-        # 获取当前 object store 名（用于 IL 参数）
         current_store = idbctx.get_current_store()
-        if current_store is None:
-            raise Exception("No current object store in IDBContext")
+
+        # 如果缺少 store 或 name，跳过该层
+        if store_id is None or current_store is None:
+            return None
 
         # PipeGraph 用于生成 pipeflow
         graph = PipeGraph()
