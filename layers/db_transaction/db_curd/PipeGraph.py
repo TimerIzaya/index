@@ -1,15 +1,13 @@
+from schema.IDBSchemaParser import IDBSchemaParser
 from layers.db_transaction.db_curd.Pipe import Pipe
 from layers.db_transaction.db_curd.PipeEnd import PipeEnd
-from schema.SchemaClass import MethodInfo
-from schema.SchemaInstanceTree import initialize_interfaces, ALL_INTERFACES
 from typing import List
 import random
 
 # === STEP 3: PipeGraph 类 ===
 class PipeGraph:
     def __init__(self):
-        initialize_interfaces()
-        self.interface = ALL_INTERFACES["IDBObjectStore"]
+        self.interface = IDBSchemaParser.getInterface("IDBObjectStore")
 
         self.pipe_ends: List[PipeEnd] = []
         self.pipes: List[Pipe] = []
@@ -154,7 +152,7 @@ class PipeGraph:
         self._add_pipe(self.pe_openKeyCursor, self.pe_openCursor, False, 0.2)
 
     def _add_pipe_end(self, name: str) -> PipeEnd:
-        method = self.interface.instanceMethods[name]
+        method = self.interface.getInstanceMethod(name).raw()
         pe = PipeEnd(method)
         self.pipe_ends.append(pe)
         return pe

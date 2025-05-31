@@ -1,121 +1,85 @@
 import json
-from typing import Dict
+from typing import Dict, Optional, Union, List
 
-import config
-from schema.SchemaClass import *
-
-SCHEMA_FILE = "indexeddb_schema.json"
-ALL_INTERFACES: Dict[str, InterfaceInfo] = {}
-
-def load_schema() -> dict:
-    with open(config.SCHEMA_FILE, "r") as f:
-        return json.load(f)
-
-def build_interface(name: str, data: dict) -> InterfaceInfo:
-    iface = InterfaceInfo({"name": name, **data})
-
-    # build static methods
-    iface.staticMethods = {}
-    for mname, mdef in data.get("staticMethods", {}).items():
-        method = build_method(mname, mdef)
-        iface.staticMethods[mname] = method
-
-    # build instance methods
-    iface.instanceMethods = {}
-    for mname, mdef in data.get("instanceMethods", {}).items():
-        method = build_method(mname, mdef)
-        iface.instanceMethods[mname] = method
-
-    # build instance properties
-    iface.instanceProperties = []
-    for prop in data.get("instanceProperties", []):
-        prop_obj = PropertyInfo(prop)
-        iface.instanceProperties.append(prop_obj)
-
-    # build events
-    iface.events = [EventInfo(e) for e in data.get("events", [])]
-
-    # build exceptions
-    exlist = data.get("exceptions", [])
-    iface.exceptions = [ExceptionInfo(e if isinstance(e, dict) else {"name": e}) for e in exlist]
-
-    return iface
-
-def build_method(name: str, mdef: dict) -> MethodInfo:
-    method = MethodInfo({"name": name, **mdef})
-    method.params = []
-    for p in mdef.get("params", []):
-        param_obj = ParamInfo(p)
-        if "type" in p:
-            param_obj.typeInfo = build_type(p["type"])
-        method.params.append(param_obj)
-
-    if "returns" in mdef or "returnGeneric" in mdef:
-        method.returns = ReturnInfo(mdef)
-        if hasattr(method.returns, "typename"):
-            method.returns.typeInfo = build_type(method.returns.typename)
-        if hasattr(method.returns, "generic"):
-            method.returns.genericTypeInfo = build_type(method.returns.generic)
-    return method
-
-def build_type(tdef):
-    if isinstance(tdef, str):
-        return TypeInfo({"typename": tdef})
-    elif isinstance(tdef, dict):
-        return TypeInfo(tdef)
-    elif isinstance(tdef, list):
-        return [TypeInfo(t) for t in tdef]
-    else:
-        return None
-
-def initialize_interfaces():
-    global schema
-    schema = load_schema()
-    for name, data in schema.items():
-        ALL_INTERFACES[name] = build_interface(name, data)
-
-def check_unmapped_fields():
-    print("[Schema Coverage Check]")
-    total = 0
-    missing_schema = 0
-    extra_inst = 0
-
-    def check(schema_obj, instance_obj, path="root"):
-        nonlocal total, missing_schema, extra_inst
-
-        if isinstance(schema_obj, dict):
-            schema_keys = set(schema_obj.keys())
-            for key in schema_keys:
-                total += 1
-                has_node = False
-                if isinstance(instance_obj, dict):
-                    has_node = key in instance_obj
-                else:
-                    has_node = hasattr(instance_obj, key)
-
-                if not has_node:
-                    print(f"[Missing] in instree: {path}.{key}")
-                    missing_schema += 1
-                else:
-                    next_instance = instance_obj[key] if isinstance(instance_obj, dict) else getattr(instance_obj, key, None)
-                    check(schema_obj[key], next_instance, f"{path}.{key}")
-
-        elif isinstance(schema_obj, list) and isinstance(instance_obj, list):
-            for i, item in enumerate(schema_obj):
-                if i < len(instance_obj):
-                    check(item, instance_obj[i], f"{path}[{i}]")
-
-    for name, data in schema.items():
-        schema_iface = data
-        instance_iface = ALL_INTERFACES.get(name)
-        if instance_iface:
-            check(schema_iface, instance_iface, path=name)
-
-    print(f"Checked {total} schema nodes")
-    print(f"Missing nodes: {missing_schema}")
-    print(f"Extra field check skipped (fields are optional)")
+from schema.SchemaClass import InterfaceInfo
+from config import SCHEMA_FILE
 
 
-if __name__ == "__main__":
-    initialize_interfaces()
-    check_unmapped_fields()
+class SchemaInstanceTree:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(SchemaInstanceTree, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
+    def __init__(self):
+        if self._initialized:
+            return
+        self.schema_file = SCHEMA_FILE
+        self.raw_schema: dict = {}
+        self.interfaces: Dict[str, InterfaceInfo] = {}
+        self._initialized = True
+        self.load()  # ✅ 自动加载
+
+    def load(self):
+        if not self.schema_file:
+            raise ValueError("Schema file path not set.")
+        with open(self.schema_file, "r") as f:
+            self.raw_schema = json.load(f)
+        for name, data in self.raw_schema.items():
+            self.interfaces[name] = self._build_interface(name, data)
+
+    def _build_interface(self, name: str, data: dict) -> InterfaceInfo:
+        interface_dict = {
+            "category": data.get("category"),
+            "events": data.get("events", []),
+            "inherits": data.get("inherits"),
+            "instanceMethods": list(data.get("instanceMethods", {}).values()),
+            "instanceProperties": data.get("instanceProperties", []),
+            "staticMethods": list(data.get("staticMethods", {}).values()),
+            "staticProperties": data.get("staticProperties", []),
+            "name": name,
+        }
+        return InterfaceInfo(interface_dict)
+
+    def get_interface(self, name: str) -> Optional[InterfaceInfo]:
+        return self.interfaces.get(name)
+
+    def summary(self):
+        print(f"[SchemaInstanceTree] Loaded {len(self.interfaces)} interfaces:")
+        for name in self.interfaces:
+            print(f"  - {name}")
+
+    def check_coverage(self):
+        print("[Schema Coverage Check]")
+        total, missing = 0, 0
+
+        def check(schema_node, instance_node, path="root"):
+            nonlocal total, missing
+            if isinstance(schema_node, dict):
+                for key in schema_node:
+                    total += 1
+                    has_attr = isinstance(instance_node, dict) and key in instance_node or hasattr(instance_node, key)
+                    if not has_attr:
+                        print(f"[Missing] {path}.{key}")
+                        missing += 1
+                    else:
+                        next_inst = (
+                            instance_node[key] if isinstance(instance_node, dict)
+                            else getattr(instance_node, key)
+                        )
+                        check(schema_node[key], next_inst, f"{path}.{key}")
+            elif isinstance(schema_node, list) and isinstance(instance_node, list):
+                for i, item in enumerate(schema_node):
+                    if i < len(instance_node):
+                        check(item, instance_node[i], f"{path}[{i}]")
+
+        for name, schema_iface in self.raw_schema.items():
+            inst = self.interfaces.get(name)
+            if inst:
+                check(schema_iface, inst, path=name)
+
+        print(f"Total nodes checked: {total}")
+        print(f"Missing nodes: {missing}")

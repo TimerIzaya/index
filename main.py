@@ -2,12 +2,11 @@ import json
 import os
 from pathlib import Path
 
-from IR.IRFuzzer import loadFuzzerNeed, generate_ir_program
+from IR.IRFuzzer import  generate_ir_program
 from layers.Layer import Layer
 from lifter.IRToJSLifter import IRToJSLifter
 
 if __name__ == "__main__":
-    loadFuzzerNeed()
     program = generate_ir_program()
     x = json.dumps(program.to_dict(), indent=2)
     file_path = "lifter/IRDemo.json"

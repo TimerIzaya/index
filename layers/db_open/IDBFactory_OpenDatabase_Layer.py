@@ -1,10 +1,10 @@
+from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
 from config import FATHER
 from layers.IDBContext import IDBContext
 from IR.IRType import IDBOpenDBRequest, IDBFactory
 from IR.IRParamGenerator import ParameterGenerator
-from IR.IRSchemaParser import get_parser
 from layers.db_open.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
 from layers.db_open.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
 from layers.db_open.db_schema.IDBOpenDBRequest_onupgradeneeded_Layer import IDBOpenDBRequest_onupgradeneeded_Layer
@@ -19,7 +19,7 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
 
     @staticmethod
     def build(irctx: IRContext, idbctx: IDBContext) -> Layer:
-        parser = get_parser()
+        parser = IDBSchemaParser()
         method = parser.getInterface("IDBFactory").getStaticMethod("open")
         gen = ParameterGenerator(irctx)
 

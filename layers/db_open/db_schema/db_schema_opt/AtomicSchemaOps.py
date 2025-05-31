@@ -1,10 +1,9 @@
+from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import MemberExpression, CallExpression, Literal, VariableDeclaration, AssignmentExpression, Identifier
 from IR.IRContext import IRContext, Variable
 from IR.IRParamGenerator import ParameterGenerator
-from IR.IRSchemaParser import get_parser
 from layers.IDBContext import IDBContext
 from IR.IRType import IDBObjectStore, IDBIndex, IDBDatabase
-import random
 
 
 def get_store_name(irctx: IRContext, idbctx: IDBContext):
@@ -100,7 +99,7 @@ def create_index(irctx: IRContext, idbctx: IDBContext):
     - 注册变量至 IRContext 和 IDBContext
     - 返回对应的 VariableDeclaration 和 AssignmentExpression 节点
     """
-    parser = get_parser()
+    parser = IDBSchemaParser()
     method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
     gen = ParameterGenerator(irctx)
 

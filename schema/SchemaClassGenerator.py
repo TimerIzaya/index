@@ -1,3 +1,12 @@
+import warnings
+
+warnings.warn(
+    "This module is deprecated and will be removed in a future version.",
+    category=DeprecationWarning,
+    stacklevel=2
+)
+
+
 import json
 from pathlib import Path
 from collections import defaultdict

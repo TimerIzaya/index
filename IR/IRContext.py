@@ -2,6 +2,7 @@ import random
 from typing import List, Dict, Optional
 from IR.IRNodes import Identifier
 from IR.IRType import Type
+from schema.SchemaClass import IDBType
 
 
 class Variable:
@@ -30,14 +31,14 @@ class IRContext:
         assert isinstance(var, Variable), "register_variable() must be called with a Variable instance"
         self.scopes[-1][var.name] = var
 
-    def get_random_identifier(self, typename: str) -> Identifier:
+    def get_random_identifier(self, typename: IDBType) -> Identifier:
         for scope in reversed(self.scopes):
             for var in scope.values():
                 if var.type.typename == typename:
                     return Identifier(var.name)
         raise ValueError(f"No identifier found for type {typename}")
 
-    def get_visible_variables(self, typename: str) -> List['Variable']:
+    def get_visible_variables(self, typename: IDBType) -> List['Variable']:
         result = []
         for scope in reversed(self.scopes):
             for var in scope.values():
