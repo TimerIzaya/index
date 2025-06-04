@@ -4,7 +4,7 @@ from typing import Optional, Union
 from IR import IRContext
 from IR.IRNodes import Literal, Identifier
 from config import OPTIONAL_JUMP
-from schema.SchemaClass import ParamInfo, TypeInfo, IDBType
+from schema.SchemaClass import ParamInfo, TypeInfo, IDBType, MethodInfo
 
 
 class ParameterGenerator:
@@ -49,6 +49,21 @@ class ParameterGenerator:
         value = self.generate_value_from_type(typeInfo)
         return Literal(value)
 
+    def generate_argument_list(self, params):
+        args = []
+        for param in params:
+            args.append(self.generate_parameter(param))
+
+        # ==== 参数间规则枚举：createIndex 情形 ====
+        if len(params) >= 3 and params[0].name == "name" and params[1].name == "keyPath":
+            keyPath = args[1]
+            options = args[2]
+            if isinstance(keyPath, Literal) and isinstance(keyPath.value, list):
+                if isinstance(options, Literal) and isinstance(options.value, dict):
+                    if options.value.get("multiEntry", False):
+                        options.value["multiEntry"] = False
+
+        return args
 
     def _resolve_typeinfo(self, typeinfo_union: Union[TypeInfo, list]) -> TypeInfo:
         if isinstance(typeinfo_union, list):

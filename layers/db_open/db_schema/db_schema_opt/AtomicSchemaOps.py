@@ -126,9 +126,8 @@ def create_index(irctx: IRContext, idbctx: IDBContext):
     params = method.getParams().raw()
     args = [Literal(index_name)]
 
-    for param in params[1:]:
-        arg = gen.generate_parameter(param)
-        args.append(arg)
+    ps = gen.generate_argument_list(params[1:])
+    args.extend(ps)
 
     ident = Identifier(index_name)
     irctx.register_variable(Variable(index_name, IDBIndex))

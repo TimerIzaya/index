@@ -11,7 +11,6 @@ from layers.db_transaction.db_curd.IDBObjectStore_DataOps_Layer import IDBObject
 
 
 class IDBDatabase_Transaction_Layer(LayerBuilder):
-
     name = "IDBDatabase_Transaction_Layer"
     layer_type = LayerType.CALLING
 
@@ -24,11 +23,20 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
 
         store_name = idbctx.pick_random_object_store()
 
-        call = CallExpression(
+        txnVarName = "txn"
+        callTX = CallExpression(
             callee_object=Identifier("db"),
             callee_method="transaction",
             args=[Literal(store_name), Literal("readwrite")],
-            result_name="txn"
+            result_name=txnVarName
+        )
+
+        osVarName = "store"
+        callOS = CallExpression(
+            callee_object=Identifier(txnVarName),
+            callee_method="objectStore",
+            args=[Literal(store_name)],
+            result_name=osVarName
         )
 
         irctx.register_variable(Variable("txn", IDBTransaction))
@@ -42,7 +50,7 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
 
         return Layer(
             IDBDatabase_Transaction_Layer.name,
-            ir_nodes=[call],
+            ir_nodes=[callTX, callOS],
             children=children,
             layer_type=IDBDatabase_Transaction_Layer.layer_type
         )
