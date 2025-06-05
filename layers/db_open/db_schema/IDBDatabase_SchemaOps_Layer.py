@@ -24,7 +24,6 @@ class IDBDatabase_SchemaOps_Layer(LayerBuilder):
         body.extend(create_index(irctx, idbctx))
 
         dispatcher = SchemaOptDispatcher()
-
         for _ in range(IDBDatabase_SchemaOps_Layer.total_ops):
             op = dispatcher.choose_op()
             try:
@@ -36,6 +35,7 @@ class IDBDatabase_SchemaOps_Layer(LayerBuilder):
                 print(f"[SchemaOpt] use {op.__name__}")
             except RuntimeError as e:
                 print(f"[SchemaOpt] skipped {op.__name__}: {e}")
+
 
         return Layer(
             IDBDatabase_SchemaOps_Layer.name,

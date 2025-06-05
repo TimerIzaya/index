@@ -68,10 +68,8 @@ def create_object_store(irctx: IRContext, idbctx: IDBContext):
         raise RuntimeError("No IDBDatabase identifier available for create_object_store")
     name = idbctx.new_object_store_name()
     idbctx.register_object_store(name)
-
-    ident = Identifier(name)
     irctx.register_variable(Variable(name, IDBObjectStore))
-
+    ident = Identifier(name)
     return [
         VariableDeclaration(ident.name),
         AssignmentExpression(ident, CallExpression(db, "createObjectStore", [Literal(name)]))
@@ -90,23 +88,16 @@ def delete_object_store(irctx: IRContext, idbctx: IDBContext):
 
 
 def create_index(irctx: IRContext, idbctx: IDBContext):
-    """
-    构造 IDBObjectStore.createIndex 调用的 IL 表达式：
-    - 首先确保当前上下文中有有效的 object store
-    - 尝试生成一个唯一的 index 名称，避免与已有 index 冲突
-    - 通过 schema 获取 createIndex 方法签名
-    - 调用 ParameterGenerator 生成参数
-    - 注册变量至 IRContext 和 IDBContext
-    - 返回对应的 VariableDeclaration 和 AssignmentExpression 节点
-    """
     parser = IDBSchemaParser()
     method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
     gen = ParameterGenerator(irctx)
 
+    # 首先确保当前上下文中有有效的 object store
     store = irctx.get_identifier_by_type(IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore available")
 
+    # 尝试生成一个唯一的 index 名称，避免与已有 index 冲突
     store_name = idbctx.get_current_store()
     if not store_name:
         raise RuntimeError("No current store in context")
