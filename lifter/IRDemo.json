@@ -23,11 +23,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_7472"
-            },
-            {
-              "type": "Literal",
-              "value": 31
+              "value": "str_3525"
             }
           ],
           "result_name": "openRequest"
@@ -145,170 +141,10 @@
                       {
                         "type": "Literal",
                         "value": [
-                          "str_8480",
-                          "str_9013",
-                          "str_9977",
-                          "str_4762",
-                          "str_4219"
+                          "str_7696",
+                          "str_9945",
+                          "str_9942"
                         ]
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_0"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_1"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_1832",
-                          "str_9763",
-                          "str_7836"
-                        ]
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_1"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_2"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_2"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_2"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "str_8884"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": {
-                          "unique": true,
-                          "multiEntry": false
-                        }
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_1"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_1"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_1"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "str_4664"
                       }
                     ],
                     "result_name": null
@@ -324,7 +160,7 @@
                   "args": [
                     {
                       "type": "Literal",
-                      "value": "store_1"
+                      "value": "store_0"
                     }
                   ],
                   "result_name": null
@@ -332,13 +168,13 @@
                 {
                   "type": "VariableDeclaration",
                   "kind": "",
-                  "name": "store_1"
+                  "name": "store_0"
                 },
                 {
                   "type": "AssignmentExpression",
                   "left": {
                     "type": "Identifier",
-                    "name": "store_1"
+                    "name": "store_0"
                   },
                   "right": {
                     "type": "CallExpression",
@@ -350,7 +186,65 @@
                     "args": [
                       {
                         "type": "Literal",
-                        "value": "store_1"
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "property": "indexNames"
+                },
+                {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "property": "keyPath"
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
                       }
                     ],
                     "result_name": null
@@ -381,13 +275,19 @@
                       },
                       {
                         "type": "Literal",
-                        "value": "str_1988"
+                        "value": [
+                          "str_4977",
+                          "str_3393",
+                          "str_581",
+                          "str_5195",
+                          "str_1683"
+                        ]
                       },
                       {
                         "type": "Literal",
                         "value": {
                           "unique": true,
-                          "multiEntry": false
+                          "multiEntry": true
                         }
                       }
                     ],
@@ -419,16 +319,7 @@
                       },
                       {
                         "type": "Literal",
-                        "value": [
-                          "str_8571"
-                        ]
-                      },
-                      {
-                        "type": "Literal",
-                        "value": {
-                          "unique": true,
-                          "multiEntry": true
-                        }
+                        "value": "str_3834"
                       }
                     ],
                     "result_name": null
@@ -449,7 +340,7 @@
                     "type": "CallExpression",
                     "callee_object": {
                       "type": "Identifier",
-                      "name": "store_1"
+                      "name": "store_0"
                     },
                     "callee_method": "createIndex",
                     "args": [
@@ -459,7 +350,60 @@
                       },
                       {
                         "type": "Literal",
-                        "value": "str_4302"
+                        "value": "str_7601"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": {
+                          "unique": false,
+                          "multiEntry": false
+                        }
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "callee_method": "deleteIndex",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "index_1"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "index_1"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "index_1"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "store_0"
+                    },
+                    "callee_method": "createIndex",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "index_1"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": "str_2834"
                       }
                     ],
                     "result_name": null
@@ -490,7 +434,43 @@
                       },
                       {
                         "type": "Literal",
-                        "value": "str_8581"
+                        "value": "str_2988"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "index_4"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "index_4"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "store_0"
+                    },
+                    "callee_method": "createIndex",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "index_4"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": [
+                          "str_5911",
+                          "str_5353",
+                          "str_6957",
+                          "str_9769"
+                        ]
                       },
                       {
                         "type": "Literal",
@@ -504,276 +484,127 @@
                   }
                 },
                 {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "index_5"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "index_5"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "store_0"
+                    },
+                    "callee_method": "createIndex",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "index_5"
+                      },
+                      {
+                        "type": "Literal",
+                        "value": "str_5544"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
+                  "type": "CallExpression",
+                  "callee_object": {
+                    "type": "Identifier",
+                    "name": "db"
+                  },
+                  "callee_method": "deleteObjectStore",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "value": "store_0"
+                    }
+                  ],
+                  "result_name": null
+                },
+                {
+                  "type": "VariableDeclaration",
+                  "kind": "",
+                  "name": "store_0"
+                },
+                {
+                  "type": "AssignmentExpression",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "store_0"
+                  },
+                  "right": {
+                    "type": "CallExpression",
+                    "callee_object": {
+                      "type": "Identifier",
+                      "name": "db"
+                    },
+                    "callee_method": "createObjectStore",
+                    "args": [
+                      {
+                        "type": "Literal",
+                        "value": "store_0"
+                      }
+                    ],
+                    "result_name": null
+                  }
+                },
+                {
                   "type": "MemberExpression",
                   "object": {
                     "type": "Identifier",
                     "name": "index_1"
                   },
-                  "property": "unique"
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_3"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_3"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_3"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_0"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_0"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_3"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_8908",
-                          "str_8916",
-                          "str_1074",
-                          "str_9137"
-                        ]
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "store_1"
-                  },
-                  "callee_method": "deleteIndex",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "index_0"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_2"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": [
-                          "str_6348",
-                          "str_8809",
-                          "str_2485",
-                          "str_951",
-                          "str_4429"
-                        ]
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_4"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_4"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_4"
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "index_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "index_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "store_1"
-                    },
-                    "callee_method": "createIndex",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "index_0"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": "str_1800"
-                      },
-                      {
-                        "type": "Literal",
-                        "value": {
-                          "unique": false,
-                          "multiEntry": true
-                        }
-                      }
-                    ],
-                    "result_name": null
-                  }
-                },
-                {
-                  "type": "CallExpression",
-                  "callee_object": {
-                    "type": "Identifier",
-                    "name": "db"
-                  },
-                  "callee_method": "deleteObjectStore",
-                  "args": [
-                    {
-                      "type": "Literal",
-                      "value": "store_0"
-                    }
-                  ],
-                  "result_name": null
-                },
-                {
-                  "type": "VariableDeclaration",
-                  "kind": "",
-                  "name": "store_0"
-                },
-                {
-                  "type": "AssignmentExpression",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "store_0"
-                  },
-                  "right": {
-                    "type": "CallExpression",
-                    "callee_object": {
-                      "type": "Identifier",
-                      "name": "db"
-                    },
-                    "callee_method": "createObjectStore",
-                    "args": [
-                      {
-                        "type": "Literal",
-                        "value": "store_0"
-                      }
-                    ],
-                    "result_name": null
-                  }
+                  "property": "multiEntry"
                 }
               ]
             }
@@ -851,7 +682,7 @@
                   "args": [
                     {
                       "type": "Literal",
-                      "value": "store_4"
+                      "value": "store_0"
                     },
                     {
                       "type": "Literal",
@@ -870,7 +701,7 @@
                   "args": [
                     {
                       "type": "Literal",
-                      "value": "store_4"
+                      "value": "store_0"
                     }
                   ],
                   "result_name": "store"
@@ -885,81 +716,81 @@
                       "type": "CallExpression",
                       "callee_object": {
                         "type": "Identifier",
-                        "name": "store_3"
+                        "name": "store_0"
                       },
-                      "callee_method": "delete",
+                      "callee_method": "openKeyCursor",
                       "args": [],
-                      "result_name": "req_delete_0"
+                      "result_name": "req_openKeyCursor_0"
                     },
                     {
                       "type": "CallExpression",
                       "callee_object": {
                         "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "delete",
-                      "args": [],
-                      "result_name": "req_delete_1"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "put",
-                      "args": [],
-                      "result_name": "req_put_2"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "get",
-                      "args": [],
-                      "result_name": "req_get_3"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "openCursor",
-                      "args": [],
-                      "result_name": "req_openCursor_4"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "delete",
-                      "args": [],
-                      "result_name": "req_delete_5"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
-                      },
-                      "callee_method": "put",
-                      "args": [],
-                      "result_name": "req_put_6"
-                    },
-                    {
-                      "type": "CallExpression",
-                      "callee_object": {
-                        "type": "Identifier",
-                        "name": "store_3"
+                        "name": "store_0"
                       },
                       "callee_method": "getAllKeys",
                       "args": [],
-                      "result_name": "req_getAllKeys_7"
+                      "result_name": "req_getAllKeys_1"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "openCursor",
+                      "args": [],
+                      "result_name": "req_openCursor_2"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "openKeyCursor",
+                      "args": [],
+                      "result_name": "req_openKeyCursor_3"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "getKey",
+                      "args": [],
+                      "result_name": "req_getKey_4"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "getAll",
+                      "args": [],
+                      "result_name": "req_getAll_5"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "delete",
+                      "args": [],
+                      "result_name": "req_delete_6"
+                    },
+                    {
+                      "type": "CallExpression",
+                      "callee_object": {
+                        "type": "Identifier",
+                        "name": "store_0"
+                      },
+                      "callee_method": "getKey",
+                      "args": [],
+                      "result_name": "req_getKey_7"
                     }
                   ]
                 },
@@ -1254,7 +1085,7 @@
           "args": [
             {
               "type": "Literal",
-              "value": "str_7472"
+              "value": "str_3525"
             }
           ],
           "result_name": "deleteRequest"
