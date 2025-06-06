@@ -1,9 +1,7 @@
-from IR.IRContext import IRContext
-from layers.IDBContext import IDBContext
-from layers.IDBRootLayer import IDBRootLayer
+from IR.layers.Globals import Global
+from IR.layers.IDBRootLayer import IDBRootLayer
 
 def generate_ir_program():
-    irctx = IRContext()
-    idbctx = IDBContext()
-    root_layer = IDBRootLayer.build(irctx, idbctx)
+    Global.reset()
+    root_layer = IDBRootLayer.build()
     return root_layer

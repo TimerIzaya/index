@@ -2,7 +2,7 @@ import unittest
 
 from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRContext import IRContext
-from IR.IRParamGenerator import ParameterGenerator
+from IR.IRParamValueGenerator import IRParamValueGenerator
 from schema.SchemaClass import IDBType, TypeInfo
 from schema.SchemaInstanceTree import SchemaInstanceTree
 
@@ -50,9 +50,17 @@ class MyTestCase(unittest.TestCase):
 
         print("transaction param[0].storeNames =", ret)
 
+        method = IDBSchemaParser.getInterface("IDBDatabase") \
+            .getInstanceMethod("transaction") \
+            .node
+
+        ps = method.genLiteralParams()
+        print(1)
+
+
     def testParamGenerator(self):
         context = IRContext()
-        generator = ParameterGenerator(context)
+        generator = IRParamValueGenerator(context)
 
         print("==== TypeInfo Generation Test ====")
         for idb_type in IDBType:

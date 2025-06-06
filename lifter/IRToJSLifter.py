@@ -1,4 +1,4 @@
-from layers.Layer import Layer, LayerType
+from IR.layers.Layer import Layer, LayerType
 from IR.IRNodes import *
 
 class IRToJSLifter:

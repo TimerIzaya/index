@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 from IR.IRFuzzer import  generate_ir_program
-from layers.Layer import Layer
+from IR.layers.Layer import Layer
 from lifter.IRToJSLifter import IRToJSLifter
 
 if __name__ == "__main__":

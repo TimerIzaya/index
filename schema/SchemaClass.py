@@ -134,11 +134,11 @@ class MethodInfo:
 
         self.params = [ParamInfo(p) for p in data.get("params", [])]
 
-    def genActualParams(self):
-        args = []
-        ps = gen.generate_argument_list(params[:])
-        args.extend(ps)
-        return args
+    # def genLiteralParams(self):
+    #     args = []
+    #     for p in self.params:
+    #         args.extend(IRParamValueGenerator.generateValueByParamInfo(p))
+    #     return args
 
 
 # ========== PropertyInfo ==========
