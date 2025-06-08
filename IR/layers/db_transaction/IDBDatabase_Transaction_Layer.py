@@ -1,5 +1,5 @@
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBTransaction
+from IR.IRType import IDBTransaction, IDBObjectStore
 from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.layers.Globals import Global
 from IR.layers.IDBContext import IDBContext
@@ -41,6 +41,7 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
         )
 
         Global.irctx.register_variable(Variable("txn", IDBTransaction))
+        Global.irctx.register_variable(Variable("store", IDBObjectStore))
 
         children = list(filter(None, [
             IDBObjectStore_DataOps_Layer.build(),

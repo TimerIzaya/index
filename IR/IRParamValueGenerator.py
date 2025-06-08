@@ -1,5 +1,5 @@
 import random
-from typing import Optional, Union
+from typing import Optional, Union, List
 
 from IR.IRNodes import Literal
 from IR.layers.Globals import Global
@@ -9,21 +9,23 @@ from schema.SchemaClass import ParamInfo, TypeInfo, IDBType, MethodInfo
 
 class IRParamValueGenerator:
 
-    # def generate_argument_list(self, params):
-    #     args = []
-    #     for param in params:
-    #         args.append(self.generateValueByParamInfo(param))
-    #
-    #     # ==== 参数间规则枚举：createIndex 情形 ====
-    #     if len(params) >= 3 and params[0].name == "name" and params[1].name == "keyPath":
-    #         keyPath = args[1]
-    #         options = args[2]
-    #         if isinstance(keyPath, Literal) and isinstance(keyPath.value, list):
-    #             if isinstance(options, Literal) and isinstance(options.value, dict):
-    #                 if options.value.get("multiEntry", False):
-    #                     options.value["multiEntry"] = False
-    #
-    #     return args
+    @staticmethod
+    def generateMethodArgs(method: MethodInfo) -> List[ParamInfo]:
+        params = method.params
+        args = []
+        for param in params:
+            args.append(IRParamValueGenerator.generateValueByParamInfo(param))
+
+        if method.name is "createIndex":
+            if len(params) >= 3:
+                keyPath = args[1]
+                options = args[2]
+                if isinstance(keyPath, Literal) and isinstance(keyPath.value, list):
+                    if isinstance(options, Literal) and isinstance(options.value, dict):
+                        if options.value.get("multiEntry", True):
+                            options.value["multiEntry"] = False
+
+        return args
 
 
     @staticmethod

@@ -1,8 +1,8 @@
 import unittest
 
-from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRContext import IRContext
 from IR.IRParamValueGenerator import IRParamValueGenerator
+from schema.IDBSchemaParser import IDBSchemaParser
 from schema.SchemaClass import IDBType, TypeInfo
 from schema.SchemaInstanceTree import SchemaInstanceTree
 
@@ -52,9 +52,7 @@ class MyTestCase(unittest.TestCase):
 
         method = IDBSchemaParser.getInterface("IDBDatabase") \
             .getInstanceMethod("transaction") \
-            .node
 
-        ps = method.genLiteralParams()
         print(1)
 
 

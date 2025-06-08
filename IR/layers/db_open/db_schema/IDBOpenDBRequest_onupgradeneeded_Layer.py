@@ -16,6 +16,7 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
 
     @staticmethod
     def build() -> Layer:
+        Global.irctx.enter_layer(IDBOpenDBRequest_onupgradeneeded_Layer)
         body = [
             ConsoleLog(Literal("db onupgraded trigered"))
         ]
@@ -43,6 +44,7 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
             right=FunctionExpression([Identifier("event")], body)
         )
 
+        Global.irctx.exit_layer()
         return Layer(
             IDBOpenDBRequest_onupgradeneeded_Layer.name,
             ir_nodes=[handler],

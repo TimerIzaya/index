@@ -114,11 +114,7 @@ def create_index():
     Global.idbctx.register_index(store_name, index_name)
 
     # 生成参数列表
-    params = method.getParams().raw()
-    args = [Literal(index_name)]
-
-    ps = IRParamValueGenerator.generate_argument_list(params[1:])
-    args.extend(ps)
+    args = IRParamValueGenerator.generateMethodArgs(method.node)
 
     ident = Identifier(index_name)
     Global.irctx.register_variable(Variable(index_name, IDBIndex))

@@ -18,8 +18,6 @@ class IDBFactory_DeleteDatabase_Layer(LayerBuilder):
 
     @staticmethod
     def build() -> Layer:
-        gen = IRParamValueGenerator(Global.irctx)
-
         db_name = Global.idbctx.get_database_name()
         args = [Literal(db_name)]
 

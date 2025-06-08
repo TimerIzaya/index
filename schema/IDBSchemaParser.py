@@ -1,11 +1,12 @@
-from typing import Union
-
 from config import GlobalIRTypeRegistry
-
+from typing import Union
 
 class SchemaNode:
     def __init__(self, node):
         self.node = node
+
+    def __getattr__(self, name):
+        return getattr(self.node, name)
 
     def _wrap(self, val):
         return SchemaNode(val) if val is not None else None
@@ -52,7 +53,6 @@ class SchemaNode:
 
     def raw(self):
         return self.node
-
 
 
 class IDBSchemaParser:
@@ -107,7 +107,6 @@ class IDBSchemaParser:
     def _get_interface(self, name: str):
         return self.root.get(name)
 
-    # ===== Static interface =====
     @classmethod
     def _get_instance(cls) -> "IDBSchemaParser":
         if cls._instance is None:
@@ -117,3 +116,6 @@ class IDBSchemaParser:
     @classmethod
     def getInterface(cls, name: str) -> SchemaNode:
         return cls._get_instance()._get_interface(name)
+
+
+
