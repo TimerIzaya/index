@@ -16,7 +16,7 @@ class IRParamValueGenerator:
         for param in params:
             args.append(IRParamValueGenerator.generateValueByParamInfo(param))
 
-        if method.name is "createIndex":
+        if method.name == "createIndex":
             if len(params) >= 3:
                 keyPath = args[1]
                 options = args[2]
@@ -69,6 +69,19 @@ class IRParamValueGenerator:
             typename.name.startswith("IDB") or "Exception" in typename.name or "Error" in typename.name
         ):
             return None
+
+        if typename == IDBType.IDBIndex.value:
+            return Global.idbctx.pick_random_index() or "idx_default"
+        if typename == IDBType.IDBObjectStore.value:
+            return Global.idbctx.get_current_store() or "store_default"
+        elif typename == IDBType.IDBKeyRange.value:
+            args.append(Literal(f"IDBKeyRange.only({key})"))
+        elif typename == IDBType.IDBRequest.value:
+            ident = Global.irctx.get_random_identifier(IDBType.IDBRequest.value)
+            args.append(ident or Literal("<request>"))
+        else:
+            # 使用统一生成器处理剩余所有普通类型
+            args.append(Literal(valgen.generate(typename, key=key)))
 
         return f"{typename.name if isinstance(typename, IDBType) else typename}_instance"
 
