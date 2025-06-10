@@ -1,7 +1,7 @@
 import random
 from typing import Dict, List, Optional
 
-class IDBContext:
+class LiteralContext:
     def __init__(self):
         self.current_db: Optional[str] = None
         self.current_store: Optional[str] = None

@@ -1,7 +1,7 @@
 from IR.IRContext import IRContext
 from IR.IRType import IDBTransaction
 from IR.layers.Globals import Global
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.IRNodes import AssignmentExpression, MemberExpression, Identifier, FunctionExpression, ConsoleLog, Literal
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder

@@ -5,7 +5,7 @@ from IR.IRNodes import Identifier, Literal, CallExpression
 from IR.layers.Globals import Global
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.layers.db_delete.IDBDeleteDBRequest_onblocked_Layer import IDBDeleteDBRequest_onblocked_Layer
 from IR.layers.db_delete.IDBDeleteDBRequest_onerror_Layer import IDBDeleteDBRequest_onerror_Layer
 from IR.layers.db_delete.IDBDeteleDBRequest_onsuccess_Layer import IDBDeleteDBRequest_onsuccess_Layer
@@ -18,7 +18,7 @@ class IDBFactory_DeleteDatabase_Layer(LayerBuilder):
 
     @staticmethod
     def build() -> Layer:
-        db_name = Global.idbctx.get_database_name()
+        db_name = Global.itctx.get_database_name()
         args = [Literal(db_name)]
 
         call = CallExpression(

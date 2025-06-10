@@ -1,6 +1,6 @@
 from IR.IRContext import IRContext
 from IR.IRNodes import *
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import LayerType, Layer
 from IR.layers.LayerBuilder import LayerBuilder
 from IR.layers.db_open.db_schema.db_schema_opt.AtomicSchemaOps import create_object_store, create_index

@@ -5,7 +5,7 @@ from IR.layers.Globals import Global
 from config import randomFuzzing
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 
 
 class IDBDeleteDBRequest_onsuccess_Layer(LayerBuilder):

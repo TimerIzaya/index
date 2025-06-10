@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from IR.IRContext import IRContext
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import Layer, LayerType
 
 class LayerBuilder(ABC):

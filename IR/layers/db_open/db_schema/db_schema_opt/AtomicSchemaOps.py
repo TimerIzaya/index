@@ -3,7 +3,7 @@ from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import MemberExpression, CallExpression, Literal, VariableDeclaration, AssignmentExpression, Identifier
 from IR.IRContext import IRContext, Variable
 from IR.IRParamValueGenerator import IRParamValueGenerator
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.IRType import IDBObjectStore, IDBIndex, IDBDatabase
 
 
@@ -67,8 +67,8 @@ def create_object_store():
     db = Global.irctx.get_identifier_by_type(IDBDatabase)
     if db is None:
         raise RuntimeError("No IDBDatabase identifier available for create_object_store")
-    name = Global.idbctx.new_object_store_name()
-    Global.idbctx.register_object_store(name)
+    name = Global.itctx.new_object_store_name()
+    Global.itctx.register_object_store(name)
     Global.irctx.register_variable(Variable(name, IDBObjectStore))
     ident = Identifier(name)
     return [
@@ -81,10 +81,10 @@ def delete_object_store():
     db = Global.irctx.get_identifier_by_type(IDBDatabase)
     if db is None:
         raise RuntimeError("No IDBDatabase identifier available for delete_object_store")
-    name = Global.idbctx.pick_random_object_store()
+    name = Global.itctx.pick_random_object_store()
     if name is None:
         raise RuntimeError("No object store available to delete.")
-    Global.idbctx.unregister_object_store(name)
+    Global.itctx.unregister_object_store(name)
     return CallExpression(db, "deleteObjectStore", [Literal(name)])
 
 
@@ -98,20 +98,20 @@ def create_index():
         raise RuntimeError("No IDBObjectStore available")
 
     # 尝试生成一个唯一的 index 名称，避免与已有 index 冲突
-    store_name = Global.idbctx.get_current_store()
+    store_name = Global.itctx.get_current_store()
     if not store_name:
         raise RuntimeError("No current store in context")
 
     # 尝试最多 5 次获取一个不重复的 index 名称
     for _ in range(5):
-        index_name = Global.idbctx.new_index_name()
-        if not Global.idbctx.has_index(store_name, index_name):
+        index_name = Global.itctx.new_index_name()
+        if not Global.itctx.has_index(store_name, index_name):
             break
     else:
         raise RuntimeError(f"Unable to generate unique index name for store: {store_name}")
 
     # 注册该索引名称
-    Global.idbctx.register_index(store_name, index_name)
+    Global.itctx.register_index(store_name, index_name)
 
     # 生成参数列表
     args = IRParamValueGenerator.generateMethodArgs(method.node)
@@ -133,12 +133,12 @@ def delete_index():
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for delete_index")
 
-    idx = Global.idbctx.pick_random_index()
+    idx = Global.itctx.pick_random_index()
     if idx is None:
         raise RuntimeError("No index available to delete.")
-    store_name = Global.idbctx.current_store
+    store_name = Global.itctx.current_store
 
-    Global.idbctx.unregister_index(store_name, idx)
+    Global.itctx.unregister_index(store_name, idx)
     return CallExpression(store, "deleteIndex", [Literal(idx)])
 
 

@@ -5,7 +5,7 @@ from IR.IRNodes import (
     MemberExpression, Literal, CallExpression
 )
 from IR.layers.Globals import Global
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
 from IR.layers.db_transaction.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer

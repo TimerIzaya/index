@@ -24,7 +24,7 @@ class PipeEnd:
 
     def generate_il(self, store_id: Identifier, key, ):
         """
-        基于 MethodInfo + IDBType + IRContext + IDBContext 生成 CallExpression。
+        基于 MethodInfo + IDBType + IRContext + LiteralContext 生成 CallExpression。
         自动将结果注册进 irctx（使用 returns 推导类型）。
         """
         args = []
@@ -43,10 +43,10 @@ class PipeEnd:
             if param.enum:
                 args.append(Literal(random.choice(param.enum)))
             elif typename == IDBType.IDBIndex.value:
-                index_name = Global.idbctx.pick_random_index()
+                index_name = Global.itctx.pick_random_index()
                 args.append(Literal(index_name or "idx_default"))
             elif typename == IDBType.IDBObjectStore.value:
-                store_name = Global.idbctx.get_current_store()
+                store_name = Global.itctx.get_current_store()
                 args.append(Literal(store_name or "store_default"))
             elif typename == IDBType.IDBKeyRange.value:
                 args.append(Literal(f"IDBKeyRange.only({key})"))

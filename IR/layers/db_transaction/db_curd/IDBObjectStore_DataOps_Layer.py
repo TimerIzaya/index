@@ -2,7 +2,7 @@ from IR.IRContext import IRContext
 from IR.IRNodes import CallExpression, Identifier
 from IR.IRType import IDBObjectStore
 from IR.layers.Globals import Global
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
 from IR.layers.db_transaction.db_curd.PipeFlow import PipeFlow
@@ -22,7 +22,7 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
         body = []
 
         store_id: Identifier = Global.irctx.get_identifier_by_type(IDBObjectStore)
-        current_store = Global.idbctx.get_current_store()
+        current_store = Global.itctx.get_current_store()
 
         # 如果缺少 store 或 name，跳过该层
         if store_id is None or current_store is None:

@@ -3,7 +3,7 @@ from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
 from config import FATHER
-from IR.layers.IDBContext import IDBContext
+from IR.layers.LiteralContext import LiteralContext
 from IR.IRType import IDBOpenDBRequest, IDBFactory
 from IR.IRParamValueGenerator import IRParamValueGenerator
 from IR.layers.db_open.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
@@ -30,7 +30,7 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
 
         # 注册数据库名
         if isinstance(name_param, Literal):
-            Global.idbctx.start_database(name_param.value)
+            Global.itctx.start_database(name_param.value)
 
         args = [name_param, version_param]
 

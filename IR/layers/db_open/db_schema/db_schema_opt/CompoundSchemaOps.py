@@ -60,7 +60,7 @@ def add_multiple_indexes():
 # drop 系列
 
 def drop_all_indexes():
-    all_indexes = Global.idbctx.get_all_indexes()
+    all_indexes = Global.itctx.get_all_indexes()
     if not all_indexes:
         raise RuntimeError("No indexes to drop")
     stmts = []
