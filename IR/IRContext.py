@@ -1,57 +1,56 @@
 import random
 from typing import List, Dict, Optional
-from IR.IRNodes import Identifier
+from IR.IRNodes import Identifier, Variable
 from IR.IRType import Type
+from IR.layers.Layer import Layer
 from schema.SchemaClass import IDBType
 
 
-class Variable:
-    def __init__(self, name: str, type_: Type):
-        self.name = name
-        self.type = type_
+class LayerPool:
+    def __init__(self, layer: Layer):
+        self.layer: Layer = layer
+        self.vars: List[Variable] = []
 
-    def __repr__(self):
-        return f"<Variable {self.name}: {self.type.typename}>"
+    def append(self, v: Variable):
+        self.vars.append(v)
 
 class IRContext:
     def __init__(self):
-        self.scopes: List[Dict[str, Variable]] = [{}]
-        self.layer_stack: List[str] = []
+        #作用域栈
+        self.layerStack: List[LayerPool] = []
         self.unique_counter = 0
 
     def enter_layer(self, layer):
-        self.scopes.append({})
-        self.layer_stack.append(layer.name if hasattr(layer, "name") else str(layer))
+        self.layerStack.append(LayerPool(layer))
 
     def exit_layer(self):
-        self.scopes.pop()
-        self.layer_stack.pop()
+        self.layerStack.pop()
 
-    def register_variable(self, var: Variable):
+    def register_variable(self, var: Variable, layer: Type):
         assert isinstance(var, Variable), "register_variable() must be called with a Variable instance"
-        self.scopes[-1][var.name] = var
+        self.layerStack[-1].append(var)
 
     def get_random_identifier(self, typename: IDBType) -> Identifier:
-        for scope in reversed(self.scopes):
-            for var in scope.values():
-                if var.type.typename == typename:
-                    return Identifier(var.name)
+        for layPool in self.layerStack:
+            for v in layPool.vars:
+                if v.type.typename == typename:
+                    return v.name
         raise ValueError(f"No identifier found for type {typename}")
 
-    def get_visible_variables(self, typename: IDBType) -> List['Variable']:
+    def get_visible_variables(self, typename: IDBType) -> List[Variable]:
         result = []
-        for scope in reversed(self.scopes):
-            for var in scope.values():
-                if var.type.typename == typename:
-                    result.append(var)
+        for layPool in self.layerStack:
+            for v in layPool.vars:
+                if v.type.typename == typename:
+                    result.append(v)
         return result
 
     def get_identifier_by_type(self, type_: Type) -> Optional[Identifier]:
         candidates = []
-        for scope in reversed(self.scopes):
-            for var in scope.values():
-                if var.type == type_:
-                    candidates.append(Identifier(var.name))
+        for layPool in self.layerStack:
+            for v in layPool.vars:
+                if v.type == type_:
+                    candidates.append(v)
         return random.choice(candidates) if candidates else None
 
     def generate_unique_name(self, base: str) -> str:

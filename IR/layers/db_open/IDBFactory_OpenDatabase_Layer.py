@@ -42,9 +42,9 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         )
 
         # 注册 indexedDB 对象
-        Global.irctx.register_variable(Variable("FATHER", IDBFactory))
+        Global.irctx.register_variable(Variable(Identifier("FATHER"), IDBFactory), IDBFactory_OpenDatabase_Layer)
 
-        Global.irctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
+        Global.irctx.register_variable(Variable(Identifier("openRequest"), IDBOpenDBRequest), IDBFactory_OpenDatabase_Layer)
 
         # 注册子事件层
         upgrade_layer = IDBOpenDBRequest_onupgradeneeded_Layer.build()

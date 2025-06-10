@@ -26,7 +26,7 @@ class IRToJSLifter:
                 and isinstance(stmt, VariableDeclaration)
                 and isinstance(stmts[i + 1], AssignmentExpression)
                 and isinstance(stmts[i + 1].left, Identifier)
-                and stmts[i + 1].left.name == stmt.name
+                and stmts[i + 1].left.raw == stmt.name
             ):
                 rhs = IRToJSLifter._convert_node(stmts[i + 1].right, 0)
                 if rhs.endswith(";"):
@@ -53,7 +53,7 @@ class IRToJSLifter:
             return f"{indent}{node.kind} {node.name};"
 
         elif isinstance(node, Identifier):
-            return node.name
+            return node.raw
 
         elif isinstance(node, Literal):
             val = node.value
@@ -80,11 +80,11 @@ class IRToJSLifter:
             return f"{indent}{left} = {right};"
 
         elif isinstance(node, MemberExpression):
-            obj = IRToJSLifter._convert_node(node.object_expr, indent_level)
+            obj = IRToJSLifter._convert_node(node.objectExpr, indent_level)
             return f"{obj}.{node.property_name}"
 
         elif isinstance(node, FunctionExpression):
-            params = ", ".join(p.name for p in node.params)
+            params = ", ".join(p.raw for p in node.params)
             body_lines = [
                 IRToJSLifter._convert_node(stmt, indent_level + 1)
                 for stmt in node.body

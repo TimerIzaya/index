@@ -25,7 +25,7 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
         assign_db = AssignmentExpression(
             left=Identifier("db"),
             right=MemberExpression(
-                object_expr=MemberExpression(Identifier("event"), "target"),
+                objectExpr=MemberExpression(Identifier("event"), "target"),
                 property_name="result"
             )
         )

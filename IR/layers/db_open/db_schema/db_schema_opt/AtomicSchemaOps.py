@@ -72,7 +72,7 @@ def create_object_store():
     Global.irctx.register_variable(Variable(name, IDBObjectStore))
     ident = Identifier(name)
     return [
-        VariableDeclaration(ident.name),
+        VariableDeclaration(ident.raw),
         AssignmentExpression(ident, CallExpression(db, "createObjectStore", [Literal(name)]))
     ]
 
@@ -120,7 +120,7 @@ def create_index():
     Global.irctx.register_variable(Variable(index_name, IDBIndex))
 
     return [
-        VariableDeclaration(ident.name),
+        VariableDeclaration(ident.raw),
         AssignmentExpression(
             ident,
             CallExpression(store, "createIndex", args)

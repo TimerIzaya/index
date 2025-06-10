@@ -1,11 +1,41 @@
 from typing import List, Union, Optional
 
+from IR.IRType import Type
 from config import OPTIONAL_JUMP
 
 
 class IRNode:
     def to_dict(self):
         raise NotImplementedError
+
+
+class Identifier(IRNode):
+    def __init__(self, raw: str):
+        self.raw = raw
+
+    def to_dict(self):
+        return {
+            "type": "Identifier",
+            "raw": self.raw
+        }
+
+
+'''
+显示声明变量，例如var x = "123"，那么一个variable一定和一个identifier
+隐式声明变量，例如funcx(KeyRanger.bound(1))，variable就不需要identifier
+但是隐式声明是对资源的一种浪漫，我们希望声明的变量可以在上下文随意调用，所以这里我选择把identifier和variable绑定
+我们IR中变量的name，其实就是它的identifier
+'''
+class Variable(IRNode):
+    def to_dict(self):
+        pass
+
+    def __init__(self, name: Identifier, type_: Type):
+        self.name = name
+        self.type = type_
+
+    def __repr__(self):
+        return f"<Variable {self.name}: {self.type.typename}>"
 
 
 class Literal(IRNode):
@@ -19,27 +49,21 @@ class Literal(IRNode):
         }
 
 
-class Identifier(IRNode):
-    def __init__(self, name: str):
-        self.name = name
-
-    def to_dict(self):
-        return {
-            "type": "Identifier",
-            "name": self.name
-        }
-
-
+'''
+1. KeyRange.bound()
+2. var x = ClassA; x.fieldA;
+静态方法调用和成员变量调用都是member expression，目前我们仅支持以上两种，实际还有更多，但是测试idb不需要，如果有再继续兼容即可
+'''
 class MemberExpression(IRNode):
-    def __init__(self, object_expr: IRNode, property_name: str):
-        assert isinstance(object_expr, IRNode), "object_expr must be IRNode"
-        self.object_expr = object_expr
+    def __init__(self, objectExpr: IRNode, property_name: str):
+        assert isinstance(objectExpr, IRNode), "objectExpr must be IRNode"
+        self.objectExpr = objectExpr
         self.property_name = property_name
 
     def to_dict(self):
         return {
             "type": "MemberExpression",
-            "object": self.object_expr.to_dict(),
+            "object": self.objectExpr.to_dict(),
             "property": self.property_name
         }
 
@@ -135,7 +159,7 @@ class IRNodeFactory:
     def from_dict(d: dict) -> IRNode:
         t = d.get("type")
         if t == "Identifier":
-            return Identifier(d["name"])
+            return Identifier(d["raw"])
         elif t == "Literal":
             return Literal(d["value"])
         elif t == "VariableDeclaration":
@@ -150,18 +174,18 @@ class IRNodeFactory:
             )
         elif t == "MemberExpression":
             return MemberExpression(
-                object_expr=IRNodeFactory.from_dict(d["object"]),
+                objectExpr=IRNodeFactory.from_dict(d["object"]),
                 property_name=d["property"]
             )
         elif t == "FunctionExpression":
             return FunctionExpression(
-                params=[Identifier(p["name"]) for p in d.get("params", [])],
+                params=[Identifier(p["raw"]) for p in d.get("params", [])],
                 body=[IRNodeFactory.from_dict(b) for b in d.get("body", [])]
             )
 
         elif t == "CallExpression":
             return CallExpression(
-                callee_object=Identifier(d["callee_object"]["name"]),
+                callee_object=Identifier(d["callee_object"]["raw"]),
                 callee_method=d["callee_method"],
                 args=[IRNodeFactory.from_dict(arg) for arg in d.get("args", [])],
                 result_name=d.get("result_name")
