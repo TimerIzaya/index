@@ -26,7 +26,7 @@ class IRContext:
     def exit_layer(self):
         self.layerStack.pop()
 
-    def register_variable(self, var: Variable, layer: Type):
+    def register_variable(self, var: Variable):
         assert isinstance(var, Variable), "register_variable() must be called with a Variable instance"
         self.layerStack[-1].append(var)
 

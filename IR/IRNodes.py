@@ -28,10 +28,14 @@ class Identifier(IRNode):
 '''
 class Variable(IRNode):
     def to_dict(self):
-        pass
+        return {
+            "type": "Variable",
+            "name": self.name.to_dict(),
+            "type": self.type.typename
+        }
 
-    def __init__(self, name: Identifier, type_: Type):
-        self.name = name
+    def __init__(self, name: str, type_: Type):
+        self.name = Identifier(name)
         self.type = type_
 
     def __repr__(self):
@@ -56,7 +60,10 @@ class Literal(IRNode):
 '''
 class MemberExpression(IRNode):
     def __init__(self, objectExpr: IRNode, property_name: str):
-        assert isinstance(objectExpr, IRNode), "objectExpr must be IRNode"
+        assert isinstance(objectExpr, Identifier) or isinstance(objectExpr, Variable) or isinstance(objectExpr, self.__class__)
+        # callee_object统一作为identifier处理
+        if isinstance(objectExpr, Variable):
+            objectExpr = objectExpr.name
         self.objectExpr = objectExpr
         self.property_name = property_name
 
@@ -85,10 +92,12 @@ class AssignmentExpression(IRNode):
 
 
 class CallExpression(IRNode):
-    def __init__(self, callee_object: Identifier, callee_method: str,
+    def __init__(self, callee_object: Union[Identifier, Variable], callee_method: str,
                  args: List[IRNode], result_name: Optional[str] = None):
-        assert isinstance(callee_object, Identifier)
-
+        assert isinstance(callee_object, Identifier) or isinstance(callee_object, Variable)
+        # callee_object统一作为identifier处理
+        if isinstance(callee_object, Variable):
+            callee_object = callee_object.name
         # 过滤掉 Literal("__JUMP__")
         filtered_args = []
         for arg in args:

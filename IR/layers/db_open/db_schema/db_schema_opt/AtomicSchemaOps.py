@@ -1,4 +1,5 @@
 from IR.layers.Globals import Global
+from IR.layers.db_open.db_schema import IDBDatabase_SchemaOps_Layer
 from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import MemberExpression, CallExpression, Literal, VariableDeclaration, AssignmentExpression, Identifier
 from IR.IRContext import IRContext, Variable
@@ -117,13 +118,14 @@ def create_index():
     args = IRParamValueGenerator.generateMethodArgs(method.node)
 
     ident = Identifier(index_name)
+
     Global.irctx.register_variable(Variable(index_name, IDBIndex))
 
     return [
         VariableDeclaration(ident.raw),
         AssignmentExpression(
             ident,
-            CallExpression(store, "createIndex", args)
+            CallExpression(store.name, "createIndex", args)
         )
     ]
 

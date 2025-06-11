@@ -1,6 +1,6 @@
 from IR.IRContext import IRContext, Variable
 from IR.IRType import IDBFactory, IDBDatabase
-from IR.IRNodes import VariableDeclaration
+from IR.IRNodes import VariableDeclaration, Identifier
 from IR.layers.Globals import Global
 from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import Layer, LayerType
@@ -17,7 +17,7 @@ class IDBRootLayer(LayerBuilder):
     def build() -> Layer:
         Global.irctx.enter_layer(IDBRootLayer)
         # 全局声明 db 变量
-        Global.irctx.register_variable(Variable("db", IDBDatabase), IDBRootLayer)
+        Global.irctx.register_variable(Variable("db", IDBDatabase))
         db_decl = VariableDeclaration(name="db", kind="let")
 
         # 构建子层：open / delete
