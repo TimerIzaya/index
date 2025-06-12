@@ -14,8 +14,8 @@ class IDBObjectStore_DataOps_Layer(LayerBuilder):
     layer_type = LayerType.EXECUTION
 
     # 可配置项：pipeflow 个数 和 每个长度
-    pipeflow_count = 2
-    pipeflow_length = 4
+    pipeflow_count = 8
+    pipeflow_length = 8
 
     @staticmethod
     def build() -> Layer | None:

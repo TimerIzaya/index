@@ -8,10 +8,10 @@ class IRToJSLifter:
     @staticmethod
     def lift(root_layer: Layer) -> str:
         IRToJSLifter._visited_layers = set()
-        return "\n".join(IRToJSLifter._convert_layer(root_layer))
+        return "\n".join(IRToJSLifter.convertLayer(root_layer))
 
     @staticmethod
-    def _convert_layer(layer: Layer, indent_level: int = 0):
+    def convertLayer(layer: Layer, indent_level: int = 0):
         IRToJSLifter._current_layer = layer
         lines = []
         stmts = layer.ir_nodes
@@ -41,7 +41,7 @@ class IRToJSLifter:
 
         for child in layer.children:
             if child.name not in IRToJSLifter._visited_layers:
-                lines.extend(IRToJSLifter._convert_layer(child, indent_level))
+                lines.extend(IRToJSLifter.convertLayer(child, indent_level))
 
         return lines
 
@@ -97,7 +97,7 @@ class IRToJSLifter:
                 for child in IRToJSLifter._current_layer.children:
                     IRToJSLifter._visited_layers.add(child.name)
                     body_lines.extend(
-                        IRToJSLifter._convert_layer(child, indent_level + 1)
+                        IRToJSLifter.convertLayer(child, indent_level + 1)
                     )
 
             indented_body = "\n".join("  " * (indent_level + 1) + line.lstrip() for line in body_lines)
