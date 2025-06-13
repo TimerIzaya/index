@@ -79,14 +79,11 @@ def create_object_store():
 
 
 def delete_object_store():
-    db = Global.irctx.get_identifier_by_type(IDBDatabase)
+    db = Global.irctx.get_identifier_by_type(IDBObjectStore)
     if db is None:
         raise RuntimeError("No IDBDatabase identifier available for delete_object_store")
-    name = Global.itctx.pick_random_object_store()
-    if name is None:
-        raise RuntimeError("No object store available to delete.")
-    Global.itctx.unregister_object_store(name)
-    return CallExpression(db, "deleteObjectStore", [Literal(name)])
+
+    return CallExpression(db, "deleteObjectStore", [db])
 
 
 def create_index():
