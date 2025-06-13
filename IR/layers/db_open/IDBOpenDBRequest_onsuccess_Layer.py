@@ -1,5 +1,4 @@
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBDatabase, IDBOpenDBRequest
 from IR.IRNodes import (
     AssignmentExpression, FunctionExpression, Identifier,
     MemberExpression, Literal, CallExpression
@@ -11,6 +10,7 @@ from IR.layers.LayerBuilder import LayerBuilder
 from IR.layers.db_transaction.IDBDatabase_Transaction_Layer import IDBDatabase_Transaction_Layer
 from IR.layers.db_open.IDBDatabase_onversionchange_Layer import IDBDatabase_onversionchange_Layer
 from IR.layers.db_open.IDBDatabase_onclose_Layer import IDBDatabase_onclose_Layer
+from IR.type.IDBType import IDBType
 
 
 class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
@@ -27,7 +27,7 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         children = []
 
         # 获取当前 openRequest
-        open_request_id = Global.irctx.get_identifier_by_type(IDBOpenDBRequest)
+        open_request_id = Global.irctx.get_identifier_by_type(IDBType.IDBOpenDBRequest)
 
         # db = request.result
         assign_db = AssignmentExpression(
@@ -37,7 +37,7 @@ class IDBOpenDBRequest_onsuccess_Layer(LayerBuilder):
         body.append(assign_db)
 
         # 注册 db 变量
-        Global.irctx.register_variable(Variable("db", IDBDatabase))
+        Global.irctx.register_variable(Variable("db", IDBType.IDBDatabase))
 
         # 构建 transaction 层
         txn_layer = IDBDatabase_Transaction_Layer.build()

@@ -1,10 +1,8 @@
-from IR.IRContext import IRContext
-from IR.IRType import IDBDatabase
 from IR.layers.Globals import Global
-from IR.layers.LiteralContext import LiteralContext
 from IR.IRNodes import Identifier, MemberExpression, AssignmentExpression, FunctionExpression, ConsoleLog, Literal
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
+from IR.type.IDBType import IDBType
 
 
 class IDBDatabase_onclose_Layer(LayerBuilder):
@@ -13,7 +11,7 @@ class IDBDatabase_onclose_Layer(LayerBuilder):
 
     @staticmethod
     def build() -> Layer:
-        db_id = Global.irctx.get_identifier_by_type(IDBDatabase)
+        db_id = Global.irctx.get_identifier_by_type(IDBType.IDBDatabase)
 
         body = [
             ConsoleLog(Literal("The database connection is unexpectedly closed"))

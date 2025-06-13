@@ -1,11 +1,11 @@
 from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBDatabase, IDBObjectStore, IDBOpenDBRequest
 from IR.IRNodes import AssignmentExpression, FunctionExpression, Identifier, MemberExpression, CallExpression, Literal, ConsoleLog
 from IR.layers.Globals import Global
 from IR.layers.LiteralContext import LiteralContext
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
 from IR.layers.db_open.db_schema.IDBDatabase_SchemaOps_Layer import IDBDatabase_SchemaOps_Layer
+from IR.type.IDBType import IDBType
 
 
 class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
@@ -32,13 +32,13 @@ class IDBOpenDBRequest_onupgradeneeded_Layer(LayerBuilder):
         body.append(assign_db)
 
         # 注册 db 到上下文
-        Global.irctx.register_variable(Variable("db", IDBDatabase))
+        Global.irctx.register_variable(Variable("db", IDBType.IDBDatabase))
 
         # ✅ 添加 schema 层
         schema_layer = IDBDatabase_SchemaOps_Layer.build()
 
         # 构造事件处理器
-        open_request_id = Global.irctx.get_identifier_by_type(IDBOpenDBRequest)
+        open_request_id = Global.irctx.get_identifier_by_type(IDBType.IDBOpenDBRequest)
         handler = AssignmentExpression(
             left=MemberExpression(open_request_id, "onupgradeneeded"),
             right=FunctionExpression([Identifier("event")], body)

@@ -1,10 +1,10 @@
 from IR.layers.Globals import Global
+from IR.type.IDBType import IDBType
 from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.IRContext import IRContext, Variable
 from config import FATHER
 from IR.layers.LiteralContext import LiteralContext
-from IR.IRType import IDBOpenDBRequest, IDBFactory
 from IR.IRParamValueGenerator import IRParamValueGenerator
 from IR.layers.db_open.IDBOpenDBRequest_onblocked_Layer import IDBOpenDBRequest_onblocked_Layer
 from IR.layers.db_open.IDBOpenDBRequest_onerror_Layer import IDBOpenDBRequest_onerror_Layer
@@ -42,9 +42,9 @@ class IDBFactory_OpenDatabase_Layer(LayerBuilder):
         )
 
         # 注册 indexedDB 对象
-        Global.irctx.register_variable(Variable("FATHER", IDBFactory))
+        Global.irctx.register_variable(Variable("FATHER", IDBType.IDBFactory))
 
-        Global.irctx.register_variable(Variable("openRequest", IDBOpenDBRequest))
+        Global.irctx.register_variable(Variable("openRequest", IDBType.IDBOpenDBRequest))
 
         # 注册子事件层
         upgrade_layer = IDBOpenDBRequest_onupgradeneeded_Layer.build()

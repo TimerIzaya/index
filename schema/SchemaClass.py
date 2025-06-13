@@ -1,30 +1,7 @@
 from typing import Optional, List, Dict, Union
 from enum import Enum
 
-
-# ========== IDBType Enum ==========
-class IDBType(Enum):
-    DOMException = "DOMException"
-    DOMStringList = "DOMStringList"
-    IDBCursor = "IDBCursor"
-    IDBDatabase = "IDBDatabase"
-    IDBIndex = "IDBIndex"
-    IDBKeyRange = "IDBKeyRange"
-    IDBObjectStore = "IDBObjectStore"
-    IDBOpenDBRequest = "IDBOpenDBRequest"
-    IDBRequest = "IDBRequest"
-    IDBTransaction = "IDBTransaction"
-    Promise = "Promise"
-    TypeError = "TypeError"
-    Any = "any"
-    Array = "array"
-    Boolean = "boolean"
-    Function = "function"
-    Null = "null"
-    Number = "number"
-    Object = "object"
-    String = "string"
-    Void = "void"
+from IR.type.IDBType import IDBType
 
 
 # ========== TypeInfo ==========
@@ -133,12 +110,6 @@ class MethodInfo:
             self.returns = None
 
         self.params = [ParamInfo(p) for p in data.get("params", [])]
-
-    # def genLiteralParams(self):
-    #     args = []
-    #     for p in self.params:
-    #         args.extend(IRParamValueGenerator.generateValueByParamInfo(p))
-    #     return args
 
 
 # ========== PropertyInfo ==========

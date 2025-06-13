@@ -1,5 +1,4 @@
-from IR.IRContext import IRContext, Variable
-from IR.IRType import IDBTransaction, IDBObjectStore
+from IR.IRContext import Variable
 from IR.IRNodes import CallExpression, Identifier, Literal
 from IR.layers.Globals import Global
 from IR.layers.LiteralContext import LiteralContext
@@ -9,6 +8,7 @@ from IR.layers.db_transaction.IDBTransaction_oncomplete_Layer import IDBTransact
 from IR.layers.db_transaction.IDBTransaction_onabort_Layer import IDBTransaction_onabort_Layer
 from IR.layers.db_transaction.IDBTransaction_onerror_Layer import IDBTransaction_onerror_Layer
 from IR.layers.db_transaction.db_curd.IDBObjectStore_DataOps_Layer import IDBObjectStore_DataOps_Layer
+from IR.type.IDBType import IDBType
 
 
 class IDBDatabase_Transaction_Layer(LayerBuilder):
@@ -40,8 +40,8 @@ class IDBDatabase_Transaction_Layer(LayerBuilder):
             result_name=osVarName
         )
 
-        Global.irctx.register_variable(Variable("txn", IDBTransaction))
-        Global.irctx.register_variable(Variable("store", IDBObjectStore))
+        Global.irctx.register_variable(Variable("txn", IDBType.IDBTransaction))
+        Global.irctx.register_variable(Variable("store", IDBType.IDBObjectStore))
 
         children = list(filter(None, [
             IDBObjectStore_DataOps_Layer.build(),

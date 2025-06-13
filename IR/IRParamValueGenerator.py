@@ -3,34 +3,30 @@ from typing import Optional, Union, List
 
 from IR.IRNodes import Literal
 from IR.layers.Globals import Global
+from IR.type.IDBTypeTool import IDBTypeTool
 from config import OPTIONAL_JUMP
 from schema.SchemaClass import ParamInfo, TypeInfo, IDBType, MethodInfo
 
 
 class IRParamValueGenerator:
     @staticmethod
-    def resolveTypeinfo(typeinfo_union: Union[TypeInfo, list]) -> TypeInfo:
-        if isinstance(typeinfo_union, list):
-            return random.choice(typeinfo_union)
-        return typeinfo_union
-
-    @staticmethod
     def generateValueFromType(typeinfo: TypeInfo):
-        typename = typeinfo.typename
+        typeinfo = IDBTypeTool.normalTypeinfo(typeinfo)
+        idbType = typeinfo.typename
         items = typeinfo.items
 
-        if typename == IDBType.Boolean:
+        if idbType == IDBType.Boolean:
             return random.choice([True, False])
 
-        if typename == IDBType.Number:
+        if idbType == IDBType.Number:
             return random.randint(0, 100)
 
-        if typename == IDBType.String:
+        if idbType == IDBType.String:
             return "str_" + str(random.randint(0, 9999))
 
-        if typename == IDBType.Array:
+        if idbType == IDBType.Array:
             count = random.randint(1, 5)
-            element_type = TypeInfo({"typename": "any"})  # 默认元素类型
+            element_type = TypeInfo({"idbType": "any"})  # 默认元素类型
 
             if isinstance(items, list) and len(items) == 1:
                 element_type = items[0]
@@ -39,27 +35,27 @@ class IRParamValueGenerator:
 
             return [IRParamValueGenerator.generateValueFromType(element_type) for _ in range(count)]
 
-        if typename == IDBType.Null:
+        if idbType == IDBType.Null:
             return None
 
-        if typename == IDBType.Any:
+        if idbType == IDBType.Any:
             return random.choice(["fallback", 42, True])
 
-        if isinstance(typename, IDBType) and (
-            typename.name.startswith("IDB") or "Exception" in typename.name or "Error" in typename.name
+        if isinstance(idbType, IDBType) and (
+                idbType.name.startswith("IDB") or "Exception" in idbType.name or "Error" in idbType.name
         ):
             return None
 
-        if typename == IDBType.IDBIndex.value:
+        if idbType == IDBType.IDBIndex.value:
             return Global.itctx.pick_random_index() or "idx_default"
-        if typename == IDBType.IDBObjectStore.value:
+        if idbType == IDBType.IDBObjectStore.value:
             return Global.itctx.get_current_store() or "store_default"
-        if typename == IDBType.IDBKeyRange.value:
+        if idbType == IDBType.IDBKeyRange.value:
             return Global.itctx.get_current_store() or "store_default"
-        if typename == IDBType.IDBRequest.value:
+        if idbType == IDBType.IDBRequest.value:
             return Global.irctx.get_random_identifier(IDBType.IDBRequest.value) or Literal("<request>")
 
-        return f"{typename.name if isinstance(typename, IDBType) else typename}_instance"
+        return f"{idbType.name if isinstance(idbType, IDBType) else idbType}_instance"
 
     @staticmethod
     def generateValueByParamInfo(param: ParamInfo):
@@ -88,7 +84,7 @@ class IRParamValueGenerator:
 
         # 参数类型可能是 TypeInfo 或 List[TypeInfo]，统一解析为一个 TypeInfo 实例
         typeInfoUnion = param.type
-        typeInfo = IRParamValueGenerator.resolveTypeinfo(typeInfoUnion)
+        typeInfo = IDBTypeTool.normalTypeinfo(typeInfoUnion)
 
         # 优先使用当前上下文中已存在的变量（重用）
         typename = typeInfo.typename
@@ -102,6 +98,10 @@ class IRParamValueGenerator:
 
     @staticmethod
     def generateMethodArgs(method: MethodInfo) -> List[ParamInfo]:
+        """
+
+        :rtype: object
+        """
         params = method.params
         args = []
         for param in params:

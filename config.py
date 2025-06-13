@@ -1,7 +1,4 @@
 import os
-from argparse import OPTIONAL
-
-from IR.IRTypeRegistry import IRTypeRegistry
 
 # 项目根目录
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,7 +7,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_FILE = os.path.join(BASE_DIR, "schema", "indexeddb_schema.json")
 
 FATHER = "window.indexedDB"
-GlobalIRTypeRegistry = IRTypeRegistry()
 
 IDBFactory_OpenDatabase_Layer = "IDBFactory_OpenDatabase_Layer"
 IDBOpenDBRequest_onsuccess_Layer = "IDBOpenDBRequest_onsuccess_Layer"

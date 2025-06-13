@@ -1,11 +1,9 @@
-from IR.IRContext import IRContext
 from IR.IRNodes import FunctionExpression, AssignmentExpression, MemberExpression, Identifier, Literal, CallExpression
-from IR.IRType import IDBOpenDBRequest
 from IR.layers.Globals import Global
+from IR.type.IDBType import IDBType
 from config import randomFuzzing
 from IR.layers.Layer import Layer, LayerType
 from IR.layers.LayerBuilder import LayerBuilder
-from IR.layers.LiteralContext import LiteralContext
 
 
 class IDBDeleteDBRequest_onerror_Layer(LayerBuilder):
@@ -22,7 +20,7 @@ class IDBDeleteDBRequest_onerror_Layer(LayerBuilder):
 
         if randomFuzzing:
             handler = AssignmentExpression(
-                left=MemberExpression(Global.irctx.get_identifier_by_type(IDBOpenDBRequest), "onerror"),
+                left=MemberExpression(Global.irctx.get_identifier_by_type(IDBType.IDBOpenDBRequest), "onerror"),
                 right=FunctionExpression([Identifier("event")], body)
             )
         else:

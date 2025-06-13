@@ -1,6 +1,6 @@
 from typing import List, Union, Optional
 
-from IR.IRType import Type
+from IR.type.IDBType import IDBType
 from config import OPTIONAL_JUMP
 from schema.SchemaClass import ParamInfo
 
@@ -35,7 +35,7 @@ class Variable(IRNode):
             "type": self.type.typename
         }
 
-    def __init__(self, name: str, type_: Type):
+    def __init__(self, name: str, type_: IDBType):
         self.name = Identifier(name)
         self.type = type_
 

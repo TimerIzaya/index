@@ -1,4 +1,3 @@
-from config import GlobalIRTypeRegistry
 from typing import Union
 
 class SchemaNode:
@@ -91,8 +90,8 @@ class IDBSchemaParser:
 
             if isinstance(raw, dict):
                 for k, v in raw.items():
-                    if k == "typename" and isinstance(v, str):
-                        GlobalIRTypeRegistry.register(v)
+                    # if k == "typename" and isinstance(v, str):
+                    #     GlobalIRTypeRegistry.register(v)
                     visit(SchemaNode(v))
             elif isinstance(raw, list):
                 for item in raw:

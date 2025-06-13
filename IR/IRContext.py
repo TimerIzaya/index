@@ -1,7 +1,6 @@
 import random
 from typing import List, Dict, Optional
 from IR.IRNodes import Identifier, Variable
-from IR.IRType import Type
 from IR.layers.Layer import Layer
 from schema.SchemaClass import IDBType
 
@@ -41,11 +40,11 @@ class IRContext:
         result = []
         for layPool in self.layerStack:
             for v in layPool.vars:
-                if v.type.typename == typename:
+                if v.type == typename:
                     result.append(v)
         return result
 
-    def get_identifier_by_type(self, type_: Type) -> Optional[Identifier]:
+    def get_identifier_by_type(self, type_: IDBType) -> Optional[Identifier]:
         candidates = []
         for layPool in self.layerStack:
             for v in layPool.vars:

@@ -1,9 +1,7 @@
 from IR.IRContext import Variable
 from IR.IRNodes import Identifier
 from IR.IRParamValueGenerator import IRParamValueGenerator
-from IR.IRType import Type
 from IR.layers.Globals import Global
-from IR.layers.db_transaction.db_curd.ValueGenerator import ValueGenerator
 from schema.SchemaClass import MethodInfo
 from IR.IRNodes import CallExpression, Literal
 from schema.SchemaClass import IDBType
@@ -42,7 +40,7 @@ class PipeEnd:
         else:
             return_typename = IDBType.IDBRequest.value
 
-        Global.irctx.register_variable(Variable(name=result_name, type_=Type(return_typename)))
+        Global.irctx.register_variable(Variable(name=result_name, type_=return_typename))
         return call
 
     def __repr__(self):

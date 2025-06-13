@@ -1,85 +1,93 @@
 from IR.layers.Globals import Global
-from IR.layers.db_open.db_schema import IDBDatabase_SchemaOps_Layer
+from IR.type.IDBType import IDBType
+from IR.type.IDBTypeTool import IDBTypeTool
 from schema.IDBSchemaParser import IDBSchemaParser
 from IR.IRNodes import MemberExpression, CallExpression, Literal, VariableDeclaration, AssignmentExpression, Identifier
 from IR.IRContext import IRContext, Variable
 from IR.IRParamValueGenerator import IRParamValueGenerator
-from IR.layers.LiteralContext import LiteralContext
-from IR.IRType import IDBObjectStore, IDBIndex, IDBDatabase
 
 
 def get_store_name():
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for get_store_name")
     return MemberExpression(store, "name")
 
 
 def get_store_keypath():
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.DBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for get_store_keypath")
     return MemberExpression(store, "keyPath")
 
 
 def get_store_autoincrement():
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for get_store_autoincrement")
     return MemberExpression(store, "autoIncrement")
 
 
 def get_store_index_names():
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for get_store_index_names")
     return MemberExpression(store, "indexNames")
 
 
 def get_index_name():
-    idx = Global.irctx.get_identifier_by_type(IDBIndex)
+    idx = Global.irctx.get_identifier_by_type(IDBType.IDBIndex)
     if idx is None:
         raise RuntimeError("No IDBIndex identifier available for get_index_name")
     return MemberExpression(idx, "name")
 
 
 def get_index_keypath():
-    idx = Global.irctx.get_identifier_by_type(IDBIndex)
+    idx = Global.irctx.get_identifier_by_type(IDBType.IDBIndex)
     if idx is None:
         raise RuntimeError("No IDBIndex identifier available for get_index_keypath")
     return MemberExpression(idx, "keyPath")
 
 
 def get_index_unique():
-    idx = Global.irctx.get_identifier_by_type(IDBIndex)
+    idx = Global.irctx.get_identifier_by_type(IDBType.IDBIndex)
     if idx is None:
         raise RuntimeError("No IDBIndex identifier available for get_index_unique")
     return MemberExpression(idx, "unique")
 
 
 def get_index_multiEntry():
-    idx = Global.irctx.get_identifier_by_type(IDBIndex)
+    idx = Global.irctx.get_identifier_by_type(IDBType.IDBIndex)
     if idx is None:
         raise RuntimeError("No IDBIndex identifier available for get_index_multiEntry")
     return MemberExpression(idx, "multiEntry")
 
 
 def create_object_store():
-    db = Global.irctx.get_identifier_by_type(IDBDatabase)
-    if db is None:
+    # 找到db的标识符
+    dbIdt = Global.irctx.get_identifier_by_type(IDBType.IDBDatabase)
+    if dbIdt is None:
         raise RuntimeError("No IDBDatabase identifier available for create_object_store")
-    name = Global.itctx.new_object_store_name()
-    Global.itctx.register_object_store(name)
-    Global.irctx.register_variable(Variable(name, IDBObjectStore))
-    ident = Identifier(name)
+
+    # 从schema中找到该方法的定义，生成参数列表
+    m = IDBSchemaParser.getInterface("IDBDatabase").getInstanceMethod("createObjectStore").raw()
+    args = IRParamValueGenerator.generateMethodArgs(m)
+
+    # 生成一个用于接收返回结果的变量，注意该对象的类型就是method的返回值
+    recVarName = Global.itctx.new_object_store_name()
+    recVar = Variable(recVarName, IDBTypeTool.extractIDBTypeFromMethodReturns(m))
+
+    Global.itctx.register_object_store(recVarName)
+    Global.irctx.register_variable(recVar)
+
     return [
-        VariableDeclaration(ident.raw),
-        AssignmentExpression(ident, CallExpression(db, "createObjectStore", [Literal(name)]))
+        VariableDeclaration(recVar.name),
+        AssignmentExpression(recVar, CallExpression(dbIdt, "createObjectStore", args = args))
     ]
 
 
 def delete_object_store():
-    db = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    db = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if db is None:
         raise RuntimeError("No IDBDatabase identifier available for delete_object_store")
 
@@ -91,7 +99,7 @@ def create_index():
     method = parser.getInterface("IDBObjectStore").getInstanceMethod("createIndex")
 
     # 首先确保当前上下文中有有效的 object store
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore available")
 
@@ -116,7 +124,7 @@ def create_index():
 
     ident = Identifier(index_name)
 
-    Global.irctx.register_variable(Variable(index_name, IDBIndex))
+    Global.irctx.register_variable(Variable(index_name, IDBType.IDBIndex))
 
     return [
         VariableDeclaration(ident.raw),
@@ -128,7 +136,7 @@ def create_index():
 
 
 def delete_index():
-    store = Global.irctx.get_identifier_by_type(IDBObjectStore)
+    store = Global.irctx.get_identifier_by_type(IDBType.IDBObjectStore)
     if store is None:
         raise RuntimeError("No IDBObjectStore identifier available for delete_index")
 
